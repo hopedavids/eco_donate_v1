@@ -12,10 +12,10 @@
     <title>EcoDonate</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ url_for('static', filename='img/core-img/favicon.ico') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/core-img/favicon.ico')}}">
 
     <!-- Core Stylesheet -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
 
 </head>
 
@@ -82,7 +82,7 @@
                     <nav class="classy-navbar justify-content-between" id="alazeaNav">
 
                         <!-- Nav Brand -->
-                        <a href="index.html" class="nav-brand"><img src="{{ url_for('static', filename='img/core-img/logo.png') }}" alt=""></a>
+                        <a href="{{ url_for('index')}}" class="nav-brand"><img src="{{ url_for('static', filename='img/core-img/logo.png') }}" alt=""></a>
 
                         <!-- Navbar Toggler -->
                         <div class="classy-navbar-toggler">
@@ -100,38 +100,38 @@
                             <!-- Navbar Start -->
                             <div class="classynav">
                                 <ul>
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="about.html">About</a></li>
+                                    <li><a href="{{ url_for('index')}}">Home</a></li>
+                                    <li><a href="{{ url_for('about')}}">About</a></li>
                                     <li><a href="#">Pages</a>
                                         <ul class="dropdown">
-                                            <li><a href="index.html">Home</a></li>
-                                            <li><a href="about.html">About</a></li>
-                                            <li><a href="shop.html">Shop</a>
+                                            <li><a href="{{ url_for('index')}}">Home</a></li>
+                                            <li><a href="{{ url_for('about')}}">About</a></li>
+                                            <li><a href="{{ url_for('shop')}}">Shop</a>
                                                 <ul class="dropdown">
-                                                    <li><a href="shop.html">Shop</a></li>
-                                                    <li><a href="shop-details.html">Shop Details</a></li>
-                                                    <li><a href="cart.html">Shopping Cart</a></li>
-                                                    <li><a href="checkout.html">Checkout</a></li>
+                                                    <li><a href="{{ url_for('shop')}}">Shop</a></li>
+                                                    <li><a href="{{ url_for('shop_details')}}">Shop Details</a></li>
+                                                    <li><a href="{{ url_for('cart')}}">Shopping Cart</a></li>
+                                                    <li><a href="{{ url_for('checkout')}}">Checkout</a></li>
                                                 </ul>
                                             </li>
-                                            <li><a href="portfolio.html">Portfolio</a>
+                                            <li><a href="{{ url_for('portfolio')}}">Portfolio</a>
                                                 <ul class="dropdown">
-                                                    <li><a href="portfolio.html">Portfolio</a></li>
-                                                    <li><a href="single-portfolio.html">Portfolio Details</a></li>
+                                                    <li><a href="{{ url_for('portfolio')}}">Portfolio</a></li>
+                                                    <li><a href="{{ url_for('single_portfolio')}}">Portfolio Details</a></li>
                                                 </ul>
                                             </li>
-                                            <li><a href="blog.html">Blog</a>
+                                            <li><a href="{{ url_for('blog')}}">Blog</a>
                                                 <ul class="dropdown">
-                                                    <li><a href="blog.html">Blog</a></li>
-                                                    <li><a href="single-post.html">Blog Details</a></li>
+                                                    <li><a href="{{ url_for('blog')}}">Blog</a></li>
+                                                    <li><a href="{{ url_for('single_post')}}">Blog Details</a></li>
                                                 </ul>
                                             </li>
-                                            <li><a href="contact.html">Contact</a></li>
+                                            <li><a href="{{ url_for('contact')}}">Contact</a></li>
                                         </ul>
                                     </li>
-                                    <li><a href="shop.html">Shop</a></li>
-                                    <li><a href="portfolio.html">Portfolio</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="{{ url_for('shop')}}">Shop</a></li>
+                                    <li><a href="{{ url_for('portfolio')}}">Portfolio</a></li>
+                                    <li><a href="{{ url_for('contact')}}">Contact</a></li>
                                 </ul>
 
                                 <!-- Search Icon -->
@@ -166,7 +166,7 @@
             <!-- Single Hero Post -->
             <div class="single-hero-post bg-overlay">
                 <!-- Post Image -->
-                <div class="slide-img bg-img" style="background-image: url(img/bg-img/1.jpg);"></div>
+                <div class="slide-img bg-img" style="background-image: url({{ url_for('static', filename='img/bg-img/1.jpg')}});"></div>
                 <div class="container h-100">
                     <div class="row h-100 align-items-center">
                         <div class="col-12">
@@ -187,7 +187,7 @@
             <!-- Single Hero Post -->
             <div class="single-hero-post bg-overlay">
                 <!-- Post Image -->
-                <div class="slide-img bg-img" style="background-image: url(img/bg-img/2.jpg);"></div>
+                <div class="slide-img bg-img" style="background-image: url({{ url_for('static', filename='img/bg-img/2.jpg')}});"></div>
                 <div class="container h-100">
                     <div class="row h-100 align-items-center">
                         <div class="col-12">
@@ -645,20 +645,20 @@
                     <div class="single-product-area mb-50 wow fadeInUp" data-wow-delay="100ms">
                         <!-- Product Image -->
                         <div class="product-img">
-                            <a href="shop-details.html"><img src="{{ url_for('static', filename='img/bg-img/9.jpg') }}" alt=""></a>
+                            <a href="{{ url_for('shop_details')}}"><img src="{{ url_for('static', filename='img/bg-img/9.jpg') }}" alt=""></a>
                             <!-- Product Tag -->
                             <div class="product-tag">
                                 <a href="#">Hot</a>
                             </div>
                             <div class="product-meta d-flex">
                                 <a href="#" class="wishlist-btn"><i class="icon_heart_alt"></i></a>
-                                <a href="cart.html" class="add-to-cart-btn">Add to cart</a>
+                                <a href="{{ url_for('cart')}}" class="add-to-cart-btn">Add to cart</a>
                                 <a href="#" class="compare-btn"><i class="arrow_left-right_alt"></i></a>
                             </div>
                         </div>
                         <!-- Product Info -->
                         <div class="product-info mt-15 text-center">
-                            <a href="shop-details.html">
+                            <a href="{{ url_for('shop_details')}}">
                                 <p>Cactus Flower</p>
                             </a>
                             <h6>$10.99</h6>
@@ -671,16 +671,16 @@
                     <div class="single-product-area mb-50 wow fadeInUp" data-wow-delay="200ms">
                         <!-- Product Image -->
                         <div class="product-img">
-                            <a href="shop-details.html"><img src="{{ url_for('static', filename='img/bg-img/10.jpg') }}" alt=""></a>
+                            <a href="{{ url_for('shop_details')}}"><img src="{{ url_for('static', filename='img/bg-img/10.jpg') }}" alt=""></a>
                             <div class="product-meta d-flex">
                                 <a href="#" class="wishlist-btn"><i class="icon_heart_alt"></i></a>
-                                <a href="cart.html" class="add-to-cart-btn">Add to cart</a>
+                                <a href="{{ url_for('cart')}}" class="add-to-cart-btn">Add to cart</a>
                                 <a href="#" class="compare-btn"><i class="arrow_left-right_alt"></i></a>
                             </div>
                         </div>
                         <!-- Product Info -->
                         <div class="product-info mt-15 text-center">
-                            <a href="shop-details.html">
+                            <a href="{{ url_for('shop_details')}}">
                                 <p>Cactus Flower</p>
                             </a>
                             <h6>$10.99</h6>
@@ -693,16 +693,16 @@
                     <div class="single-product-area mb-50 wow fadeInUp" data-wow-delay="300ms">
                         <!-- Product Image -->
                         <div class="product-img">
-                            <a href="shop-details.html"><img src="{{ url_for('static', filename='img/bg-img/11.jpg') }}" alt=""></a>
+                            <a href="{{ url_for('shop_details')}}"><img src="{{ url_for('static', filename='img/bg-img/11.jpg') }}" alt=""></a>
                             <div class="product-meta d-flex">
                                 <a href="#" class="wishlist-btn"><i class="icon_heart_alt"></i></a>
-                                <a href="cart.html" class="add-to-cart-btn">Add to cart</a>
+                                <a href="{{ url_for('cart')}}" class="add-to-cart-btn">Add to cart</a>
                                 <a href="#" class="compare-btn"><i class="arrow_left-right_alt"></i></a>
                             </div>
                         </div>
                         <!-- Product Info -->
                         <div class="product-info mt-15 text-center">
-                            <a href="shop-details.html">
+                            <a href="{{ url_for('shop_details')}}">
                                 <p>Cactus Flower</p>
                             </a>
                             <h6>$10.99</h6>
@@ -715,20 +715,20 @@
                     <div class="single-product-area mb-50 wow fadeInUp" data-wow-delay="400ms">
                         <!-- Product Image -->
                         <div class="product-img">
-                            <a href="shop-details.html"><img src="{{ url_for('static', filename='img/bg-img/12.jpg') }}" alt=""></a>
+                            <a href="{{ url_for('shop_details')}}"><img src="{{ url_for('static', filename='img/bg-img/12.jpg') }}" alt=""></a>
                             <!-- Product Tag -->
                             <div class="product-tag sale-tag">
                                 <a href="#">Hot</a>
                             </div>
                             <div class="product-meta d-flex">
                                 <a href="#" class="wishlist-btn"><i class="icon_heart_alt"></i></a>
-                                <a href="cart.html" class="add-to-cart-btn">Add to cart</a>
+                                <a href="{{ url_for('cart')}}" class="add-to-cart-btn">Add to cart</a>
                                 <a href="#" class="compare-btn"><i class="arrow_left-right_alt"></i></a>
                             </div>
                         </div>
                         <!-- Product Info -->
                         <div class="product-info mt-15 text-center">
-                            <a href="shop-details.html">
+                            <a href="{{ url_for('shop_details')}}">
                                 <p>Cactus Flower</p>
                             </a>
                             <h6>$10.99</h6>
@@ -764,10 +764,10 @@
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="single-blog-post mb-100">
                         <div class="post-thumbnail mb-30">
-                            <a href="single-post.html"><img src="{{ url_for('static', filename='img/bg-img/6.jpg') }}" alt=""></a>
+                            <a href="{{ url_for('single_post')}}"><img src="{{ url_for('static', filename='img/bg-img/6.jpg') }}" alt=""></a>
                         </div>
                         <div class="post-content">
-                            <a href="single-post.html" class="post-title">
+                            <a href="{{ url_for('single_post')}}" class="post-title">
                                 <h5>Garden designers across the country forecast ideas shaping the gardening world in 2018</h5>
                             </a>
                             <div class="post-meta">
@@ -783,10 +783,10 @@
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="single-blog-post mb-100">
                         <div class="post-thumbnail mb-30">
-                            <a href="single-post.html"><img src="{{ url_for('static', filename='img/bg-img/7.jpg') }}" alt=""></a>
+                            <a href="{{ url_for('single_post')}}"><img src="{{ url_for('static', filename='img/bg-img/7.jpg') }}" alt=""></a>
                         </div>
                         <div class="post-content">
-                            <a href="single-post.html" class="post-title">
+                            <a href="{{ url_for('single_post')}}" class="post-title">
                                 <h5>2018 Midwest Tree and Shrub Conference: Resilient Plants for a Lasting Landscape</h5>
                             </a>
                             <div class="post-meta">
@@ -802,10 +802,10 @@
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="single-blog-post mb-100">
                         <div class="post-thumbnail mb-30">
-                            <a href="single-post.html"><img src="{{ url_for('static', filename='img/bg-img/8.jpg') }}" alt=""></a>
+                            <a href="{{ url_for('single_post')}}"><img src="{{ url_for('static', filename='img/bg-img/8.jpg') }}" alt=""></a>
                         </div>
                         <div class="post-content">
-                            <a href="single-post.html" class="post-title">
+                            <a href="{{ url_for('single_post')}}" class="post-title">
                                 <h5>The summer coming up, it’s time for both us and the flowers to soak up the sunshine</h5>
                             </a>
                             <div class="post-meta">
@@ -961,10 +961,10 @@
                             <!-- Single Best Seller Products -->
                             <div class="single-best-seller-product d-flex align-items-center">
                                 <div class="product-thumbnail">
-                                    <a href="shop-details.html"><img src="{{ url_for('static', filename='img/bg-img/4.jpg') }}" alt=""></a>
+                                    <a href="{{ url_for('shop_details')}}"><img src="{{ url_for('static', filename='img/bg-img/4.jpg') }}" alt=""></a>
                                 </div>
                                 <div class="product-info">
-                                    <a href="shop-details.html">Cactus Flower</a>
+                                    <a href="{{ url_for('shop_details')}}">Cactus Flower</a>
                                     <p>$10.99</p>
                                 </div>
                             </div>
@@ -972,10 +972,10 @@
                             <!-- Single Best Seller Products -->
                             <div class="single-best-seller-product d-flex align-items-center">
                                 <div class="product-thumbnail">
-                                    <a href="shop-details.html"><img src="{{ url_for('static', filename='img/bg-img/5.jpg') }}" alt=""></a>
+                                    <a href="{{ url_for('shop_details')}}"><img src="{{ url_for('static', filename='img/bg-img/5.jpg') }}" alt=""></a>
                                 </div>
                                 <div class="product-info">
-                                    <a href="shop-details.html">Tulip Flower</a>
+                                    <a href="{{ url_for('shop_details')}}">Tulip Flower</a>
                                     <p>$11.99</p>
                                 </div>
                             </div>
@@ -1023,12 +1023,12 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                         <div class="footer-nav">
                             <nav>
                                 <ul>
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="about.html">About</a></li>
+                                    <li><a href="{{ url_for('index')}}">Home</a></li>
+                                    <li><a href="{{ url_for('about')}}">About</a></li>
                                     <li><a href="#">Service</a></li>
-                                    <li><a href="portfolio.html">Portfolio</a></li>
-                                    <li><a href="blog.html">Blog</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="{{ url_for('portfolio')}}">Portfolio</a></li>
+                                    <li><a href="{{ url_for('blog')}}">Blog</a></li>
+                                    <li><a href="{{ url_for('contact')}}">Contact</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -1041,15 +1041,15 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
     <!-- ##### All Javascript Files ##### -->
     <!-- jQuery-2.2.4 js -->
-    <script src="{{ url_for('static', filename='js/jquery/jquery-2.2.4.min.') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery/jquery-2.2.4.min.js')}}"></script>
     <!-- Popper js -->
-    <script src="{{ url_for('static', filename='js/bootstrap/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap/popper.min.js')}}"></script>
     <!-- Bootstrap js -->
-    <script src="{{ url_for('static', filename='js/bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap/bootstrap.min.js')}}"></script>
     <!-- All Plugins js -->
-    <script src="{{ url_for('static', filename='js/plugins/plugins.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/plugins.js')}}"></script>
     <!-- Active js -->
-    <script src="{{ url_for('static', filename='js/active.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/active.js')}}"></script>
 </body>
 
 </html>
