@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  app: 
+    build:
+      context: .
+    ports:
+    - "5000:5000"
+    volumes:
+    - ./donate:/app
+    # command: >
+    #   python donate_app.py
