@@ -36,3 +36,4 @@ RUN useradd -ms /bin/bash dev
 # activate and the dev user
 USER dev
 
+CMD ["python","donate_app.py"]
