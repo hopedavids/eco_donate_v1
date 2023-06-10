@@ -8,7 +8,6 @@ LABEL maintainer="Hope Davids <hledavids@gmail.com>,\
 
 LABEL version="1.0"
 LABEL description="Eco_Donate Project"
-LABEL name="eco_donate_v1.0"
 
 ENV PYTHONUNBUFFERED 1
 
