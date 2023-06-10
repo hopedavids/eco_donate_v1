@@ -1,5 +1,8 @@
 from flask import Flask
 from flask_restx import Api, Resource
+from dotenv import load_dotenv
+
+load_dotenv('.flasenv')
 
 
 """ This is the main application that serves as the pivort and blueprint
