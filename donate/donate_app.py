@@ -1,5 +1,5 @@
-from flask import Flask
-from flask_restx import Api, Resource
+from flask import Flask, jsonify
+from flask_restx import Api, Resource, Namespace
 from dotenv import load_dotenv
 
 load_dotenv('.flasenv')
@@ -15,11 +15,17 @@ load_dotenv('.flasenv')
 app = Flask(__name__)
 api = Api(app)
 
+# define namespace Users
+ns = Namespace('Users', description="All user operations are handled here.") 
+
+# register namespace Users
+api.add_namespace(ns)
+
 
 """Below is the definition for the API routes and views """
 
 
-@api.route('/auth_user')
+@ns.route('/auth_user')
 class Users(Resource):
     """This class object defines the routes and views for
        User Authentication.
@@ -28,7 +34,7 @@ class Users(Resource):
     def get(self):
         """ This method handles the GET HTTP method and return a response."""
 
-        return ("hello, world")
+        return jsonify({"hello":"world"})
 
 
 if __name__ == "__main__":
