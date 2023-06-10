@@ -16,7 +16,7 @@ app = Flask(__name__)
 api = Api(app)
 
 # define namespace Users
-ns = Namespace('Users', description="All user operations are handled here.") 
+ns = Namespace('Users', description="All user operations are handled here.")
 
 # register namespace Users
 api.add_namespace(ns)
@@ -34,7 +34,7 @@ class Users(Resource):
     def get(self):
         """ This method handles the GET HTTP method and return a response."""
 
-        return jsonify({"hello":"world"})
+        return jsonify({'hello' : 'world'})
 
 
 if __name__ == "__main__":
