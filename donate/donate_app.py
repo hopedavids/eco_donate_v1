@@ -16,16 +16,37 @@ app = Flask(__name__)
 api = Api(app)
 
 # define namespace Users
-ns = Namespace('Users', description="All user operations are handled here.")
+auth_ns = Namespace('authenticate', description="Login Endpoint")
+user_ns = Namespace('user', description="All user operations.")
+wallet_ns = Namespace('wallet', description="Wallet information")
+pay_ns = Namespace('payment', description="All payments operations")
+trans_ns = Namespace('transaction', description="Transactions operation")
 
 # register namespace Users
-api.add_namespace(ns)
+api.add_namespace(auth_ns)
+api.add_namespace(user_ns)
+api.add_namespace(wallet_ns)
+api.add_namespace(pay_ns)
+api.add_namespace(trans_ns)
 
 
 """Below is the definition for the API routes and views """
 
 
-@ns.route('/auth_user')
+@auth_ns.route('')
+class Authentication(Resource):
+    """ Login Endpoint to access the endpoint and api resources.
+        This allows users to retrieve a JWT which gives access
+        to all eco_donate resources
+    """
+
+    def post(self):
+        """ This allows users to retrieve a JWT which gives access.
+        """
+        pass
+
+
+@user_ns.route('/<int:id>')
 class Users(Resource):
     """This class object defines the routes and views for
        User Authentication.
@@ -34,7 +55,12 @@ class Users(Resource):
     def get(self):
         """ This method handles the GET HTTP method and return a response."""
 
-        return jsonify({'hello' : 'world'})
+        return jsonify({'hello': 'world'})
+
+    def post(self):
+        """This method handles the POST requests."""
+
+        return jsonify({'Post': 'user'})
 
 
 if __name__ == "__main__":
