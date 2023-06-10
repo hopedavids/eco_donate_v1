@@ -1,4 +1,4 @@
 FLASK_APP=donate_app.py
 
-FLASK DEBUGE=TRUE
+FLASK_DEBUG=TRUE
 
