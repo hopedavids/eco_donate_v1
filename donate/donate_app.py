@@ -19,6 +19,7 @@ api = Api(app)
 """Below is the definition for the API routes and views """
 
 
+@api.route('/auth_user')
 class Users(Resource):
     """This class object defines the routes and views for
        User Authentication.
@@ -27,4 +28,8 @@ class Users(Resource):
     def get(self):
         """ This method handles the GET HTTP method and return a response."""
 
-        return ("Hello world")
+        return ("hello, world")
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
