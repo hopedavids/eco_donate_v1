@@ -1,8 +1,11 @@
-from flask import Flask, jsonify
+import os
+from flask import Flask, jsonify, request
 from flask_restx import Api, Resource, Namespace
+from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
+from flask_login import LoginManager, login_user, logout_user, login_required
 
-load_dotenv('.flasenv')
+load_dotenv('.flaskenv')
 
 
 """ This is the main application that serves as the pivort and blueprint
@@ -14,6 +17,16 @@ load_dotenv('.flasenv')
 
 app = Flask(__name__)
 api = Api(app)
+
+# creating and initializing the Login Manager instance class
+login_manager = LoginManager(app)
+
+# configure the SQLite database, relative to the app instance folder
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///donations.db"
+
+#initialize the app with the extension
+db = SQLAlchemy(app)
+
 
 # define namespace Users
 auth_ns = Namespace('authenticate', description="Login Endpoint")
@@ -43,7 +56,31 @@ class Authentication(Resource):
     def post(self):
         """ This allows users to retrieve a JWT which gives access.
         """
+        
         pass
+    
+    @login_manager.user_loader
+    def load_user(user_id):
+        return users.get(int(user_id))
+
+    def login():
+        """ This is the login session to authenticate users.
+        """
+        
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+
+        # authenticate the user using the in-built authenticate_user method
+        authenticated_user = authenticate_user(username, password)
+
+        if authenticated_user:
+            login_user(authenticated_user)
+            # generate token after a successful login
+            token = generate_token(authenticated_user)
+            return jsonify({'token': token}), 200
+        else:
+            return jsonify({'message': 'Invalid credentials'}), 401
 
 
 @user_ns.route('/<int:id>')
