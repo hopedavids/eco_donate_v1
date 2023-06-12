@@ -53,14 +53,91 @@ class Users(Resource):
     """
 
     def get(self):
-        """ This method handles the GET HTTP method and return a response."""
+        """ This method handles the GET HTTP method and returns
+            response in a serialized way.
+        """
 
         return jsonify({'hello': 'world'})
 
     def post(self):
-        """This method handles the POST requests."""
+        """This method handles the POST and creates new uses based
+            on requests.
+        """
 
         return jsonify({'Post': 'user'})
+
+    def put(self):
+        """This method updates a user details and roles"""
+
+        pass
+
+
+@wallet_ns.route()
+class Wallet(Resource):
+    """This object defines the routes and views for Wallet and
+        handles all wallets resources.
+    """
+
+    def get(self):
+        """The get method handles the HTTP GET requests and returns
+            response in a serialized way.
+        """
+
+        pass
+
+    def post(self):
+        """This method provides the means to create new wallets."""
+
+        pass
+
+    def put(self):
+        """This method provides the flexibility to update user's
+            wallet details.
+        """
+
+        pass
+
+
+@pay_ns.route()
+class Payment(Resource):
+    """This object defines the routes and views for Payment and
+        handles the defined resources.
+    """
+
+    def get(self):
+        """This method handles the HTTP GET method and provides the
+            platform to retrieve payments informations.
+        """
+
+        pass
+
+    def post(self):
+        """This method handles the HTTP POST requests and provides the
+            platform to create new payment.
+        """
+
+        pass
+
+    def put(self):
+        """This method handles the HTTP PUT requests and provides the
+            platform to update payment based on id.
+        """
+
+        pass
+
+
+@trans_ns.route()
+class Transaction(Resource):
+    """This object defines the routes and views for Transactions and
+        handles the defined resources.
+    """
+
+    def get(self):
+        """This method handles the HTTP GET method and provides the
+            platform to retrieve transactions details.
+        """
+
+        pass
 
 
 if __name__ == "__main__":
