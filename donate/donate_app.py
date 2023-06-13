@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 from flask_login import LoginManager, login_user, logout_user, login_required
 
+
 load_dotenv('.flaskenv')
 
 
@@ -14,6 +15,7 @@ load_dotenv('.flaskenv')
     resources and modules.
 """
 
+base_dir = os.path.dirname(os.path.realpath(__file__))
 
 app = Flask(__name__)
 api = Api(app)
@@ -22,11 +24,14 @@ api = Api(app)
 login_manager = LoginManager(app)
 
 # configure the SQLite database, relative to the app instance folder
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///donations.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(base_dir, "donations.db")
 
-#initialize the app with the extension
+# Initialize the app with the extension
 db = SQLAlchemy(app)
 
+
+""" Importing User from the models """
+from .models import User
 
 # define namespace Users
 auth_ns = Namespace('authenticate', description="Login Endpoint")
@@ -56,9 +61,9 @@ class Authentication(Resource):
     def post(self):
         """ This allows users to retrieve a JWT which gives access.
         """
-        
+
         pass
-    
+
     @login_manager.user_loader
     def load_user(user_id):
         return users.get(int(user_id))
@@ -66,7 +71,7 @@ class Authentication(Resource):
     def login():
         """ This is the login session to authenticate users.
         """
-        
+
         data = request.get_json()
         username = data.get('username')
         password = data.get('password')
