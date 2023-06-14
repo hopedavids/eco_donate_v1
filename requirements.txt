@@ -9,3 +9,5 @@ Flask-SQLAlchemy
 flask-login
 
 Flask-Migrate
+
+Flask-JWT-Extended
