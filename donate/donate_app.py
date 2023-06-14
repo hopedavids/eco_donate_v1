@@ -4,6 +4,7 @@ from flask_restx import Api, Resource, Namespace
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 from flask_login import LoginManager, login_user, logout_user, login_required
+from flask_jwt_extended import jwt_required, JWTManager
 
 
 load_dotenv('.flaskenv')
@@ -23,19 +24,30 @@ api = Api(app)
 # creating and initializing the Login Manager instance class
 login_manager = LoginManager(app)
 
+# initializing JWT Manager and secret key
+app.config["JWT_SECRET_KEY"] = "super-secret"
+jwt = JWTManager(app)
+
 # configure the SQLite database, relative to the app instance folder
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(base_dir, "donations.db")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
+app.config['SQLALCHEMY_ECHO']=True
 
 # Initialize the app with the extension
 db = SQLAlchemy(app)
 
+authorizations = {
+    "jsonWebToken": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+    }
+}
 
-""" Importing User from the models """
-from .models import User
 
 # define namespace Users
 auth_ns = Namespace('authenticate', description="Login Endpoint")
-user_ns = Namespace('user', description="All user operations.")
+user_ns = Namespace('user', description="All user operations.", authorizations=authorizations)
 wallet_ns = Namespace('wallet', description="Wallet information")
 pay_ns = Namespace('payment', description="All payments operations")
 trans_ns = Namespace('transaction', description="Transactions operation")
@@ -94,6 +106,9 @@ class Users(Resource):
        User Authentication.
     """
 
+    method_decorators = ['jsonWebToken']
+
+    @user_ns.doc(security="jsonWebToken")
     def get(self):
         """ This method handles the GET HTTP method and returns
             response in a serialized way.
@@ -183,4 +198,6 @@ class Transaction(Resource):
 
 
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(host='0.0.0.0')
