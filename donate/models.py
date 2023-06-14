@@ -40,7 +40,8 @@ class Wallet(db.Model):
 
     __tablename__ = 'donate_wallets'
 
-    wallet_id = db.Column(db.String(36), primary_key=True, default=generate_wallet_id)
+    # wallet_id = db.Column(db.Integer, primary_key=True, default=uuid.uuid4)
+    wallet_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id'),nullable=False)
     current_balance = db.Column(db.Float, default=0.0)
     previous_balance = db.Column(db.Float, default=0.0)
@@ -51,15 +52,10 @@ class Wallet(db.Model):
 
 
 
-# @event.listens_for(Wallet, 'after_insert')
-# def create_wallets(mapper, connection, target):
-#     wallet = target
-#     user = User.query.get(wallet.user_id)
-#     if user is not None:
-#         return
-#     wallet_id = str(uuid.uuid4())
-#     new_wallet = Wallet(wallet_id=wallet_id, user_id=target.user_id)
-#     db.session.add(new_wallet)
+# @event.listens_for(User, 'after_insert')
+# def create_wallet(mapper, connection, target):
+#     wallet = Wallet(user_id=target.id)
+#     db.session.add(wallet)
 #     db.session.commit()
 
 
