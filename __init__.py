@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 app = Flask(__name__)
 
 @app.route('/')
@@ -45,3 +45,6 @@ def single_portfolio():
 @app.route('/single-post')
 def single_post():
     return render_template('single-post.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
