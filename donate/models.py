@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from . import db
+from .exetensions import db
 from sqlalchemy import event
 
 
