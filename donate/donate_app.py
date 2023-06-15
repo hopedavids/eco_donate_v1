@@ -3,8 +3,8 @@ import psycopg2
 from flask import Flask
 from dotenv import load_dotenv
 from flask_login import LoginManager
-from .instances import api, db
-from flask_jwt_extended import jwt_required, JWTManager
+from .instances import api, db, jwt
+# from flask_jwt_extended import JWTManager
 from sqlalchemy.dialects.postgresql import psycopg2
 from .resources import auth_ns, user_ns, wallet_ns, pay_ns, trans_ns
 
@@ -37,7 +37,7 @@ def create_app():
     # adding the secret
     app.config["JWT_SECRET_KEY"] = "super-secret"
     # initializing the JWTManager
-    jwt = JWTManager(app)
+    jwt.init_app(app)
 
     # creating and initializing the Login Manager instance class
     # login_manager = LoginManager(app)
