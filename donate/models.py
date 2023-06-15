@@ -1,7 +1,11 @@
 import uuid
-from datetime import datetime
-from . import db
 from sqlalchemy import event
+from datetime import datetime
+from .instances import db
+
+
+
+# from resources import db
 
 
 
@@ -15,7 +19,6 @@ class User(db.Model):
     """In this class, the data model for the User
         will be defined.
     """
-
     __tablename__ = 'donate_users'
     __table_args__ = {'extend_existing': True}
 
@@ -40,8 +43,8 @@ class Wallet(db.Model):
 
     __tablename__ = 'donate_wallets'
 
-    # wallet_id = db.Column(db.Integer, primary_key=True, default=uuid.uuid4)
-    wallet_id = db.Column(db.Integer, primary_key=True)
+    wallet_id = db.Column(db.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
+    # wallet_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id'),nullable=False)
     current_balance = db.Column(db.Float, default=0.0)
     previous_balance = db.Column(db.Float, default=0.0)
@@ -67,7 +70,7 @@ class Payment(db.Model):
     __tablename__ = 'donate_payments'
 
     payment_id = db.Column(db.Integer, primary_key=True)
-    wallet_id = db.Column(db.String(36), db.ForeignKey('donate_wallets.wallet_id'), nullable=False)
+    wallet_id = db.Column(db.UUID(as_uuid=True), db.ForeignKey('donate_wallets.wallet_id'), nullable=False)
     donation_id = db.Column(db.Integer, db.ForeignKey('donations.donation_id'), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 

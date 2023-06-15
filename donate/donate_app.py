@@ -1,13 +1,17 @@
 import os
-from flask import Flask, jsonify, request
-from flask_restx import Api, Resource, Namespace
-from flask_sqlalchemy import SQLAlchemy
+import psycopg2
+from flask import Flask
 from dotenv import load_dotenv
-from flask_login import LoginManager, login_user, logout_user, login_required
+from flask_login import LoginManager
+from .instances import api, db
 from flask_jwt_extended import jwt_required, JWTManager
+from sqlalchemy.dialects.postgresql import psycopg2
+from .resources import auth_ns, user_ns, wallet_ns, pay_ns, trans_ns
+
 
 
 load_dotenv('.flaskenv')
+load_dotenv('.env')
 
 
 """ This is the main application that serves as the pivort and blueprint
@@ -16,188 +20,50 @@ load_dotenv('.flaskenv')
     resources and modules.
 """
 
-base_dir = os.path.dirname(os.path.realpath(__file__))
-
-app = Flask(__name__)
-api = Api(app)
-
-# creating and initializing the Login Manager instance class
-login_manager = LoginManager(app)
-
-# initializing JWT Manager and secret key
-app.config["JWT_SECRET_KEY"] = "super-secret"
-jwt = JWTManager(app)
-
-# configure the SQLite database, relative to the app instance folder
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(base_dir, "donations.db")
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
-app.config['SQLALCHEMY_ECHO']=True
-
-# Initialize the app with the extension
-db = SQLAlchemy(app)
-
-authorizations = {
-    "jsonWebToken": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "Authorization"
-    }
-}
+def create_app():
 
 
-# define namespace Users
-auth_ns = Namespace('authenticate', description="Login Endpoint")
-user_ns = Namespace('user', description="All user operations.", authorizations=authorizations)
-wallet_ns = Namespace('wallet', description="Wallet information")
-pay_ns = Namespace('payment', description="All payments operations")
-trans_ns = Namespace('transaction', description="Transactions operation")
+    app = Flask(__name__)
 
-# register namespace Users
-api.add_namespace(auth_ns)
-api.add_namespace(user_ns)
-api.add_namespace(wallet_ns)
-api.add_namespace(pay_ns)
-api.add_namespace(trans_ns)
+    base_dir = os.path.dirname(os.path.realpath(__file__))
 
+    # configure the SQLite database, relative to the app instance folder
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('POSTGRES_URL')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
+    app.config['SQLALCHEMY_ECHO']=True
 
-"""Below is the definition for the API routes and views """
+    # api = api(app)
+    # # Initialize the app with the extension
+    # db = SQLAlchemy(app)\
 
+    # adding the secret and initializing the JWTManager
+    app.config["JWT_SECRET_KEY"] = "super-secret"
+    jwt = JWTManager(app)
 
-@auth_ns.route('')
-class Authentication(Resource):
-    """ Login Endpoint to access the endpoint and api resources.
-        This allows users to retrieve a JWT which gives access
-        to all eco_donate resources
-    """
+    # creating and initializing the Login Manager instance class
+    # login_manager = LoginManager(app)
 
-    def post(self):
-        """ This allows users to retrieve a JWT which gives access.
-        """
+    # register namespace Users
+    api.add_namespace(auth_ns)
+    api.add_namespace(user_ns)
+    api.add_namespace(wallet_ns)
+    api.add_namespace(pay_ns)
 
-        pass
-
-    @login_manager.user_loader
-    def load_user(user_id):
-        return users.get(int(user_id))
-
-    def login():
-        """ This is the login session to authenticate users.
-        """
-
-        data = request.get_json()
-        username = data.get('username')
-        password = data.get('password')
-
-        # authenticate the user using the in-built authenticate_user method
-        authenticated_user = authenticate_user(username, password)
-
-        if authenticated_user:
-            login_user(authenticated_user)
-            # generate token after a successful login
-            token = generate_token(authenticated_user)
-            return jsonify({'token': token}), 200
-        else:
-            return jsonify({'message': 'Invalid credentials'}), 401
-
-
-@user_ns.route('/<int:id>')
-class Users(Resource):
-    """This class object defines the routes and views for
-       User Authentication.
-    """
-
-    method_decorators = ['jsonWebToken']
-
-    @user_ns.doc(security="jsonWebToken")
-    def get(self):
-        """ This method handles the GET HTTP method and returns
-            response in a serialized way.
-        """
-
-        return jsonify({'hello': 'world'})
-
-    def post(self):
-        """This method handles the POST and creates new uses based
-            on requests.
-        """
-
-        return jsonify({'Post': 'user'})
-
-    def put(self):
-        """This method updates a user details and roles"""
-
-        pass
-
-
-@wallet_ns.route()
-class Wallet(Resource):
-    """This object defines the routes and views for Wallet and
-        handles all wallets resources.
-    """
-
-    def get(self):
-        """The get method handles the HTTP GET requests and returns
-            response in a serialized way.
-        """
-
-        pass
-
-    def post(self):
-        """This method provides the means to create new wallets."""
-
-        pass
-
-    def put(self):
-        """This method provides the flexibility to update user's
-            wallet details.
-        """
-
-        pass
-
-
-@pay_ns.route()
-class Payment(Resource):
-    """This object defines the routes and views for Payment and
-        handles the defined resources.
-    """
-
-    def get(self):
-        """This method handles the HTTP GET method and provides the
-            platform to retrieve payments informations.
-        """
-
-        pass
-
-    def post(self):
-        """This method handles the HTTP POST requests and provides the
-            platform to create new payment.
-        """
-
-        pass
-
-    def put(self):
-        """This method handles the HTTP PUT requests and provides the
-            platform to update payment based on id.
-        """
-
-        pass
-
-
-@trans_ns.route()
-class Transaction(Resource):
-    """This object defines the routes and views for Transactions and
-        handles the defined resources.
-    """
-
-    def get(self):
-        """This method handles the HTTP GET method and provides the
-            platform to retrieve transactions details.
-        """
-
-        pass
-
-
-if __name__ == "__main__":
+    api.init_app(app)
+    db.init_app(app)
+    
     with app.app_context():
         db.create_all()
-    app.run(host='0.0.0.0')
+
+    return app
+    
+
+    
+
+# sys.path.append('/app')
+# from resources import *
+
+# if __name__ == "__main__":
+#     with app.app_context():
+#         db.create_all()
+#     app.run(host='0.0.0.0')
