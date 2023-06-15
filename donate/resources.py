@@ -1,5 +1,6 @@
 from flask import jsonify
 from flask_restx import Resource, Namespace
+from flask_jwt_extended import jwt_required
 from .instances import db
 from .models import User
 
@@ -39,12 +40,13 @@ class Authentication(Resource):
         pass
 
 
+@jwt_required
 @user_ns.route('')
 class Users(Resource):
     """This class object defines the routes and views for
        User Authentication.
     """
-    # method_decorators = ['jsonWebToken']
+    method_decorator = ['jsonWebToken']
 
     @user_ns.doc(security="jsonWebToken")
     def get(self):
