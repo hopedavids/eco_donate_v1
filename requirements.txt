@@ -11,3 +11,5 @@ flask-login
 Flask-Migrate
 
 Flask-JWT-Extended
+
+psycopg2-binary
