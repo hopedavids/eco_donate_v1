@@ -4,12 +4,6 @@ from datetime import datetime
 from .instances import db
 
 
-
-# from resources import db
-
-
-
-
 """In this model, all the schemas and tables,
     columns would be created here.
 """
@@ -30,30 +24,24 @@ class User(db.Model):
     # wallet = db.relationship('Wallet', backref='user_wallet', uselist=False)
 
 
-
-
 class Wallet(db.Model):
-    """This class defines the data model for the 
+    """This class defines the data model for the
         donate_wallet table.
     """
 
     def generate_wallet_id():
         return str(uuid.uuid4())
 
-
     __tablename__ = 'donate_wallets'
 
     wallet_id = db.Column(db.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
-    # wallet_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id'),nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id'), nullable=False)
     current_balance = db.Column(db.Float, default=0.0)
     previous_balance = db.Column(db.Float, default=0.0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user = db.relationship('User', backref='wallet', uselist=False)
-
-
 
 # @event.listens_for(User, 'after_insert')
 # def create_wallet(mapper, connection, target):
@@ -63,10 +51,9 @@ class Wallet(db.Model):
 
 
 class Payment(db.Model):
-    """This object defines the data model and schemas 
+    """This object defines the data model and schemas
         for payments.
     """
-
     __tablename__ = 'donate_payments'
 
     payment_id = db.Column(db.Integer, primary_key=True)
@@ -80,7 +67,7 @@ class Payment(db.Model):
 
 class Donation(db.Model):
     """This object defines the data model and schemas
-        for donations    
+        for donations.
     """
 
     __tablename__ = 'donations'
