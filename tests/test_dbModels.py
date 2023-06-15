@@ -1,5 +1,5 @@
-from .models import User
-from . import db
+from models import User
+from donate.donate_app import db
 
 # Create a new User instance
 user = User(username='john_doe', email='john@example.com', password='password123')
