@@ -9,7 +9,6 @@ from sqlalchemy.dialects.postgresql import psycopg2
 from .resources import auth_ns, user_ns, wallet_ns, pay_ns, trans_ns
 
 
-
 load_dotenv('.flaskenv')
 load_dotenv('.env')
 
@@ -20,8 +19,11 @@ load_dotenv('.env')
     resources and modules.
 """
 
-def create_app():
 
+def create_app():
+    """This method initialize and registers the app and the restful API
+        including the namespaces
+    """
 
     app = Flask(__name__)
 
@@ -29,15 +31,12 @@ def create_app():
 
     # configure the SQLite database, relative to the app instance folder
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('POSTGRES_URL')
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
-    app.config['SQLALCHEMY_ECHO']=True
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_ECHO'] = True
 
-    # api = api(app)
-    # # Initialize the app with the extension
-    # db = SQLAlchemy(app)\
-
-    # adding the secret and initializing the JWTManager
+    # adding the secret
     app.config["JWT_SECRET_KEY"] = "super-secret"
+    # initializing the JWTManager
     jwt = JWTManager(app)
 
     # creating and initializing the Login Manager instance class
@@ -51,19 +50,8 @@ def create_app():
 
     api.init_app(app)
     db.init_app(app)
-    
+
     with app.app_context():
         db.create_all()
 
     return app
-    
-
-    
-
-# sys.path.append('/app')
-# from resources import *
-
-# if __name__ == "__main__":
-#     with app.app_context():
-#         db.create_all()
-#     app.run(host='0.0.0.0')

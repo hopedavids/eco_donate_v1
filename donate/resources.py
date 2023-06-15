@@ -4,6 +4,9 @@ from .instances import db
 from .models import User
 
 
+"""In this module, namespaces are defined and including the routes and views
+    which are also defined here and associated with the models module.
+"""
 
 
 authorizations = {
@@ -14,13 +17,12 @@ authorizations = {
     }
 }
 
-# define namespace Users
+# define namespaces for the views
 auth_ns = Namespace('authenticate', description="Login Endpoint")
 user_ns = Namespace('user', description="All user operations.", authorizations=authorizations)
 wallet_ns = Namespace('wallet', description="Wallet information")
 pay_ns = Namespace('payment', description="All payments operations")
 trans_ns = Namespace('transaction', description="Transactions operation")
-
 
 
 @auth_ns.route('')
@@ -37,7 +39,6 @@ class Authentication(Resource):
         pass
 
 
-
 @user_ns.route('')
 class Users(Resource):
     """This class object defines the routes and views for
@@ -52,7 +53,7 @@ class Users(Resource):
         """
 
         user = User.query.all()
-      
+
         return jsonify({'username': user})
 
     def post(self):
@@ -120,6 +121,3 @@ class Payment(Resource):
         """
 
         pass
-
-
-
