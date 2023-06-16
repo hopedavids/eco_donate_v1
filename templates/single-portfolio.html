@@ -12,7 +12,7 @@
     <title>EcoDonate</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="img/core-img/favicon.ico">
+    <link rel="icon" href="{{ url_for('static', filename='img/core-img/favicon.ico') }}">
 
     <!-- Core Stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
@@ -24,7 +24,7 @@
     <div class="preloader d-flex align-items-center justify-content-center">
         <div class="preloader-circle"></div>
         <div class="preloader-img">
-            <img src="img/core-img/leaf.png" alt="">
+            <img src="{{ url_for('static', filename='img/core-img/leaf.png') }}" alt="">
         </div>
     </div>
 
@@ -41,7 +41,7 @@
                     <nav class="classy-navbar justify-content-between" id="alazeaNav">
 
                         <!-- Nav Brand -->
-                        <a href="index.html" class="nav-brand"><img src="img/core-img/logo.png" alt=""></a>
+                        <a href="{{ url_for('index')}}" class="nav-brand"><img src="{{ url_for('static', filename='img/core-img/logo.png') }}" alt=""></a>
 
                         <!-- Navbar Toggler -->
                         <div class="classy-navbar-toggler">
@@ -59,12 +59,10 @@
                             <!-- Navbar Start -->
                             <div class="classynav">
                                 <ul>
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="about.html">About</a></li>
-                                    <li><a href="#">Pages</a>
-                                    <li><a href="shop.html">Shop</a></li>
-                                    <li><a href="portfolio.html">Portfolio</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="{{ url_for('index')}}">Home</a></li>
+                                    <li><a href="{{ url_for('about')}}">About</a></li>
+                                    <li><a href="{{ url_for('portfolio')}}">Gallary</a></li>
+                                    <li><a href="{{ url_for('contact')}}">Contact</a></li>
                                 </ul>
 
                                 <!-- Search Icon -->
@@ -95,7 +93,7 @@
     <!-- ##### Breadcrumb Area Start ##### -->
     <div class="breadcrumb-area">
         <!-- Top Breadcrumb Area -->
-        <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center" style="background-image: url(img/bg-img/24.jpg);">
+        <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center" style="background-image: url({{ url_for('static', filename='img/bg-img/24.jpg')}});">
             <h2>SINGLE PORTFOLIO</h2>
         </div>
 
@@ -104,7 +102,7 @@
                 <div class="col-12">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html"><i class="fa fa-home"></i> Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ url_for('index')}}"><i class="fa fa-home"></i> Home</a></li>
                             <li class="breadcrumb-item"><a href="#">Portfolio</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Single Portfolio</li>
                         </ol>
@@ -157,15 +155,15 @@
         <div class="portfolio-slides owl-carousel mb-100">
             <!-- Single Portfolio Slide -->
             <div class="single-portfolio-slide">
-                <img src="img/bg-img/26.jpg" alt="">
+                <img src="{{ url_for('static', filename='img/bg-img/26.jpg') }}" alt="">
             </div>
             <!-- Single Portfolio Slide -->
             <div class="single-portfolio-slide">
-                <img src="img/bg-img/27.jpg" alt="">
+                <img src="{{ url_for('static', filename='img/bg-img/27.jpg') }}" alt="">
             </div>
             <!-- Single Portfolio Slide -->
             <div class="single-portfolio-slide">
-                <img src="img/bg-img/28.jpg" alt="">
+                <img src="{{ url_for('static', filename='img/bg-img/28.jpg') }}" alt="">
             </div>
         </div>
 
@@ -213,7 +211,7 @@
     <!-- ##### Portfolio Detaila Area End ##### -->
 
     <!-- ##### Footer Area Start ##### -->
-    <footer class="footer-area bg-img" style="background-image: url(img/bg-img/3.jpg);">
+    <footer class="footer-area bg-img" style="background-image: url({{ url_for('static', filename='img/bg-img/3.jpg') }});">
         <!-- Main Footer Area -->
         <div class="main-footer-area">
             <div class="container">
@@ -223,7 +221,7 @@
                     <div class="col-12 col-sm-6 col-lg-3">
                         <div class="single-footer-widget">
                             <div class="footer-logo mb-30">
-                                <a href="#"><img src="img/core-img/logo.png" alt=""></a>
+                                <a href="#"><img src="{{ url_for('static', filename='img/core-img/logo.png') }}" alt=""></a>
                             </div>
                             <p>Lorem ipsum dolor sit samet, consectetur adipiscing elit. India situs atione mantor</p>
                             <div class="social-info">
@@ -244,51 +242,16 @@
                             </div>
                             <nav class="widget-nav">
                                 <ul>
-                                    <li><a href="#">Purchase</a></li>
-                                    <li><a href="#">FAQs</a></li>
-                                    <li><a href="#">Payment</a></li>
-                                    <li><a href="#">News</a></li>
-                                    <li><a href="#">Return</a></li>
-                                    <li><a href="#">Advertise</a></li>
-                                    <li><a href="#">Shipping</a></li>
-                                    <li><a href="#">Career</a></li>
-                                    <li><a href="#">Orders</a></li>
-                                    <li><a href="#">Policities</a></li>
+                                    <li><a href="{{ url_for('index')}}">Home</a></li>
+                                    <li><a href="{{ url_for('about')}}">About</a></li>
+                                    <li><a href="{{ url_for('portfolio')}}">Gallary</a></li>
+                                    <li><a href="{{ url_for('contact')}}">Contact</a></li>
                                 </ul>
                             </nav>
                         </div>
                     </div>
 
                     <!-- Single Footer Widget -->
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="single-footer-widget">
-                            <div class="widget-title">
-                                <h5>BEST SELLER</h5>
-                            </div>
-
-                            <!-- Single Best Seller Products -->
-                            <div class="single-best-seller-product d-flex align-items-center">
-                                <div class="product-thumbnail">
-                                    <a href="shop-details.html"><img src="img/bg-img/4.jpg" alt=""></a>
-                                </div>
-                                <div class="product-info">
-                                    <a href="shop-details.html">Cactus Flower</a>
-                                    <p>$10.99</p>
-                                </div>
-                            </div>
-
-                            <!-- Single Best Seller Products -->
-                            <div class="single-best-seller-product d-flex align-items-center">
-                                <div class="product-thumbnail">
-                                    <a href="shop-details.html"><img src="img/bg-img/5.jpg" alt=""></a>
-                                </div>
-                                <div class="product-info">
-                                    <a href="shop-details.html">Tulip Flower</a>
-                                    <p>$11.99</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Single Footer Widget -->
                     <div class="col-12 col-sm-6 col-lg-3">
@@ -299,10 +262,8 @@
 
                             <div class="contact-information">
                                 <p><span>Address:</span> 505 Silk Rd, New York</p>
-                                <p><span>Phone:</span> +1 234 122 122</p>
-                                <p><span>Email:</span> info.deercreative@gmail.com</p>
-                                <p><span>Open hours:</span> Mon - Sun: 8 AM to 9 PM</p>
-                                <p><span>Happy hours:</span> Sat: 2 PM to 4 PM</p>
+                                <p><span>Phone:</span>+233 592 140 092 / +233 207 232 162</p>
+                                <p><span>Email:</span> emmanueldavids417@gmail.com</p>
                             </div>
                         </div>
                     </div>
@@ -327,20 +288,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                         </div>
                     </div>
                     <!-- Footer Nav -->
-                    <div class="col-12 col-md-6">
-                        <div class="footer-nav">
-                            <nav>
-                                <ul>
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="about.html">About</a></li>
-                                    <li><a href="#">Service</a></li>
-                                    <li><a href="portfolio.html">Portfolio</a></li>
-                                    <li><a href="blog.html">Blog</a></li>
-                                    <li><a href="contact.html">Contact</a></li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
