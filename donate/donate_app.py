@@ -4,9 +4,10 @@ from flask import Flask
 from dotenv import load_dotenv
 from flask_login import LoginManager
 from .instances import api, db, jwt
-# from flask_jwt_extended import JWTManager
 from sqlalchemy.dialects.postgresql import psycopg2
 from .resources import auth_ns, user_ns, wallet_ns, pay_ns, trans_ns
+from .user_auth import user_auth as user_auth_blueprint
+from .main import main as main_blueprint
 
 
 load_dotenv('.flaskenv')
@@ -50,6 +51,11 @@ def create_app():
 
     api.init_app(app)
     db.init_app(app)
+
+    # adding and registering the blueprint
+    app.register_blueprint(user_auth_blueprint)
+    app.register_blueprint(main_blueprint)
+
 
     with app.app_context():
         db.create_all()
