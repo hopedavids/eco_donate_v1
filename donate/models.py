@@ -1,4 +1,5 @@
 import uuid
+from werkzeug.security import generate_password_hash
 from flask_login import UserMixin
 from sqlalchemy import event
 from datetime import datetime
@@ -22,7 +23,10 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False, unique=True)
 
-
+    def set_password(self, password):
+        self.password = generate_password_hash(password, method='sha256')
+        return self.password
+    
     def is_active(self):
         """True, as all users are active."""
         return True
