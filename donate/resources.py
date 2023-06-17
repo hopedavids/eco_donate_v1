@@ -1,7 +1,7 @@
 from flask import jsonify
 from flask_restx import Resource, Namespace
 from flask_jwt_extended import jwt_required
-from .instances import db
+from .instances import db, login_manager
 from .models import User
 
 
@@ -26,6 +26,12 @@ pay_ns = Namespace('payment', description="All payments operations")
 trans_ns = Namespace('transaction', description="Transactions operation")
 
 
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get((user_id))
+
+
 @auth_ns.route('')
 class Authentication(Resource):
     """ Login Endpoint to access the endpoint and api resources.
@@ -40,7 +46,6 @@ class Authentication(Resource):
         pass
 
 
-@jwt_required
 @user_ns.route('')
 class Users(Resource):
     """This class object defines the routes and views for
@@ -48,6 +53,7 @@ class Users(Resource):
     """
     method_decorator = ['jsonWebToken']
 
+    @jwt_required
     @user_ns.doc(security="jsonWebToken")
     def get(self):
         """ This method handles the GET HTTP method and returns
@@ -71,7 +77,7 @@ class Users(Resource):
         pass
 
 
-@wallet_ns.route()
+@wallet_ns.route('')
 class Wallet(Resource):
     """This object defines the routes and views for Wallet and
         handles all wallets resources.
