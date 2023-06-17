@@ -9,13 +9,14 @@
 
             <div class="card-body">
               {% with messages = get_flashed_messages() %}
-              {% if messages %}
-                <div color="white" class="alert alert-danger" role="alert">
-                  {{messages[0]}} Go to <a href="{{ url_for('user_auth.signin') }}">login</a></strong> 
+              {% for message in messages %}
+                <div style="color: white;" align="center" class="alert alert-danger" role="alert">
+                  {{ message }}
                 </div>
-              {% endif %}
+              {% endfor %}
               {% endwith %}
               <form action="/account/register" method="POST" role="form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                 <div class="mb-3">
                   <input type="text" class="form-control" name="username" placeholder="Username" aria-label="username">
                 </div>
