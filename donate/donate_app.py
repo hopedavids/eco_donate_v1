@@ -2,6 +2,9 @@ import os
 import psycopg2
 from flask import Flask
 from dotenv import load_dotenv
+from datetime import timedelta
+from flask_wtf.csrf import CSRFProtect
+from flask_session import Session
 from .instances import api, db, jwt, login_manager
 from sqlalchemy.dialects.postgresql import psycopg2
 from .resources import auth_ns, user_ns, wallet_ns, pay_ns, trans_ns
@@ -35,6 +38,16 @@ def create_app():
     # adding the secret to the app and JWT
     app.secret_key ="eudbefgeduegvd!@#"
     app.config["JWT_SECRET_KEY"] = "super-secret"
+
+    # adding extra security parameters for sessions
+    app.config['SESSION_COOKIE_SECURE'] = False
+    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
+    csrf = CSRFProtect(app)
+    # Use a secure session storage
+    app.config['SESSION_TYPE'] = 'filesystem'
+    Session(app)
+
+
     # initializing the JWTManager
     jwt.init_app(app)
 
