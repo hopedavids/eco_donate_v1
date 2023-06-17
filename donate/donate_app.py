@@ -2,8 +2,7 @@ import os
 import psycopg2
 from flask import Flask
 from dotenv import load_dotenv
-from flask_login import LoginManager
-from .instances import api, db, jwt
+from .instances import api, db, jwt, login_manager
 from sqlalchemy.dialects.postgresql import psycopg2
 from .resources import auth_ns, user_ns, wallet_ns, pay_ns, trans_ns
 from .user_auth import user_auth as user_auth_blueprint
@@ -28,20 +27,19 @@ def create_app():
 
     app = Flask(__name__)
 
-    base_dir = os.path.dirname(os.path.realpath(__file__))
-
     # configure the SQLite database, relative to the app instance folder
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('POSTGRES_URL')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ECHO'] = True
 
-    # adding the secret
+    # adding the secret to the app and JWT
+    app.secret_key ="eudbefgeduegvd!@#"
     app.config["JWT_SECRET_KEY"] = "super-secret"
     # initializing the JWTManager
     jwt.init_app(app)
 
     # creating and initializing the Login Manager instance class
-    # login_manager = LoginManager(app)
+    login_manager.init_app(app)
 
     # register namespace Users
     api.add_namespace(auth_ns)
