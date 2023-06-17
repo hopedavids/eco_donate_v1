@@ -12,4 +12,6 @@ Flask-Migrate
 
 Flask-JWT-Extended
 
+Werkzeug
+
 psycopg2-binary
