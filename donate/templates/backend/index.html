@@ -5,6 +5,13 @@
 
   {% block content %}
 
+  {% with messages = get_flashed_messages() %}
+  {% for message in messages %}
+    <div color="white" class="alert alert-success alert-dismissible fade show" role="alert">
+      {{message}} Go to <a href="{{ url_for('user_auth.signin') }}">login</a></strong> 
+    </div>
+  {% endfor %}
+  {% endwith %}
     <div class="container-fluid py-4">
       <div class="row">
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
