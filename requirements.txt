@@ -14,4 +14,8 @@ Flask-JWT-Extended
 
 Werkzeug
 
+Flask-WTF
+
+Flask-Session
+
 psycopg2-binary
