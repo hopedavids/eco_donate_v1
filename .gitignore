@@ -2,3 +2,4 @@ iso_env
 __pycache__/
 .vscode
 donate/.env
+flask_session
