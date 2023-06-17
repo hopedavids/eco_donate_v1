@@ -1,4 +1,5 @@
 import uuid
+from flask_login import UserMixin
 from sqlalchemy import event
 from datetime import datetime
 from .instances import db
@@ -9,7 +10,7 @@ from .instances import db
 """
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     """In this class, the data model for the User
         will be defined.
     """
@@ -21,7 +22,19 @@ class User(db.Model):
     email = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False, unique=True)
 
-    # wallet = db.relationship('Wallet', backref='user_wallet', uselist=False)
+
+    def is_active(self):
+        """True, as all users are active."""
+        return True
+
+
+    def is_authenticated(self):
+        """Return True if the user is authenticated."""
+        return self.authenticated
+
+    def is_anonymous(self):
+        """False, as anonymous users aren't supported."""
+        return False
 
 
 class Wallet(db.Model):
