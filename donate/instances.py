@@ -14,4 +14,4 @@ jwt = JWTManager()
 
 login_manager = LoginManager()
 
-login_manager.login_view = 'user_auth.views'
+login_manager.login_view = 'user_auth.signin'
