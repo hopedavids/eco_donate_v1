@@ -19,3 +19,5 @@ Flask-WTF
 Flask-Session
 
 psycopg2-binary
+
+Flask-Script
