@@ -13,3 +13,14 @@ def index():
     
     except:
         return
+
+@main.route('/donations')
+@login_required
+def donate():
+    return render_template('backend/pages/donate.html')
+
+
+@main.route('/thank-you')
+@login_required
+def after_payment():
+    return render_template('backend/pages/thank-you.html')
