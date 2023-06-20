@@ -24,6 +24,8 @@ user_ns = Namespace('user', description="All user operations.", authorizations=a
 wallet_ns = Namespace('wallet', description="Wallet information")
 pay_ns = Namespace('payment', description="All payments operations")
 trans_ns = Namespace('transaction', description="Transactions operation")
+api_ns = Namespace('api', description='API namespace')
+
 
 
 
