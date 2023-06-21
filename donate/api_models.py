@@ -16,3 +16,10 @@ user_input_model = api.model(
         "password": fields.String
     }
 )
+
+api_auth =  {
+        "username": fields.String,
+        "email": fields.String,
+        'login_date': fields.DateTime(dt_format='iso8601')
+
+    }
