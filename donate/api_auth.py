@@ -13,20 +13,35 @@ api_auth = Blueprint('api_auth', __name__, url_prefix='/v1/auth')
 @api_auth.route('/login', methods=['POST'])
 @csrf.exempt
 def login():
-    username = request.json['username']
-    password = request.json['password']
+    try:
+        username = request.json['username']
+        password = request.json['password']
 
-    user = User.query.filter_by(username=username).first()
+        user = User.query.filter_by(username=username).first()
 
-    if not user or not check_password_hash(user.password, password):
+
+        if not username or  not password:
+            return jsonify({'message': 'Invalid fields'}), 400
+
+        # Check if username is an email
+        elif '@' in username:
+            return jsonify({'message': 'username should not be an email'}), 400
+
+
+        elif not user or not check_password_hash(user.password, password):
+            return jsonify({
+                "data": "null",
+                "message": "Username or Password Incorrect",
+                "status": "api-error"
+            }), 400
+        
+
+        
+        access_token = create_access_token(identity=username)
         return jsonify({
-            "data": "null",
-            "message": "Username or Password Incorrect",
-            "status": "api-error"
-        }),401
-    
-    access_token = create_access_token(identity=username)
-    return jsonify({
-        "username": username,
-        "access_token": access_token
-        })
+            "username": username,
+            "access_token": access_token
+            }), 200
+
+    except:
+        return jsonify({"message": "username or password not satisfied"}), 400
