@@ -5,7 +5,8 @@ from .instances import api
 user_model = api.model(
     "User", {
         "id": fields.Integer,
-        "username": fields.String
+        "username": fields.String,
+        "email": fields.String
     }
 )
 
