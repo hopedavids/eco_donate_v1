@@ -83,7 +83,7 @@ def register():
             db.session.add(new_user)
             db.session.commit()
 
-            flash('Account created, please signin')
+            # flash('Account created, please signin')
             return redirect(url_for('user_auth.signin'))
         
         return render_template('backend/accounts/register.html')
