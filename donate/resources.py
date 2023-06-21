@@ -2,6 +2,7 @@ from flask import jsonify
 from flask_restx import Resource, Namespace
 from flask_jwt_extended import jwt_required
 from .instances import db, login_manager
+from .api_models import user_model
 from .models import User
 
 
@@ -48,15 +49,16 @@ class Authentication(Resource):
         pass
 
 
-@user_ns.route('')
+@user_ns.route('/get_user')
 class Users(Resource):
     """This class object defines the routes and views for
        User Authentication.
     """
-    method_decorator = ['jsonWebToken']
+    # method_decorator = ['jsonWebToken']
 
-    @jwt_required
-    @user_ns.doc(security="jsonWebToken")
+    # @user_ns.doc(security="jsonWebToken")
+    @user_ns.marshal_list_with(user_model)
+    @jwt_required()
     def get(self):
         """ This method handles the GET HTTP method and returns
             response in a serialized way.
@@ -64,8 +66,9 @@ class Users(Resource):
 
         user = User.query.all()
 
-        return jsonify({'username': user})
+        return user
 
+    
     def post(self):
         """This method handles the POST and creates new uses based
             on requests.
