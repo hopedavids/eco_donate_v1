@@ -1,16 +1,16 @@
 import os
 import psycopg2
-from flask import Flask, Blueprint, url_for
+from flask import Flask
 from dotenv import load_dotenv
 from datetime import timedelta
-from flask_wtf.csrf import CSRFProtect
 from flask_session import Session
 from flask_restx import apidoc
-from .instances import api, db, jwt, login_manager
+from .instances import api, db, jwt, login_manager, csrf
 from sqlalchemy.dialects.postgresql import psycopg2
 from .resources import auth_ns, user_ns, wallet_ns, pay_ns, trans_ns, api_ns
 from .user_auth import user_auth as user_auth_blueprint
 from .main import main as main_blueprint
+from .api_auth import api_auth as api_auth_blueprint
 
 
 load_dotenv('.flaskenv')
@@ -37,15 +37,15 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ECHO'] = True
 
-
+    
     # adding the secret to the app and JWT
-    app.secret_key ="eudbefgeduegvd!@#"
+    app.config['SECRET_KEY'] ="eudbefgeduegvd!@#"
     app.config["JWT_SECRET_KEY"] = "super-secret"
 
     # adding extra security parameters for sessions
     app.config['SESSION_COOKIE_SECURE'] = False
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
-    csrf = CSRFProtect(app)
+    # csrf = CSRFProtect(app)
     # Use a secure session storage
     app.config['SESSION_TYPE'] = 'filesystem'
     Session(app)
@@ -66,10 +66,13 @@ def create_app():
 
     api.init_app(app)
     db.init_app(app)
+    csrf.init_app(app)
+
     
     # adding and registering the blueprint
     app.register_blueprint(user_auth_blueprint)
     app.register_blueprint(main_blueprint)
+    app.register_blueprint(api_auth_blueprint)
 
     @api.documentation
     def customize_swagger_ui():
