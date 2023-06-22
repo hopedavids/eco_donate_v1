@@ -8,5 +8,6 @@ services:
     - "5000:5000"
     volumes:
     - ./donate:/app
+    # - /etc/resolv.conf:/etc/resolv.conf
     # command: >
     #   python donate_app.py

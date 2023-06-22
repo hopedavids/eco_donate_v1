@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>OTP Verification</title>
+</head>
+<body>
+<h1>OTP Verification</h1>
+<p>Please enter the OTP that was sent to your email address.</p>
+<form action="/confirm" method="POST">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+<input type="text" name="otp" placeholder="OTP">
+<input type="submit" value="Verify">
+</form>
+</body>
+</html>
