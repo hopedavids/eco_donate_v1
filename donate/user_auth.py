@@ -1,11 +1,14 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, session, redirect, url_for, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user
+from flask_mail import Message
 from .models import User
-from .instances import db
+from .instances import db, mail
 from sqlalchemy.exc import IntegrityError
-import re
+from dotenv import load_dotenv
+import re, random, os
 
+load_dotenv('.env')
 
 user_auth = Blueprint('user_auth', __name__)
 
@@ -83,15 +86,51 @@ def register():
             db.session.add(new_user)
             db.session.commit()
 
+            #email verfication
+            otp = generate_otp()
+            send_otp(email, otp)
+            session['otp'] = otp
+
             # flash('Account created, please signin')
-            return redirect(url_for('user_auth.signin'))
+            return redirect(url_for('user_auth.confirm'))
         
         return render_template('backend/accounts/register.html')
 
     except IntegrityError or UnboundLocalError or TypeError:
         flash('invalid username or password')
         return
+
+   
+def generate_otp():
+    otp = ''.join([str(random.randint(0, 9)) for i in range(6)])
+    return otp
+
+
+def send_otp(email, otp):
+    message = Message('One Time Password', sender='emmanueldavids417@gmail.com', recipients=[email])
+    message.body = 'Your OTP is: {}'.format(otp)
+    mail.send(message)
+
+
+
+@user_auth.route('/confirm', methods=['GET', 'POST'])
+def confirm():
+    # email = request.args.get('email')
+    # otp = request.args.get('otp')
+    if request.method == 'POST':
+        email = request.form.get('email')
+        otp = request.form.get('otp')
+        
+        stored_otp = session.get('otp')
+
+        if otp == stored_otp:
+            # Update the user's account status to verified
+            return 'Your account has been verified.'
+        else:
+            return 'Invalid OTP.'
     
+    return render_template('backend/pages/test.html')
+
 
 
 @user_auth.route('/account/signout')
@@ -104,3 +143,6 @@ def signout():
     db.session.commit()
     logout_user()
     return redirect(url_for('user_auth.signin'))
+
+
+
