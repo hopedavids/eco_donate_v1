@@ -22,7 +22,10 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(50), nullable=False, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False, unique=True)
+    email_confirm = db.Column(Boolean, default=False)
     created_date = db.Column(db.DateTime, default=datetime.utcnow)
+    email_confirm_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
 
     def set_password(self, password):
         self.password = generate_password_hash(password, method='sha256')
