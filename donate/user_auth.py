@@ -16,36 +16,41 @@ user_auth = Blueprint('user_auth', __name__)
 
 @user_auth.route('/account/signin', methods=['GET', 'POST'])
 def signin():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        remember = request.form.get('remember', False)
-        
-        user = User.query.filter_by(username=username).first()
-
-        if not username or not password:
-            flash('Enter a valid username and password', 'warning')
-            return redirect(url_for('user_auth.signin'))
-
-        if user and not check_password_hash(user.password, password):
-            flash("Invalid username or password", 'danger')
-            return redirect(url_for('user_auth.signin'))
-
-        elif not user:    
-            flash("Enter a valid username or password", 'danger')
-            return redirect(url_for('user_auth.signin'))
-
-        else:
-            if user.email_confirm == True:
-
-                login_user(user, remember=remember)
-                user = current_user
-                flash("Login successful, welcome back", 'success')
-                return redirect(url_for('main.index'))
+    try:
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+            remember = request.form.get('remember', False)
             
-            flash("Your account is not Verified", 'warning')
+            user = User.query.filter_by(username=username).first()
+
+            if not username or not password:
+                flash('Enter a valid username and password', 'warning')
+                return redirect(url_for('user_auth.signin'))
+
+            if user and not check_password_hash(user.password, password):
+                flash("Invalid username or password", 'danger')
+                return redirect(url_for('user_auth.signin'))
+
+            elif not user:    
+                flash("Enter a valid username or password", 'danger')
+                return redirect(url_for('user_auth.signin'))
+
+            else:
+                if user.email_confirm == True:
+
+                    login_user(user, remember=remember)
+                    user = current_user
+                    flash("Login successful, welcome back", 'success')
+                    return redirect(url_for('main.index'))
                 
-    return render_template('backend/accounts/signin.html')
+                flash("Your account is not Verified", 'warning')
+                    
+        return render_template('backend/accounts/signin.html')
+    
+    except:
+        
+        return render_template('backend/accounts/signin.html')
 
 
 @user_auth.route('/account/register', methods=['GET', 'POST'])
