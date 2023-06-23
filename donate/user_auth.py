@@ -24,22 +24,27 @@ def signin():
         user = User.query.filter_by(username=username).first()
 
         if not username or not password:
-            flash('Enter a valid username and password')
+            flash('Enter a valid username and password', 'warning')
             return redirect(url_for('user_auth.signin'))
 
         if user and not check_password_hash(user.password, password):
-            flash("Invalid username or password")
+            flash("Invalid username or password", 'danger')
             return redirect(url_for('user_auth.signin'))
 
         elif not user:    
-            flash("Enter a valid username or password")
+            flash("Enter a valid username or password", 'danger')
             return redirect(url_for('user_auth.signin'))
 
-        login_user(user, remember=remember)
-        user = current_user
-        flash("Login successful, welcome back")
-        return redirect(url_for('main.index'))
-        
+        else:
+            if user.email_confirm == True:
+
+                login_user(user, remember=remember)
+                user = current_user
+                flash("Login successful, welcome back", 'success')
+                return redirect(url_for('main.index'))
+            
+            flash("Your account is not Verified", 'warning')
+                
     return render_template('backend/accounts/signin.html')
 
 
@@ -55,20 +60,20 @@ def register():
             user = User.query.filter_by(email=email).first()
             
             if not username or not email or not password:
-                flash('Kindly fill all fields!')
+                flash('Kindly fill all fields!', 'danger')
                 return redirect(url_for('user_auth.register'))
             
             if username.isupper() or email.isupper():
-                flash('Email and Username must be lowercase!')
+                flash('Email and Username must be lowercase!', 'danger')
                 return redirect(url_for('user_auth.register'))
 
             if user:
-                flash('username or email taken')
+                flash('username or email taken', 'danger')
                 return redirect(url_for('user_auth.register'))
 
             if password:
                 if password != confirm_password:
-                    flash('Passwords do not match', 'error')
+                    flash('Passwords do not match', 'danger')
                     return redirect(url_for('user_auth.register'))
 
             
@@ -79,7 +84,7 @@ def register():
                     return redirect(url_for('user_auth.register'))
 
                 if not any(char.isalpha() for char in password) or not any(char.isdigit() for char in password):
-                    flash('Password should contain alphanumeric', 'error')
+                    flash('Password should contain alphanumeric', 'danger')
                     return redirect(url_for('user_auth.register'))
         
             new_user = User(username=username, email=email, password=generate_password_hash(password, method='sha256'))
@@ -97,7 +102,7 @@ def register():
         return render_template('backend/accounts/register.html')
 
     except IntegrityError or UnboundLocalError or TypeError:
-        flash('invalid username or password')
+        flash('invalid username or password', 'danger')
         return
 
    
@@ -107,29 +112,46 @@ def generate_otp():
 
 
 def send_otp(email, otp):
-    message = Message('One Time Password', sender='emmanueldavids417@gmail.com', recipients=[email])
+    message = Message('One Time Password', sender=os.environ.get('MAIL_SENDER'), recipients=[email])
     message.body = 'Your OTP is: {}'.format(otp)
     mail.send(message)
 
+    session['email'] = email
 
 
-@user_auth.route('/confirm', methods=['GET', 'POST'])
+
+@user_auth.route('/account/confirm', methods=['GET', 'POST'])
 def confirm():
     # email = request.args.get('email')
     # otp = request.args.get('otp')
     if request.method == 'POST':
-        email = request.form.get('email')
+        # email = request.args.get('email')
         otp = request.form.get('otp')
         
         stored_otp = session.get('otp')
+        email = session.get('email')
 
         if otp == stored_otp:
-            # Update the user's account status to verified
-            return 'Your account has been verified.'
+            # Find the user in the database
+            user = User.query.filter_by(email=email).first()
+
+            if user:
+                # Update the user's account status to True which indicates verified
+                user.email_confirm = True
+                db.session.commit()
+                # send a notification to the user indicating account has been verified
+                flash('Your account has been verified. Kindly Signin', 'success')
+                # redirect the user to signin after verification
+                return redirect(url_for('user_auth.signin'))
+            else:
+                # send a warning notification to the user
+                flash('User not found.', 'warning')
         else:
-            return 'Invalid OTP.'
+            # send a warning notification to the user
+            flash('Invalid OTP.', 'danger')
     
-    return render_template('backend/pages/test.html')
+    # if the request method is not POST, then the page below is rendered
+    return render_template('backend/accounts/verification.html')
 
 
 
@@ -142,6 +164,7 @@ def signout():
     db.session.add(user)
     db.session.commit()
     logout_user()
+    flash('You are Signout', 'warning')
     return redirect(url_for('user_auth.signin'))
 
 
