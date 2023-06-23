@@ -2,9 +2,9 @@
 
 {% block title %} Home {% endblock %}
 
+{% block user %} {{user}} {% endblock %}
 
   {% block content %}
-
 
   {% with messages = get_flashed_messages(with_categories=true) %}
   {% for category, message in messages %}
@@ -317,8 +317,17 @@
               </div>
             </div>
             <div class="card-body pt-0">
-              <div class="row">
-                <div class="col">
+              <div class="text-center mt-4">
+                <div class="row">
+                  <h5>Hope Davids<span class="font-weight-light">, active</span></h5>
+
+                  <p>Email: {{user.email}}</p>
+                  <p>Wallet ID: </p>
+                  <p>Date Created: {{user.created_date}}</p>
+
+                  
+                </div>
+                <!-- <div class="col">
                   <div class="d-flex justify-content-center">
                     <div class="d-grid text-center">
                       <span class="text-lg font-weight-bolder">22</span>
@@ -333,12 +342,9 @@
                       <span class="text-sm opacity-8">Comments</span>
                     </div>
                   </div>
-                </div>
+                </div>  -->
               </div>
-              <div class="text-center mt-4">
-                <h5>
-                  Mark Davis<span class="font-weight-light">, 35</span>
-                </h5>
+               <!----
                 <div class="h6 font-weight-300">
                   <i class="ni location_pin mr-2"></i>Bucharest, Romania
                 </div>
@@ -351,7 +357,7 @@
                 <br>
                 <div>
                   <a href="#" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Make a Donation Today!</a>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>

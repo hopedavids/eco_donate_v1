@@ -7,12 +7,10 @@ main = Blueprint('main', __name__)
 @main.route('/profile')
 @login_required
 def index():
-    try:
-        user = current_user.username
-        return render_template('backend/index.html', user=user)
-    
-    except:
-        return
+
+    user = current_user.username
+    return render_template('backend/index.html', user=user)
+
 
 @main.route('/donations')
 @login_required
