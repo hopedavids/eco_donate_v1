@@ -69,7 +69,8 @@ class Wallet(db.Model):
 
 
     def __str__(self):
-    return {}.format(self.wallet_id)
+        # The method show how the object should return in a human-readable format
+        return {}.format(self.wallet_id)
 
 
 class Payment(db.Model):
