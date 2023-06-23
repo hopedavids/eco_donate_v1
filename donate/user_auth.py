@@ -102,12 +102,12 @@ def register():
             send_otp(email, otp)
             session['otp'] = otp
 
-            # flash('Account created, please signin')
+            flash('Enter the code sent to your email here', 'info')
             return redirect(url_for('user_auth.confirm'))
         
         return render_template('backend/accounts/register.html')
 
-    except IntegrityError or UnboundLocalError or TypeError:
+    except:
         flash('invalid username or password', 'danger')
         return
 
@@ -149,7 +149,7 @@ def confirm():
                 db.session.commit()
 
                 # create a wallet for the user account
-                wallet = Wallet(user_id=user.id, current_balance=20)
+                wallet = Wallet(user_id=user.id)
                 db.session.add(wallet)
                 db.session.commit()
                 # send a notification to the user indicating account has been verified
