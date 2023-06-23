@@ -59,7 +59,7 @@ class Wallet(db.Model):
     __tablename__ = 'donate_wallets'
 
     wallet_id = db.Column(db.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id'), nullable=False, unique=True)
     current_balance = db.Column(db.Float, default=0.0)
     previous_balance = db.Column(db.Float, default=0.0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
