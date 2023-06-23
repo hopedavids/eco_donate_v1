@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, session, redirect, url_for, reques
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_mail import Message
-from .models import User
+from .models import User, Wallet
 from .instances import db, mail
 from sqlalchemy.exc import IntegrityError
 from dotenv import load_dotenv
@@ -96,6 +96,7 @@ def register():
             db.session.add(new_user)
             db.session.commit()
 
+
             #email verfication
             otp = generate_otp()
             send_otp(email, otp)
@@ -109,6 +110,8 @@ def register():
     except IntegrityError or UnboundLocalError or TypeError:
         flash('invalid username or password', 'danger')
         return
+
+
 
    
 def generate_otp():
@@ -143,6 +146,11 @@ def confirm():
             if user:
                 # Update the user's account status to True which indicates verified
                 user.email_confirm = True
+                db.session.commit()
+
+                # create a wallet for the user account
+                wallet = Wallet(user_id=user.id, current_balance=20)
+                db.session.add(wallet)
                 db.session.commit()
                 # send a notification to the user indicating account has been verified
                 flash('Your account has been verified. Kindly Signin', 'success')
