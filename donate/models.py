@@ -67,8 +67,9 @@ class Wallet(db.Model):
 
     user = db.relationship('User', backref='wallet', uselist=False)
 
+
     def __str__(self):
-        return {}.format(self.wallet_id)
+    return {}.format(self.wallet_id)
 
 
 class Payment(db.Model):
@@ -127,3 +128,11 @@ class Donation(db.Model):
     donation_id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Float, default=0.00)
     description = db.Column(db.String(255), nullable=False)
+
+
+
+
+# This is method automatically updates the previous balance value
+@event.listens_for(Wallet.current_balance, 'set')
+def update_previous_balance(target, value, oldvalue, initiator):
+    target.previous_balance = oldvalue
