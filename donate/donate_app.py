@@ -38,8 +38,8 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ECHO'] = True
 
-    app.config["GOOGLE_OAUTH_CLIENT_ID"] = "624564857118-mt3fdl8vkm69erqnigtshkr3tct2v2gt.apps.googleusercontent.com"
-    app.config["GOOGLE_OAUTH_CLIENT_SECRET"] = "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"
+    # app.config["GOOGLE_OAUTH_CLIENT_ID"] = "624564857118-mt3fdl8vkm69erqnigtshkr3tct2v2gt.apps.googleusercontent.com"
+    # app.config["GOOGLE_OAUTH_CLIENT_SECRET"] = "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"
 
     
     # adding the secret to the app and JWT
@@ -51,6 +51,7 @@ def create_app():
     app.config['MAIL_PORT'] = os.environ.get('EMAIL_PORT')
     app.config['MAIL_USERNAME'] = os.environ.get('PUSH_EMAIL')
     app.config['MAIL_PASSWORD'] = os.environ.get('PUSH_EMAIL_PASSWD')
+    app.config['MAIL_SENDER'] = os.environ.get('MAIL_SENDER')
     app.config['MAIL_USE_TLS'] = False
     app.config['MAIL_USE_SSL'] = True
 
