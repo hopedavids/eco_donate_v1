@@ -26,6 +26,8 @@ class User(UserMixin, db.Model):
     created_date = db.Column(db.DateTime, default=datetime.utcnow)
     email_confirm_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    # wallet = db.relationship('Wallet', backref='user', uselist=False)
+
 
     def set_password(self, password):
         self.password = generate_password_hash(password, method='sha256')
@@ -44,8 +46,8 @@ class User(UserMixin, db.Model):
         """False, as anonymous users aren't supported."""
         return False
 
-    def __str__(self):
-        return {}.format(self.id)
+    # def __str__(self):
+    #     return (self.id)
 
 
 class Wallet(db.Model):
@@ -81,14 +83,11 @@ class Payment(db.Model):
 
     payment_id = db.Column(db.Integer, primary_key=True)
     wallet_id = db.Column(db.UUID(as_uuid=True), db.ForeignKey('donate_wallets.wallet_id'), nullable=False)
-    tree_species = db.Column(db.String(30), nullable=False)
-    region_to_sow = db.Column(db.String(30), nullable=False)
-    description = db.Column(db.String(100), nullable=False)
-    get_certified = db.Column(Boolean, default=False)
+    donation_id = db.Column(db.Integer, db.ForeignKey('donations'), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
     wallet = db.relationship('Wallet', backref='payment', uselist=False)
-
+    donation = db.relationship('Donation', backref='payment', uselist=False)
 
     def __str__(self):
         return {}.format(self.payment_id)
@@ -104,10 +103,9 @@ class Contact(db.Model):
 
     contact_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id'), nullable=False)
+    full_name = db.Column(db.String(100), nullable=False)
     address = db.Column(db.String(150), nullable=False)
-    city = db.Column(db.String(100), nullable=False)
     country = db.Column(db.String(50), nullable=False)
-    postal_code = db.Column(db.String(10), nullable=False)
     about_me = db.Column(db.String(255), nullable=False)
 
     user = db.relationship('User', backref='contact', uselist=False)
@@ -127,10 +125,19 @@ class Donation(db.Model):
     __tablename__ = 'donations'
 
     donation_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id'), nullable=False)
     amount = db.Column(db.Float, default=0.00)
+    tree_spieces = db.Column(db.String(30), nullable=False)
+    number_of_trees = db.Column(db.Integer, nullable=False)
+    region_to_plant = db.Column(db.String(30), nullable=False)
     description = db.Column(db.String(255), nullable=False)
+    get_certified = db.Column(Boolean, default=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
+    user = db.relationship('User', backref='donations', uselist=False)
 
+    def __str__(self):
+        return {}.format(self.donation_id)
 
 
 # This is method automatically updates the previous balance value
