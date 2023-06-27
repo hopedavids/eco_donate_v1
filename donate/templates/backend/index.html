@@ -9,10 +9,7 @@
   {% with messages = get_flashed_messages(with_categories=true) %}
   {% for category, message in messages %}
     <div style="color: white;" class="alert alert-{{ category }}" role="alert">
-      <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-      <span class="alert-text"><strong>Awesome!</strong> {{ message }} <strong>{{ user }}!</strong></span>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+      <strong>Note: </strong> {{ message }} <strong>{{ user }}!</strong></span>
       </button>
   </div>
   {% endfor %}
@@ -25,13 +22,13 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Today's Money</p>
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Wallet Current Balance</p>
                     <h5 class="font-weight-bolder">
-                      $53,000
+                      ${{ current_balance }}
                     </h5>
                     <p class="mb-0">
-                      <span class="text-success text-sm font-weight-bolder">+55%</span>
-                      since yesterday
+                      <!-- <span class="text-success text-sm font-weight-bolder">+55%</span> -->
+                      Your current Wallet balance
                     </p>
                   </div>
                 </div>
@@ -50,18 +47,18 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Today's Users</p>
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Wallet Update Timestamp</p>
                     <h5 class="font-weight-bolder">
-                      2,300
+                      {{ updated_at }}
                     </h5>
                     <p class="mb-0">
-                      <span class="text-success text-sm font-weight-bolder">+3%</span>
-                      since last week
+                      <!-- <span class="text-success text-sm font-weight-bolder">+3%</span> -->
+                      Wallet Timestamp for changes
                     </p>
                   </div>
                 </div>
                 <div class="col-4 text-end">
-                  <div class="icon icon-shape bg-gradient-danger shadow-danger text-center rounded-circle">
+                  <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
                     <i class="ni ni-world text-lg opacity-10" aria-hidden="true"></i>
                   </div>
                 </div>
@@ -75,19 +72,20 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">New Clients</p>
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Wallet Creation Timestamp</p>
                     <h5 class="font-weight-bolder">
-                      +3,462
+                      {{ created_at }}
                     </h5>
                     <p class="mb-0">
-                      <span class="text-danger text-sm font-weight-bolder">-2%</span>
-                      since last quarter
+                      <!-- <span class="text-danger text-sm font-weight-bolder">-2%</span> -->
+                      Wallet Timestamp
                     </p>
                   </div>
                 </div>
                 <div class="col-4 text-end">
-                  <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
-                    <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
+                  <div class="icon icon-shape bg-gradient-danger shadow-danger text-center rounded-circle">
+                    <i class="ni ni-world text-lg opacity-10" aria-hidden="true"></i>
+                    <!-- <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i> -->
                   </div>
                 </div>
               </div>
@@ -100,18 +98,20 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Sales</p>
+                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Wallet Previous Balance</p>
                     <h5 class="font-weight-bolder">
-                      $103,430
+                      ${{ previous_balance }}
                     </h5>
                     <p class="mb-0">
-                      <span class="text-success text-sm font-weight-bolder">+5%</span> than last month
+                      <!-- <span class="text-success text-sm font-weight-bolder">+5%</span> than last month -->
+                      View your previous balance.
                     </p>
                   </div>
                 </div>
                 <div class="col-4 text-end">
                   <div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
-                    <i class="ni ni-cart text-lg opacity-10" aria-hidden="true"></i>
+                    <!-- <i class="ni ni-cart text-lg opacity-10" aria-hidden="true"></i> -->
+                    <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
                   </div>
                 </div>
               </div>
@@ -122,178 +122,135 @@
       <div class="row mt-4">
 
         <!-- Wallet-->
-        <div class="row mt-4">
-          <div class="col-lg-7 mb-lg-0 mb-4">
-            <div class="card ">
-              <div class="card-header pb-0 p-3">
-                <div class="d-flex justify-content-between" align="center">
-                  <h6 class="mb-2">My Wallet Details </h6>
+
+
+        <div class="container-fluid py-4">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-header pb-0">
+                  <div class="d-flex align-items-center">
+                    <p class="mb-0 text-center">Eco-Donate Tree Donation Project</p>
+                
+                  </div>
+                  <div style="color:white" class="alert alert-secondary" role="alert">
+                    <strong>Kindly Note!</strong> 1 USD would plant 1 tree, likewise 20 USD will plant 20 trees, 50 USD will plant 50 trees and so on!
+                  </div>
+                </div>
+                <div class="card-body">
+                  <!-- <p class="text-uppercase text-sm">Donation for the Tree Project</p> -->
+                <form action="/profile" method="POST">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="example-text-input" class="form-control-label">Amount to donate USD $</label>
+                        <!-- <input class="form-control" type="text" value="$10"> -->
+                        <select class="form-select" aria-label="Select option" name="amount">
+                          <option value="1">1</option>
+                          <option value="20">20 </option>
+                          <option value="50">50</option>
+                          <option value="100">100</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="example-text-input"  class="form-control-label">What type of tree would you like to Plant?</label>
+                        <!-- <input class="form-control" type="text" value="Mahogany"> -->
+                        <select class="form-select" aria-label="Select option" name="spieces">
+                          <option value="Aspen Trees">Aspen Trees</option>
+                          <option value="Evergreen Trees">Evergreen Trees</option>
+                          <option value="Oak Trees">Oak Trees</option>
+                          <option value="Mangrove Trees">Mangrove Trees</option>
+                          <option value="Willow Trees">Willow Trees</option>
+                          <option value="Redwood Trees">Redwood Trees</option>
+                          <option value="Pine Trees">Pine Trees</option>
+                          <option value="Indigenous Trees">Indigenous Trees</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="example-text-input"  class="form-control-label">Where do you want your seed Planted?</label>
+                        <!-- <input class="form-control" type="text" value="Sub Sahara Africa"> -->
+                        <select class="form-select" aria-label="Select option" name="region">
+                          <option value="Sub-Saharan Africa">Sub-Saharan Africa</option>
+                          <option value="South America - Amazon Basin">South America - Amazon Basin</option>
+                          <option value="Southeast Asia">Southeast Asia</option>
+                          <option value="South Asia - Indian Subcontinent">South Asia - Indian Subcontinent</option>
+                          <option value="Central Asia - Arid and Semi-arid Regions">Central Asia - Arid and Semi-arid Regions</option>
+                          <option value="Oceania - Pacific Islands">Oceania - Pacific Islands</option>
+                          <option value="Regions in Europe">Regions in Europe</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="example-text-input" class="form-control-label">Donation Purpose</label>
+                        <input class="form-control" type="text" value="Lucky" name="description">
+                      </div>
+                    </div>
+                  <div class="col-md-6">
+                    <div class="form-check">
+                      <input class="form-check-input" name="get_certified" type="checkbox" value="" id="fcustomCheck1" checked="">
+                      <label class="custom-control-label"  for="customCheck1">Would you like to receive a certificate of donation?</label>
+                    </div>
+                  </div>
+                  </div>
+                  <hr class="horizontal dark">
+                  <p class="text-uppercase text-sm">Contact Information</p>
+                  <div class="row">
+                    <!-- <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="example-text-input" class="form-control-label">Address</label>
+                        <input class="form-control" type="text" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09">
+                      </div>
+                    </div> -->
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="example-text-input"  class="form-control-label">Full Name</label>
+                        <input class="form-control" type="text" value="New York" name="fullname">
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="example-text-input" class="form-control-label">Address</label>
+                        <input class="form-control" type="text" value="Greater Accra Region" name="address">
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="example-text-input" class="form-control-label">Country</label>
+                        <input class="form-control" type="text" value="Ghana" name="country">
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <hr class="horizontal dark">
+                  <p class="text-uppercase text-sm">About me</p> -->
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="example-text-input" class="form-control-label">About me</label>
+                        <input class="form-control" name="aboutme" type="text" value="A beautiful Dashboard for Bootstrap 5. It is Free and Open Source.">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-success btn-lg btn-block">Plant Your Tree Now!</button>
+                    <p class="text-sm mt-3 mb-0">Want to explore other payment options? <a href="javascript:;" class="text-dark font-weight-bolder">Click here</a></p>
+                  </div>
+                  
+
+                </form>
                 </div>
               </div>
-              <div class="table-responsive">
-                <table class="table align-items-center ">
-                  <tbody>
-                    <tr>
-                      <td class="w-30">
-                        <div class="d-flex px-2 py-1 align-items-center">
-                          <!-- <div>
-                            <img src="{{ url_for('static', filename='assets/img/icons/flags/US.png') }}" alt="Country flag">
-                          </div> -->
-                          <div class="ms-4">
-                            <p class="text-xs font-weight-bold mb-0">Current Balance:</p>
-                            <h6 class="text-sm mb-0">$50.00</h6>
-                          </div>
-                        </div>
-                      </td>
-                      
-                      <td>
-                        <div class="text-center">
-                          <p class="text-xs font-weight-bold mb-0">Previous Balance:</p>
-                          <h6 class="text-sm mb-0">$1</h6>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="text-center">
-                          <p class="text-xs font-weight-bold mb-0">Redrawal:</p>
-                          <h6 class="text-sm mb-0">$10.00</h6>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="text-center">
-                          <p class="text-xs font-weight-bold mb-0">Purpose:</p>
-                          <h6 class="text-sm mb-0">1</h6>
-                        </div>
-                      </td>
-                      <td class="align-middle text-sm">
-                        <div class="col text-center">
-                          <p class="text-xs font-weight-bold mb-0">Bounce:</p>
-                          <h6 class="text-sm mb-0">29.9%</h6>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="w-30">
-                        <div class="d-flex px-2 py-1 align-items-center">
-                          <!-- <div>
-                            <img src="{{ url_for('static', filename='assets/img/icons/flags/US.png') }}" alt="Country flag">
-                          </div> -->
-                          <div class="ms-4">
-                            <p class="text-xs font-weight-bold mb-0">Current Balance:</p>
-                            <h6 class="text-sm mb-0">$50.00</h6>
-                          </div>
-                        </div>
-                      </td>
-                      
-                      <td>
-                        <div class="text-center">
-                          <p class="text-xs font-weight-bold mb-0">Previous Balance:</p>
-                          <h6 class="text-sm mb-0">$1</h6>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="text-center">
-                          <p class="text-xs font-weight-bold mb-0">Redrawal:</p>
-                          <h6 class="text-sm mb-0">$10.00</h6>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="text-center">
-                          <p class="text-xs font-weight-bold mb-0">Purpose:</p>
-                          <h6 class="text-sm mb-0">1</h6>
-                        </div>
-                      </td>
-                      <td class="align-middle text-sm">
-                        <div class="col text-center">
-                          <p class="text-xs font-weight-bold mb-0">Bounce:</p>
-                          <h6 class="text-sm mb-0">29.9%</h6>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="w-30">
-                        <div class="d-flex px-2 py-1 align-items-center">
-                          <!-- <div>
-                            <img src="{{ url_for('static', filename='assets/img/icons/flags/US.png') }}" alt="Country flag">
-                          </div> -->
-                          <div class="ms-4">
-                            <p class="text-xs font-weight-bold mb-0">Current Balance:</p>
-                            <h6 class="text-sm mb-0">$50.00</h6>
-                          </div>
-                        </div>
-                      </td>
-                      
-                      <td>
-                        <div class="text-center">
-                          <p class="text-xs font-weight-bold mb-0">Previous Balance:</p>
-                          <h6 class="text-sm mb-0">$1</h6>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="text-center">
-                          <p class="text-xs font-weight-bold mb-0">Redrawal:</p>
-                          <h6 class="text-sm mb-0">$10.00</h6>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="text-center">
-                          <p class="text-xs font-weight-bold mb-0">Purpose:</p>
-                          <h6 class="text-sm mb-0">1</h6>
-                        </div>
-                      </td>
-                      <td class="align-middle text-sm">
-                        <div class="col text-center">
-                          <p class="text-xs font-weight-bold mb-0">Bounce:</p>
-                          <h6 class="text-sm mb-0">29.9%</h6>
-                        </div>
-                      </td>
-                    </tr>
-                
-                    
-                    <tr>
-                      <td class="w-30">
-                        <div class="d-flex px-2 py-1 align-items-center">
-                          <!-- <div>
-                            <img src="{{ url_for('static', filename='assets/img/icons/flags/US.png') }}" alt="Country flag">
-                          </div> -->
-                          <div class="ms-4">
-                            <p class="text-xs font-weight-bold mb-0">Current Balance:</p>
-                            <h6 class="text-sm mb-0">$50.00</h6>
-                          </div>
-                        </div>
-                      </td>
-                      
-                      <td>
-                        <div class="text-center">
-                          <p class="text-xs font-weight-bold mb-0">Previous Balance:</p>
-                          <h6 class="text-sm mb-0">$1</h6>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="text-center">
-                          <p class="text-xs font-weight-bold mb-0">Redrawal:</p>
-                          <h6 class="text-sm mb-0">$10.00</h6>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="text-center">
-                          <p class="text-xs font-weight-bold mb-0">Purpose:</p>
-                          <h6 class="text-sm mb-0">1</h6>
-                        </div>
-                      </td>
-                      <td class="align-middle text-sm">
-                        <div class="col text-center">
-                          <p class="text-xs font-weight-bold mb-0">Bounce:</p>
-                          <h6 class="text-sm mb-0">29.9%</h6>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                  </tbody>
-                </table>
-              </div>
             </div>
-
-          </div>
+                  
+                    
+                 
+        
 
         <!-- Profile -->
         <div class="col-md-4">
@@ -319,45 +276,17 @@
             <div class="card-body pt-0">
               <div class="text-center mt-4">
                 <div class="row">
-                  <h5>Hope Davids<span class="font-weight-light">, active</span></h5>
+                  <h5><span class="font-weight-light">Username</span>: {{ user }} <span class="font-weight-light">, active</span></h5>
 
-                  <p>Email: {{user.email}}</p>
-                  <p>Wallet ID: </p>
-                  <p>Date Created: {{user.created_date}}</p>
+                  <h6><span class="font-weight-light">Email</span>: {{email}}</h6>
+                  <h6><span class="font-weight-light">Wallet ID</span>: {{wallet_id}} </h6>
+                  <h6><span class="font-weight-light">Date Created</span>: {{created_date}}</h6>
 
                   
                 </div>
-                <!-- <div class="col">
-                  <div class="d-flex justify-content-center">
-                    <div class="d-grid text-center">
-                      <span class="text-lg font-weight-bolder">22</span>
-                      <span class="text-sm opacity-8">Friends</span>
-                    </div>
-                    <div class="d-grid text-center mx-4">
-                      <span class="text-lg font-weight-bolder">10</span>
-                      <span class="text-sm opacity-8">Photos</span>
-                    </div>
-                    <div class="d-grid text-center">
-                      <span class="text-lg font-weight-bolder">89</span>
-                      <span class="text-sm opacity-8">Comments</span>
-                    </div>
-                  </div>
-                </div>  -->
+                
               </div>
-               <!----
-                <div class="h6 font-weight-300">
-                  <i class="ni location_pin mr-2"></i>Bucharest, Romania
-                </div>
-                <div class="h6 mt-4">
-                  <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer
-                </div>
-                <div>
-                  <i class="ni education_hat mr-2"></i>University of Computer Science
-                </div>
-                <br>
-                <div>
-                  <a href="#" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Make a Donation Today!</a>
-                </div> -->
+               
               </div>
             </div>
           </div>
