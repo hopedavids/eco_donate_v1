@@ -10,7 +10,7 @@
 {% with messages = get_flashed_messages(with_categories=true) %}
   {% for category, message in messages %}
     <div style="color: white;" class="alert alert-{{ category }}" role="alert">
-      <strong>Note: </strong> {{ message }} <strong>{{ user }}!</strong></span>
+      <strong>Heya {{ user }}: </strong> {{ message }} !</span>
     </div>
   {% endfor %}
   {% endwith %}
@@ -36,9 +36,9 @@
         Whats Next?
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <li><a class="dropdown-item" href="/transactions">View donation logs</a></li>
-        <li><a class="dropdown-item" href="#">View certificate</a></li>
-        <li><a class="dropdown-item" href="#">Email me my certificate</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('main.transaction') }}">View donation logs</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('main.view_certificate') }}">View certificate</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('main.email_certificate') }}">Email me my certificate</a></li>
       </ul>
   </div>
   </div>
