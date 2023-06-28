@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from datetime import datetime
@@ -6,6 +8,8 @@ from .models import Wallet, Donation, Contact, Payment
 
 
 main = Blueprint('main', __name__)
+
+load_dotenv('.env')
 
 
 @main.route('/profile', methods = ['GET', 'POST'])
@@ -94,12 +98,20 @@ def index():
         # query the donation object to retrieve the id
         donation = Donation.query.filter_by(user_id=user_id).first()
 
+        donate_wallet = os.environ.get('DONATE_WALLET')
         payment = Payment(
-                    wallet_id=wallet.wallet_id,
+                    wallet_id=donate_wallet, 
+                    amount=amount, 
                     donation_id=donation.donation_id
                     )
-        db.session.add(payment)
+
+        wallet=Wallet.query.filter_by(wallet_id=donate_wallet).first()
+        wallet.current_balance = amount
+
+        db.session.add_all([payment, wallet])
         db.session.commit()
+
+        
 
         flash("Congratulations! Your tree planting donations was successful!!", 'success')
 
@@ -118,16 +130,27 @@ def index():
                             )
 
 
-# @main.route('/donations', methods = ['GET', 'POST'])
-# def handle_donations():
-#     if request.method == "POST":
-#         return "method is post"
-#     return "Hi you donated successfully"
 
 @main.route('/transactions')
 @login_required
 def transaction():
-    return render_template('backend/pages/tables.html')
+    page = request.args.get('page', 1, type=int)
+    user_id = current_user.id
+    contacts = Contact.query.filter_by(user_id=user_id).paginate(page=page, per_page=2)
+    donations = Donation.query.filter_by(user_id=user_id).paginate(page=page, per_page=2)
+    payments = Payment.query.filter_by(wallet_id=os.environ.get('DONATE_WALLET')).paginate(page=page, per_page=2)
+
+    wallets = Wallet.query.filter_by(user_id=user_id).paginate(page=page, per_page=2)
+    print(dir(wallets))
+    print(wallets.items)
+    print(wallets.page)
+
+    transaction = zip(wallets, payments)
+
+    data = zip(donations, contacts)
+
+
+    return render_template('backend/pages/tables.html', data=data, transactions=transaction)
 
 
 @main.route('/thank-you')
