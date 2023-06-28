@@ -37,3 +37,5 @@ Flask-Dance[google]
 Flask-Mail
 
 itsdangerous
+
+reportlab

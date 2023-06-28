@@ -1,9 +1,15 @@
 import os
+from datetime import datetime
 from dotenv import load_dotenv
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, send_file
 from flask_login import login_required, current_user
 from datetime import datetime
-from .instances import db
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.units import inch
+from reportlab.pdfgen import canvas
+from io import BytesIO
+from flask_mail import Message
+from .instances import db, mail
 from .models import Wallet, Donation, Contact, Payment
 
 
@@ -136,21 +142,18 @@ def index():
 def transaction():
     page = request.args.get('page', 1, type=int)
     user_id = current_user.id
+    user = current_user.username
     contacts = Contact.query.filter_by(user_id=user_id).paginate(page=page, per_page=2)
     donations = Donation.query.filter_by(user_id=user_id).paginate(page=page, per_page=2)
     payments = Payment.query.filter_by(wallet_id=os.environ.get('DONATE_WALLET')).paginate(page=page, per_page=2)
 
     wallets = Wallet.query.filter_by(user_id=user_id).paginate(page=page, per_page=2)
-    print(dir(wallets))
-    print(wallets.items)
-    print(wallets.page)
 
     transaction = zip(wallets, payments)
 
     data = zip(donations, contacts)
 
-
-    return render_template('backend/pages/tables.html', data=data, transactions=transaction)
+    return render_template('backend/pages/tables.html', data=data, transactions=transaction, user=user)
 
 
 @main.route('/thank-you')
@@ -161,3 +164,115 @@ def gratitude():
 
     return render_template('backend/pages/thank-you.html', user=user)
 
+
+@main.route('/view-certificate')
+@login_required
+def view_certificate():
+     # query the contact object for the full name
+    user_id = current_user.id
+
+    contact = Contact.query.filter_by(user_id=user_id).first()
+    donation = Donation.query.filter_by(user_id=user_id).first()
+
+    # Obtain data for the certificate (e.g., recipient's name, donation amount)
+    recipient_name = contact.full_name
+    country = contact.country
+    donation_amount = '$'+ str(donation.amount)
+    region_to_plant = 'in ' + donation.region_to_plant
+    certify_date = 'Date: ' + datetime.now().strftime("%B %d, %Y")
+
+    # Generate the certificate content
+    generate_certificate_content(recipient_name, country, donation_amount, region_to_plant, certify_date)
+
+    # get the file path
+    filepath = 'certify/certificate.pdf'
+
+    # Return the PDF file to the user for viewing in the browser
+    return send_file(filepath, mimetype='application/pdf', as_attachment=False)
+
+
+@main.route('/mail-certificate')
+@login_required
+def email_certificate():
+    try:
+        # query the contact object for the full name
+        user_id = current_user.id
+        email = current_user.email
+        contact = Contact.query.filter_by(user_id=user_id).first()
+        donation = Donation.query.filter_by(user_id=user_id).first()
+
+        # Obtain data for the certificate (e.g., recipient's name, donation amount)
+        recipient_name = contact.full_name
+        country = contact.country
+        donation_amount = '$'+ str(donation.amount)
+        region_to_plant = 'in ' + donation.region_to_plant
+        certify_date = 'Date: ' + datetime.now().strftime("%B %d, %Y")
+
+        # Generate the certificate content
+        pdf_buffer = generate_certificate_content(recipient_name, country, donation_amount, region_to_plant, certify_date)
+
+        # get the file path
+        filepath = 'certify/certificate.pdf'
+
+        # Send the certificate as an email attachment
+        send_certificate(email, filepath)
+
+        # Return a response to the user
+        flash("The certificate has been successfully sent to your email", "success")
+        return redirect(url_for('main.gratitude'))
+    
+    except:
+        flash("The was an error in email transit", "danger")
+        return redirect(url_for('main.gratitude'))
+
+
+def send_certificate(email, filepath):
+    with open(filepath, 'rb') as file:
+        pdf_content = file.read()
+
+    message = Message("Certificate of Donation", sender=os.environ.get('MAIL_SENDER'), recipients=[email])
+    message.attach("certificate.pdf", "application/pdf", pdf_content)
+    mail.send(message)
+
+
+def generate_certificate_content(recipient_name, country, donation_amount, region_to_plant, certify_date):
+    pdf_buffer = BytesIO()
+
+    # Create a new PDF file
+    pdf = canvas.Canvas('certify/certificate.pdf', pagesize=letter)
+
+
+    # Set up the certificate layout
+    pdf.setFont("Helvetica-Bold", 24)
+    pdf.drawCentredString(letter[0] / 2, 8 * inch, "ECO-DONATE")
+
+    pdf.drawCentredString(letter[0] / 2, 7 * inch, "Certificate of Donation")
+
+    # Add nice designs to the edges of the sheet
+    pdf.setStrokeColorRGB(0.2, 0.5, 0.7)
+    pdf.setLineWidth(3)
+    pdf.line(0.5 * inch, 0.5 * inch, 0.5 * inch, letter[1] - 0.5 * inch)
+    pdf.line(letter[0] - 0.5 * inch, 0.5 * inch, letter[0] - 0.5 * inch, letter[1] - 0.5 * inch)
+    pdf.line(0.5 * inch, 0.5 * inch, letter[0] - 0.5 * inch, 0.5 * inch)
+    pdf.line(0.5 * inch, letter[1] - 0.5 * inch, letter[0] - 0.5 * inch, letter[1] - 0.5 * inch)
+
+    pdf.setFont("Helvetica", 14)
+    pdf.drawCentredString(letter[0] / 2, 6 * inch, "This is to certify that")
+    pdf.drawCentredString(letter[0] / 2, 5.5 * inch, recipient_name)
+    pdf.drawCentredString(letter[0] / 2, 5 * inch, country)
+
+    pdf.drawCentredString(letter[0] / 2, 4 * inch, "has generously donated")
+    pdf.drawCentredString(letter[0] / 2, 3.5 * inch, donation_amount)
+    pdf.drawCentredString(letter[0] / 2, 2.8 * inch, "towards the cause of planting trees and combating climate change")
+    pdf.drawCentredString(letter[0] / 2, 2.5 * inch, region_to_plant)
+
+    pdf.setFont("Helvetica-Oblique", 12)
+    pdf.drawCentredString(letter[0] / 2, 1.5 * inch, certify_date)
+
+    # Save and close the PDF file
+    pdf.save()
+
+    # Move the buffer's file pointer to the beginning of the buffer
+    pdf_buffer.seek(0)
+
+    return pdf_buffer

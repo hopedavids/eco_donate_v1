@@ -9,9 +9,8 @@
   {% with messages = get_flashed_messages(with_categories=true) %}
   {% for category, message in messages %}
     <div style="color: white;" class="alert alert-{{ category }}" role="alert">
-      <strong>Note: </strong> {{ message }} <strong>{{ user }}!</strong></span>
-      </button>
-  </div>
+      <strong>Heya {{ user }}: </strong> {{ message }} !</span>
+    </div>
   {% endfor %}
   {% endwith %}
     <div class="container-fluid py-4">
@@ -267,11 +266,11 @@
             </div>
             <div class="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
               <div class="d-flex justify-content-between">
-                <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-none d-lg-block">Connect</a>
-                <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-block d-lg-none"><i class="ni ni-collection"></i></a>
-                <a href="javascript:;" class="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block">Message</a>
+                <!-- <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-none d-lg-block">View Donation Info</a> -->
+                <!-- <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-block d-lg-none"><i class="ni ni-collection"></i></a>
+                <a href="javascript:;" class="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block">View Certificate</a>
                 <a href="javascript:;" class="btn btn-sm btn-dark float-right mb-0 d-block d-lg-none"><i class="ni ni-email-83"></i></a>
-              </div>
+              </div> -->
             </div>
             <div class="card-body pt-0">
               <div class="text-center mt-4">
@@ -286,8 +285,12 @@
                 </div>
                 
               </div>
-               
+
               </div>
+              <br>
+              <a href="{{ url_for('main.transaction') }}" class="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block">View Donation Details</a>
+              <a href="{{ url_for('main.transaction') }}" class="btn btn-sm btn-dark mb-0 d-block d-lg-none"><i class="ni ni-collection"></i></a>
+
             </div>
           </div>
         </div>
