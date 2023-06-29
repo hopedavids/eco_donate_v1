@@ -57,10 +57,10 @@
               <div class="col-md-6">
                 <h6 class="mb-0">Your Transaction's</h6>
               </div>
-        {% for wallet, payment in transactions %}
+        {% for wallet, donation in transactions %}
               <div class="col-md-6 d-flex justify-content-end align-items-center">
                 <i class="far fa-calendar-alt me-2"></i>
-                <small>{{ payment.timestamp }}</small>
+                <small>{{ donation.timestamp }}</small>
               </div>
             </div>
           </div>
@@ -72,11 +72,11 @@
                   <button class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 btn-sm d-flex align-items-center justify-content-center"><i class="fas fa-arrow-down"></i></button>
                   <div class="d-flex flex-column">
                     <h6 class="mb-1 text-dark text-sm">Donations</h6>
-                    <span class="text-xs">{{ payment.timestamp }}</span>
+                    <span class="text-xs">{{ donation.timestamp }}</span>
                   </div>
                 </div>
                 <div class="d-flex align-items-center text-danger text-gradient text-sm font-weight-bold">
-                  - $ {{ payment.amount }}.00
+                  - $ {{ donation.amount }}
                 </div>
               </li>
               <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">

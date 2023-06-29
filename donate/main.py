@@ -143,14 +143,13 @@ def transaction():
     page = request.args.get('page', 1, type=int)
     user_id = current_user.id
     user = current_user.username
-    contacts = Contact.query.filter_by(user_id=user_id).paginate(page=page, per_page=2)
-    donations = Donation.query.filter_by(user_id=user_id).paginate(page=page, per_page=2)
-    payments = Payment.query.filter_by(wallet_id=os.environ.get('DONATE_WALLET')).paginate(page=page, per_page=2)
-
-    wallets = Wallet.query.filter_by(user_id=user_id).paginate(page=page, per_page=2)
-
-    transaction = zip(wallets, payments)
-
+    contacts = Contact.query.filter_by(user_id=user_id).order_by(Contact.contact_id.desc()).paginate(page=page, per_page=2)
+    donations = Donation.query.filter_by(user_id=user_id).order_by(Donation.donation_id.desc()).paginate(page=page, per_page=2)
+    
+    offset_donations = Donation.query.filter_by(user_id=user_id).order_by(Donation.donation_id.desc()).all()
+    wallets = Wallet.query.filter_by(user_id=user_id).all()
+    
+    transaction = zip(wallets, offset_donations)
     data = zip(donations, contacts)
 
     return render_template('backend/pages/tables.html', data=data, transactions=transaction, user=user)
@@ -171,8 +170,8 @@ def view_certificate():
      # query the contact object for the full name
     user_id = current_user.id
 
-    contact = Contact.query.filter_by(user_id=user_id).first()
-    donation = Donation.query.filter_by(user_id=user_id).first()
+    contact = Contact.query.filter_by(user_id=user_id).order_by(Contact.contact_id.desc()).first()
+    donation = Donation.query.filter_by(user_id=user_id).order_by(Donation.donation_id.desc()).first()
 
     # Obtain data for the certificate (e.g., recipient's name, donation amount)
     recipient_name = contact.full_name
@@ -198,8 +197,9 @@ def email_certificate():
         # query the contact object for the full name
         user_id = current_user.id
         email = current_user.email
-        contact = Contact.query.filter_by(user_id=user_id).first()
-        donation = Donation.query.filter_by(user_id=user_id).first()
+        contact = Contact.query.filter_by(user_id=user_id).order_by(Contact.contact_id.desc()).first()
+        donation = Donation.query.filter_by(user_id=user_id).order_by(Donation.donation_id.desc()).first()
+
 
         # Obtain data for the certificate (e.g., recipient's name, donation amount)
         recipient_name = contact.full_name
