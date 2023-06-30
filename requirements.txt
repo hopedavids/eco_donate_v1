@@ -39,3 +39,11 @@ Flask-Mail
 itsdangerous
 
 reportlab
+
+beautifulsoup4
+
+flask-cors
+
+flask-adminlite 
+
+flask-admin
