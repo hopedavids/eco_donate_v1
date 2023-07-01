@@ -11,6 +11,7 @@ from .resources import auth_ns, user_ns, wallet_ns, pay_ns, trans_ns, api_ns
 from .user_auth import user_auth as user_auth_blueprint
 from .main import main as main_blueprint
 from .api_auth import api_auth as api_auth_blueprint
+from .admin import admin as admin_blueprint
 from .google import google as google_blueprint
 
 
@@ -88,7 +89,7 @@ def create_app():
     app.register_blueprint(user_auth_blueprint)
     app.register_blueprint(main_blueprint)
     app.register_blueprint(api_auth_blueprint)
-    # app.register_blueprint(google_blueprint)
+    app.register_blueprint(admin_blueprint)
 
     @api.documentation
     def customize_swagger_ui():
