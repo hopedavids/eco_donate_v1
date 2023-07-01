@@ -30,6 +30,7 @@ api_ns = Namespace('api', description='API namespace')
 
 
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get((user_id))
@@ -59,6 +60,7 @@ class Users(Resource):
     # @user_ns.doc(security="jsonWebToken")
     @user_ns.marshal_list_with(user_model)
     @jwt_required()
+
     def get(self):
         """ This method handles the GET HTTP method and returns
             response in a serialized way.
@@ -69,6 +71,7 @@ class Users(Resource):
         return user
 
     
+
     def post(self):
         """This method handles the POST and creates new uses based
             on requests.

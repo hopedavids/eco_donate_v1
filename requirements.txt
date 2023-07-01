@@ -47,3 +47,4 @@ flask-cors
 Flask-AdminLTE3
 
 Flask-Admin
+

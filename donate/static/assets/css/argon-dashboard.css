@@ -374,7 +374,11 @@ label {
 }
 
 button {
+<<<<<<< HEAD
   border-radius: 0;
+=======
+  border-radius: 20;
+>>>>>>> origin/finalize-frontend-works-01
 }
 
 button:focus:not(:focus-visible) {

@@ -25,6 +25,3 @@ login_manager.login_view = 'user_auth.signin'
 
 mail = Mail()
 
-
-
-

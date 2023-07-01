@@ -5,6 +5,7 @@
 {% block options %}Register Your Account Here {% endblock %}
 
 
+
 {% block content %}
 
             <div class="card-body">
@@ -15,6 +16,7 @@
                 </div>
               {% endfor %}
               {% endwith %}
+
 
               <form action="/account/register" method="POST" role="form">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
@@ -40,6 +42,7 @@
                   <button  class="btn bg-gradient-dark w-100 my-4 mb-2">Sign up</button>
                 </div>
                 <p class="text-sm mt-3 mb-0">Already have an account? <a href="{{ url_for('user_auth.signin') }}" class="text-dark font-weight-bolder">Sign in</a></p>
+
               </form>
             </div>
           </div>
@@ -48,4 +51,5 @@
     </div>
   </main>
   
+
   {% endblock %}

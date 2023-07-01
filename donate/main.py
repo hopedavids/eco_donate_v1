@@ -15,6 +15,7 @@ from .models import Wallet, Donation, Contact, Payment
 
 main = Blueprint('main', __name__)
 
+
 load_dotenv('.env')
 
 

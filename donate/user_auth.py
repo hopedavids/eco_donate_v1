@@ -10,6 +10,7 @@ import re, random, os
 
 load_dotenv('.env')
 
+
 user_auth = Blueprint('user_auth', __name__)
 
 
@@ -53,6 +54,7 @@ def signin():
         return render_template('backend/accounts/signin.html')
 
 
+
 @user_auth.route('/account/register', methods=['GET', 'POST'])
 def register():
     try:
@@ -74,11 +76,13 @@ def register():
 
             if user:
                 flash('username or email taken', 'danger')
+
                 return redirect(url_for('user_auth.register'))
 
             if password:
                 if password != confirm_password:
                     flash('Passwords do not match', 'danger')
+
                     return redirect(url_for('user_auth.register'))
 
             
@@ -90,12 +94,12 @@ def register():
 
                 if not any(char.isalpha() for char in password) or not any(char.isdigit() for char in password):
                     flash('Password should contain alphanumeric', 'danger')
+
                     return redirect(url_for('user_auth.register'))
         
             new_user = User(username=username, email=email, password=generate_password_hash(password, method='sha256'))
             db.session.add(new_user)
             db.session.commit()
-
 
             #email verfication
             otp = generate_otp()
@@ -168,6 +172,7 @@ def confirm():
 
 
 
+
 @user_auth.route('/account/signout')
 @login_required
 def signout():
@@ -177,8 +182,7 @@ def signout():
     db.session.add(user)
     db.session.commit()
     logout_user()
+
     flash('You are Signout', 'warning')
     return redirect(url_for('user_auth.signin'))
-
-
 

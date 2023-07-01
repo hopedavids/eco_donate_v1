@@ -29,6 +29,7 @@ class User(UserMixin, db.Model):
     # wallet = db.relationship('Wallet', backref='user', uselist=False)
 
 
+
     def set_password(self, password):
         self.password = generate_password_hash(password, method='sha256')
         return self.password
@@ -46,8 +47,10 @@ class User(UserMixin, db.Model):
         """False, as anonymous users aren't supported."""
         return False
 
+
     # def __str__(self):
     #     return (self.id)
+
 
 
 class Wallet(db.Model):
@@ -62,6 +65,7 @@ class Wallet(db.Model):
 
     wallet_id = db.Column(db.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id'), nullable=False, unique=True)
+
     current_balance = db.Column(db.Float, default=0.0)
     previous_balance = db.Column(db.Float, default=0.0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -75,6 +79,7 @@ class Wallet(db.Model):
         return {}.format(self.wallet_id)
 
 
+
 class Payment(db.Model):
     """This object defines the data model and schemas
         for payments.
@@ -85,6 +90,7 @@ class Payment(db.Model):
     wallet_id = db.Column(db.UUID(as_uuid=True), db.ForeignKey('donate_wallets.wallet_id'), nullable=False)
     donation_id = db.Column(db.Integer, db.ForeignKey('donations'), nullable=False)
     amount = db.Column(db.Integer, nullable=False)
+
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
     wallet = db.relationship('Wallet', backref='payment', uselist=False)
@@ -117,7 +123,6 @@ class Contact(db.Model):
 
 
 
-
 class Donation(db.Model):
     """This object defines the data model and schemas
         for donations.
@@ -143,3 +148,4 @@ class Donation(db.Model):
 @event.listens_for(Wallet.current_balance, 'set')
 def update_previous_balance(target, value, oldvalue, initiator):
     target.previous_balance = oldvalue
+

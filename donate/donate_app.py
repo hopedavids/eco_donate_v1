@@ -15,6 +15,7 @@ from .admin import admin as admin_blueprint
 from .google import google as google_blueprint
 
 
+
 load_dotenv('.flaskenv')
 load_dotenv('.env')
 
@@ -33,7 +34,7 @@ def create_app():
 
     app = Flask(__name__)
 
-    
+
     # configure the SQLite database, relative to the app instance folder
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('POSTGRES_URL')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -56,10 +57,12 @@ def create_app():
     app.config['MAIL_USE_TLS'] = False
     app.config['MAIL_USE_SSL'] = True
 
+
     # adding extra security parameters for sessions
     app.config['SESSION_COOKIE_SECURE'] = False
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
     
+
     # Use a secure session storage
     app.config['SESSION_TYPE'] = 'filesystem'
     Session(app)
@@ -77,6 +80,7 @@ def create_app():
     api.add_namespace(user_ns)
     api.add_namespace(wallet_ns)
     api.add_namespace(pay_ns)
+
     api.add_namespace(api_ns)
 
     api.init_app(app)

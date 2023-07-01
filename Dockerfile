@@ -23,6 +23,10 @@ COPY ./requirements.txt /requirements.txt
 RUN pip install --upgrade pip &&\
     pip install -r requirements.txt
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/finalize-frontend-works-01
 #set the current working directory
 WORKDIR /app
 

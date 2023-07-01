@@ -1,4 +1,5 @@
 iso_env
+<<<<<<< HEAD
 tests
 donate/.env
 donate/.flaskenv

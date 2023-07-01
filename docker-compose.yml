@@ -8,6 +8,9 @@ services:
     - "5000:5000"
     volumes:
     - ./donate:/app
+<<<<<<< HEAD
     # - /etc/resolv.conf:/etc/resolv.conf
+=======
+>>>>>>> origin/finalize-frontend-works-01
     # command: >
     #   python donate_app.py
