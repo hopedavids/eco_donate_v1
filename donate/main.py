@@ -19,6 +19,14 @@ main = Blueprint('main', __name__)
 load_dotenv('.env')
 
 
+@main.route('/eco-donate')
+def landing_page():
+    return render_template('frontend/land-page.html')
+
+
+@main.route('/profile')
+def profile_page():
+    return render_template('frontend/pages/profile.html')
 
 @main.route('/profile', methods = ['GET', 'POST'])
 @login_required

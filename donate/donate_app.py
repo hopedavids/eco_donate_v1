@@ -13,7 +13,7 @@ from .main import main as main_blueprint
 from .api_auth import api_auth as api_auth_blueprint
 from .admin import admin as admin_blueprint
 from .google import google as google_blueprint
-
+from .frontend_views import frontend_views as frontend_views_blueprint
 
 
 load_dotenv('.flaskenv')
@@ -94,6 +94,7 @@ def create_app():
     app.register_blueprint(main_blueprint)
     app.register_blueprint(api_auth_blueprint)
     app.register_blueprint(admin_blueprint)
+    app.register_blueprint(frontend_views_blueprint)
 
     @api.documentation
     def customize_swagger_ui():

@@ -4,14 +4,11 @@
 {% block title %}EcoDonate{% endblock  %}
 
 {% block content %}
-<body class="landing-page">
   <!-- Navbar -->
   <nav id="navbar-main" class="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light py-2">
     <div class="container">
 
-      <!--<a class="navbar-brand mr-lg-5" href="{{ url_for('landing_page')}}">
-        <img src="{{ url_for('static', filename='assets/img/brand/black.png') }}">
-      </a>-->
+     
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -20,7 +17,7 @@
           <div class="row">
             <div class="col-6 collapse-brand">
 
-              <a href="{{ url_for('index')}}">
+              <a href="#">
                 <img src="{{ url_for('static', filename='assets/img/brand/blue.png') }}">
               </a>
             </div>
@@ -36,88 +33,33 @@
           <li class="nav-item dropdown">
             <a href="#" class="nav-link" data-toggle="dropdown" href="#" role="button">
               <i class="ni ni-ui-04 d-lg-none"></i>
-              <span class="nav-link-inner--text">EcoDonate</span>
+              <span class="nav-link-inner--text"><strong>ECO-DONATE</strong></span>
             </a>
-            <div class="dropdown-menu dropdown-menu-xl">
-              <div class="dropdown-menu-inner">
-                <a href="https://demos.creative-tim.com/argon-design-system/docs/getting-started/overview.html" class="media d-flex align-items-center">
-                  <div class="icon icon-shape bg-gradient-primary rounded-circle text-white">
-                    <i class="ni ni-spaceship"></i>
-                  </div>
-                  <div class="media-body ml-3">
-                    <h6 class="heading text-primary mb-md-1">Getting started</h6>
-                    <p class="description d-none d-md-inline-block mb-0">Learn how to use compiling Scss, change brand colors and more.</p>
-                  </div>
-                </a>
-                <a href="https://demos.creative-tim.com/argon-design-system/docs/foundation/colors.html" class="media d-flex align-items-center">
-                  <div class="icon icon-shape bg-gradient-success rounded-circle text-white">
-                    <i class="ni ni-palette"></i>
-                  </div>
-                  <div class="media-body ml-3">
-                    <h6 class="heading text-primary mb-md-1">Foundation</h6>
-                    <p class="description d-none d-md-inline-block mb-0">Learn more about colors, typography, icons and the grid system we used for .</p>
-                  </div>
-                </a>
-                <a href="https://demos.creative-tim.com/argon-design-system/docs/components/alerts.html" class="media d-flex align-items-center">
-                  <div class="icon icon-shape bg-gradient-warning rounded-circle text-white">
-                    <i class="ni ni-ui-04"></i>
-                  </div>
-                  <div class="media-body ml-3">
-                    <h5 class="heading text-warning mb-md-1">Components</h5>
-                    <p class="description d-none d-md-inline-block mb-0">Browse our 50 beautiful handcrafted components offered in the Free version.</p>
-                  </div>
-                </a>
-              </div>
+            
             </div>
           </li>
           <li class="nav-item dropdown">
-            <a href="#" class="nav-link" data-toggle="dropdown" href="#" role="button">
+            <!-- <a href="#" class="nav-link" data-toggle="dropdown" href="#" role="button">
               <i class="ni ni-collection d-lg-none"></i>
 
               <span class="nav-link-inner--text">Home Page</span>
-            </a>
+            </a> -->
             <div class="dropdown-menu">
-              <a href="{{ url_for('landing_page')}}" class="dropdown-item">Home</a>
-              <a href="{{ url_for('profile')}}" class="dropdown-item">Profile</a>
+              <a href="{{ url_for('main.landing_page')}}" class="dropdown-item">Home</a>
+              <a href="#" class="dropdown-item">Profile</a>
              
               
             </div>
           </li>
         </ul>
         <ul class="navbar-nav align-items-lg-center ml-lg-auto">
-
-          <!--<li class="nav-item">
-            <a class="nav-link nav-link-icon" href="https://www.facebook.com/CreativeTim/" target="_blank" data-toggle="tooltip" title="Like us on Facebook">
-              <i class="fa fa-facebook-square"></i>
-              <span class="nav-link-inner--text d-lg-none">Facebook</span>
-            </a>
-          </li>
           <li class="nav-item">
-            <a class="nav-link nav-link-icon" href="https://www.instagram.com/creativetimofficial" target="_blank" data-toggle="tooltip" title="Follow us on Instagram">
-              <i class="fa fa-instagram"></i>
-              <span class="nav-link-inner--text d-lg-none">Instagram</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link nav-link-icon" href="https://twitter.com/creativetim" target="_blank" data-toggle="tooltip" title="Follow us on Twitter">
-              <i class="fa fa-twitter-square"></i>
-              <span class="nav-link-inner--text d-lg-none">Twitter</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link nav-link-icon" href="https://github.com/creativetimofficial/argon-design-system" target="_blank" data-toggle="tooltip" title="Star us on Github">
-              <i class="fa fa-github"></i>
-              <span class="nav-link-inner--text d-lg-none">Github</span>
-            </a>
-
-          </li> -->
-          <li class="nav-item">
-            <a class="btn btn-neutral" href="https://www.creative-tim.com/builder/argon" target="_blank">
+            <a class="btn btn-neutral" href="{{ url_for('user_auth.signin') }}" target="_blank">
               <span class="nav-link-inner--text">Login</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="btn btn-neutral" href="https://www.creative-tim.com/builder/argon" target="_blank">
+            <a class="btn btn-neutral" href="{{ url_for('user_auth.register') }}" target="_blank">
               <span class="nav-link-inner--text">Sign-Up</span>
             </a>
           </li>
@@ -131,17 +73,17 @@
       <div class="shape shape-style-3 shape-default">
 
 
-        <span class="span-150"></span>
-        <span class="span-50"></span>
-        <span class="span-50"></span>
-        <span class="span-75"></span>
-        <span class="span-100"></span>
-        <span class="span-75"></span>
-        <span class="span-50"></span>
-        <span class="span-100"></span>
-        <span class="span-50"></span>
+        <!-- <span class="trees-150"></span>
+        <span class="trees-50"></span>
+        <span class="trees-50"></span>
+        <span class="trees-75"></span>
+        <span class="trees-100"></span>
+        <span class="trees-75"></span>
+        <span class="trees-50"></span>
+        <span class="trees-100"></span>
+        <span class="trees-50"></span>
 
-        <span class="span-100"></span> 
+        <span class="span-100"></span>  -->
       </div>
       <div class="page-header">
         <div class="container shape-container d-flex align-items-center py-lg">
@@ -152,11 +94,14 @@
                 <h1 class="text-white display-1">More Trees!</h1>
                 <h2 class="display-4 font-weight-normal text-white">The time is right now!</h2>
                 <div class="btn-wrapper mt-4">
-                  <a href="https://www.youtube.com/watch?v=tFQ9BXkm0LI&pp=ygUrcGxhbnRpbmcgbW9yZSB0cmVlcyB0byBhdm9pZCBnbG9iYWwgd29ybWluZw%3D%3D" class="btn btn-warning btn-icon mt-3 mb-sm-0">
-                    <span class="btn-inner--icon"><i class="ni ni-button-play"></i></span>
-                    <span class="btn-inner--text">Play more</span>
+
+                  <a href="{{ url_for('user_auth.signin') }}" class="btn btn-warning btn-icon mt-3 mb-sm-0">
+                    <button class="btn btn-success btn-icon">
+                    <!-- <span class="btn-inner--icon"><i class="ni ni-button-play"></i></span> -->
+                    <span class="btn-inner--text">Make your Donations Today!</span>
+                    </button></a>
                   </a>
-                </div>
+                  </div>
               </div>
             </div>
           </div>
@@ -205,27 +150,13 @@
       </div>
     </div>
     <div>
-   <!-- <div class="col-md-8 mx-auto text-center">
-      <h3 class="display-3">Meet Our Developers</h3>
-    </div>
-    <div class="row">
-      <div class="col-sm-3 col-6">
+   
+      <div class="btn-wrapper mt-4">
+        <!-- <a href="https://www.youtube.com/watch?v=tFQ9BXkm0LI&pp=ygUrcGxhbnRpbmcgbW9yZSB0cmVlcyB0byBhdm9pZCBnbG9iYWwgd29ybWluZw%3D%3D" class="btn btn-warning btn-icon mt-3 mb-sm-0"> -->
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/jvgAg2o4-xg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display:block; margin:auto;">
+          </iframe>
         
       </div>
-      <div class="col-sm-3 col-6">
-        <img src="{{ url_for('static', filename='assets/img/faces/team-2.jpg') }}" alt="Circle image" class="img-fluid rounded-circle shadow" style="width: 150px;">
-        <small class="d-block text-uppercase font-weight-bold mb-4">Hope Lekan Davdis</small>
-      </div>
-      <div class="col-sm-3 col-6 mt-5 mt-sm-0">
-        <img src="{{ url_for('static', filename='assets/img/faces/team-2.jpg') }}" alt="Circle image" class="img-fluid rounded-circle shadow" style="width: 150px;">
-        <small class="d-block text-uppercase font-weight-bold mb-4">Benard Sakyi</small>
-      </div>
-      <div class="col-sm-3 col-6 mt-5 mt-sm-0">
-        <img src="{{ url_for('static', filename='assets/img/faces/team-2.jpg') }}" alt="Circle image" class="img-fluid rounded-circle shadow" style="width: 150px;">
-        <small class="d-block text-uppercase font-weight-bold mb-4">Emmanuel k. Davids</small>
-      </div>
-    </div>
-  -->
 
     <div class="section features-1">
       <div class="container">
@@ -307,8 +238,8 @@
       <div class="container">
         <div class="row row-grid align-items-center mb-5">
           <div class="col-lg-6">
-            <h3 class="text-primary font-weight-light mb-2">Thank you for supporting us!</h3>
-            <h4 class="mb-0 font-weight-light">Let's get in touch on any of these platforms.</h4>
+            <h3 class="text-primary font-weight-light mb-2">Lets Plant more trees!</h3>
+            <h4 class="mb-0 font-weight-light">Your donations can save the planet earth from global warming.</h4>
           </div>
           <div class="col-lg-6 text-lg-center btn-wrapper">
             <button target="_blank" href="https://twitter.com/creativetim" rel="nofollow" class="btn btn-icon-only btn-twitter rounded-circle" data-toggle="tooltip" data-original-title="Follow us">
@@ -329,7 +260,7 @@
         <div class="row align-items-center justify-content-md-between">
           <div class="col-md-6">
             <div class="copyright">
-              &copy; 2020 <a href="" target="_blank">Creative Tim</a>.
+              &copy; 2020 <a href="" target="_blank">Eco-Donate Developers</a>.
             </div>
           </div>
           <div class="col-md-6">
@@ -337,10 +268,10 @@
 
              
               <li class="nav-item">
-                <a href="{{ url_for('landing_page')}}" class="nav-link" target="_blank">Home</a>
+                <a href="{{ url_for('main.landing_page')}}" class="nav-link" target="_blank">Home</a>
               </li>
               <li class="nav-item">
-                <a href="{{ url_for('profile')}}" class="nav-link" target="_blank">Profile</a>
+                <a href="/profile" class="nav-link" target="_blank">Profile</a>
               </li>
             </ul>
           </div>
