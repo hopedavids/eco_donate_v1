@@ -18,6 +18,7 @@ main = Blueprint('main', __name__)
 load_dotenv('.env')
 
 
+
 @main.route('/profile', methods = ['GET', 'POST'])
 @login_required
 def index():

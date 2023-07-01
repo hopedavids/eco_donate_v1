@@ -44,6 +44,6 @@ beautifulsoup4
 
 flask-cors
 
-flask-adminlite 
+Flask-AdminLTE3
 
-flask-admin
+Flask-Admin

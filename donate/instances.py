@@ -7,6 +7,8 @@ from flask_mail import Mail
 
 
 
+
+
 """This is where initialization of the app and db takes place."""
 
 api = Api()
@@ -22,5 +24,7 @@ login_manager = LoginManager()
 login_manager.login_view = 'user_auth.signin'
 
 mail = Mail()
+
+
 
 
