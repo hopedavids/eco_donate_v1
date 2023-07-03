@@ -52,29 +52,47 @@
             </div>
           </li>
         </ul>
+        <ul class="navbar-nav navbar-nav-hover align-items-lg-center">
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link" data-toggle="dropdown" href="#" role="button">
+              <i class="ni ni-ui-04 d-lg-none"></i>
+              <a href="{{ url_for('user_auth.signin') }}"><button type="button" class="btn btn-default">SignIn</button></a>
+              <a href="{{ url_for('user_auth.signin') }}"><button type="button" class="btn btn-default">Register</button></a>
+
+            </a>
+            
+            </div>
+          </li>
+        <!-- <li class="nav-item dropdown">
+        <li class="nav-item">
         <ul class="navbar-nav align-items-lg-center ml-lg-auto">
+          <a href="{{ url_for('user_auth.signin') }}"><button type="button" class="btn btn-default">SignIn</button></a>
+        
+          <a href="{{ url_for('user_auth.signin') }}"><button type="button" class="btn btn-default">Register</button></a>
+
+        </ul> -->
+        <!-- <ul class="navbar-nav align-items-lg-center ml-lg-auto">
           <li class="nav-item">
-            <a class="btn btn-neutral" href="{{ url_for('user_auth.signin') }}" target="_blank">
+            <a class="btn btn-primary" href="{{ url_for('user_auth.signin') }}" target="_blank">
               <span class="nav-link-inner--text">Login</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="btn btn-neutral" href="{{ url_for('user_auth.register') }}" target="_blank">
+            <a class="btn btn-primary" href="{{ url_for('user_auth.register') }}" target="_blank">
               <span class="nav-link-inner--text">Sign-Up</span>
             </a>
           </li>
-        </ul>
+        </ul> -->
       </div>
     </div>
   </nav>
   <!-- End Navbar -->
   <div class="wrapper">
     <div class="section section-hero section-shaped">
-      <div class="shape shape-style-3 shape-default">
-
-
-        <!-- <span class="trees-150"></span>
-        <span class="trees-50"></span>
+      <div class="shape shape-style-3 shape" style="background-image: url('{{ url_for('static', filename='assets/img/trees/tree5.jpg') }}');>
+        
+        <span class="trees-150"></span>
+        <!-- <span class="trees-50"></span>
         <span class="trees-50"></span>
         <span class="trees-75"></span>
         <span class="trees-100"></span>
@@ -149,20 +167,29 @@
         </div>
       </div>
     </div>
-    <div>
-   
-      <div class="btn-wrapper mt-4">
-        <!-- <a href="https://www.youtube.com/watch?v=tFQ9BXkm0LI&pp=ygUrcGxhbnRpbmcgbW9yZSB0cmVlcyB0byBhdm9pZCBnbG9iYWwgd29ybWluZw%3D%3D" class="btn btn-warning btn-icon mt-3 mb-sm-0"> -->
-          <iframe width="560" height="315" src="https://www.youtube.com/embed/jvgAg2o4-xg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display:block; margin:auto;">
-          </iframe>
-        
-      </div>
-
+    <br>
+    <br>
     <div class="section features-1">
       <div class="container">
         <div class="row">
           <div class="col-md-8 mx-auto text-center">
-            <span class="badge badge-primary badge-pill mb-3">Insight</span>
+            <span class="badge badge-primary badge-pill mb-3">Let's combat Climate Change</span>
+
+            <h3 class="display-3"> Combating Climate Change for a Greener World</h3>
+            <p class="lead">Thinking out of the Box to bring out this brilliant Idea to avoid global worming</p>
+          <div class="btn-wrapper mt-4">
+          <iframe width="660" height="315" src="https://www.youtube.com/embed/jvgAg2o4-xg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display:block; margin:auto;">
+          </iframe>
+        </div>
+      </div>
+      </div>
+      </div>
+    </div>
+    <div class="section features-1">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 mx-auto text-center">
+            <span class="badge badge-primary badge-pill mb-3">Our Developers</span>
 
             <h3 class="display-3">Meet Our Developers</h3>
             <p class="lead">Thinking out of the Box to bring out this brilliant Idea to avoid global worming</p>
@@ -193,7 +220,7 @@
             <div class="info">
 
               <img src="{{ url_for('static', filename='assets/img/faces/team-2.jpg') }}" alt="Circle image" class="img-fluid rounded-circle shadow" style="width: 150px;">
-              <h6 class="info-title text-uppercase text-success">Benard Sakyi</h6>
+              <h6 class="info-title text-uppercase text-success">Benard Boateng Sakyi</h6>
               <p class="description opacity-8">FullStack Software Engineer.<br> Get In Touch With Us Below</p>
               <div class="col-lg-6 text-lg-center btn-wrapper">
                 <button target="_blank" href="https://twitter.com/creativetim" rel="nofollow" class="btn btn-icon-only btn-twitter rounded-circle" data-toggle="tooltip" data-original-title="Follow us">
@@ -245,11 +272,11 @@
             <button target="_blank" href="https://twitter.com/creativetim" rel="nofollow" class="btn btn-icon-only btn-twitter rounded-circle" data-toggle="tooltip" data-original-title="Follow us">
               <span class="btn-inner--icon"><i class="fa fa-twitter"></i></span>
             </button>
-            <button target="_blank" href="https://www.facebook.com/CreativeTim/" rel="nofollow" class="btn-icon-only rounded-circle btn btn-facebook" data-toggle="tooltip" data-original-title="Like us">
-              <span class="btn-inner--icon"><i class="fab fa-facebook"></i></span>
+            <!-- <button target="_blank" href="https://www.facebook.com/CreativeTim/" rel="nofollow" class="btn-icon-only rounded-circle btn btn-facebook" data-toggle="tooltip" data-original-title="Like us">
+              <span class="btn-inner--icon"><i class="fab fa-facebook"></i></span> -->
             </button>
-            <button target="_blank" href="https://dribbble.com/creativetim" rel="nofollow" class="btn btn-icon-only btn-dribbble rounded-circle" data-toggle="tooltip" data-original-title="Follow us">
-              <span class="btn-inner--icon"><i class="fa fa-dribbble"></i></span>
+            <!-- <button target="_blank" href="https://dribbble.com/creativetim" rel="nofollow" class="btn btn-icon-only btn-dribbble rounded-circle" data-toggle="tooltip" data-original-title="Follow us">
+              <span class="btn-inner--icon"><i class="fa fa-dribbble"></i></span> -->
             </button>
             <button target="_blank" href="https://github.com/creativetimofficial" rel="nofollow" class="btn btn-icon-only btn-github rounded-circle" data-toggle="tooltip" data-original-title="Star on Github">
               <span class="btn-inner--icon"><i class="fa fa-github"></i></span>
@@ -260,7 +287,7 @@
         <div class="row align-items-center justify-content-md-between">
           <div class="col-md-6">
             <div class="copyright">
-              &copy; 2020 <a href="" target="_blank">Eco-Donate Developers</a>.
+              &copy; 2023 <a href="" target="_blank">Eco-Donate Developers</a>.
             </div>
           </div>
           <div class="col-md-6">
@@ -271,7 +298,7 @@
                 <a href="{{ url_for('main.landing_page')}}" class="nav-link" target="_blank">Home</a>
               </li>
               <li class="nav-item">
-                <a href="/profile" class="nav-link" target="_blank">Profile</a>
+                <a href="#" class="nav-link" target="_blank">Profile</a>
               </li>
             </ul>
           </div>
