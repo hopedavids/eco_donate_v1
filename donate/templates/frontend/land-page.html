@@ -31,7 +31,7 @@
         </div>
         <ul class="navbar-nav navbar-nav-hover align-items-lg-center">
           <li class="nav-item dropdown">
-            <a href="#" class="nav-link" data-toggle="dropdown" href="#" role="button">
+            <a href="" class="nav-link" data-toggle="dropdown" href="#" role="button">
               <i class="ni ni-ui-04 d-lg-none"></i>
               <span class="nav-link-inner--text"><strong>ECO-DONATE</strong></span>
             </a>
@@ -56,8 +56,8 @@
           <li class="nav-item dropdown">
             <a href="#" class="nav-link" data-toggle="dropdown" href="#" role="button">
               <i class="ni ni-ui-04 d-lg-none"></i>
-              <a href="{{ url_for('user_auth.signin') }}"><button type="button" class="btn btn-default">SignIn</button></a>
-              <a href="{{ url_for('user_auth.signin') }}"><button type="button" class="btn btn-default">Register</button></a>
+              <a href="{{ url_for('user_auth.signin') }}"><button type="button" class="btn btn-danger">SignIn</button></a>
+              <a href="{{ url_for('user_auth.signin') }}"><button type="button" class="btn btn-success">Register</button></a>
 
             </a>
             
@@ -113,7 +113,7 @@
                 <h2 class="display-4 font-weight-normal text-white">The time is right now!</h2>
                 <div class="btn-wrapper mt-4">
 
-                  <a href="{{ url_for('user_auth.signin') }}" class="btn btn-warning btn-icon mt-3 mb-sm-0">
+                  <a href="{{ url_for('user_auth.signin') }}" class="btn btn-danger btn-icon mt-3 mb-sm-0">
                     <button class="btn btn-success btn-icon">
                     <!-- <span class="btn-inner--icon"><i class="ni ni-button-play"></i></span> -->
                     <span class="btn-inner--text">Make your Donations Today!</span>
