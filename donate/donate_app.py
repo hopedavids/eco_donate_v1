@@ -3,11 +3,12 @@ import psycopg2
 from flask import Flask
 from dotenv import load_dotenv
 from datetime import timedelta
+from flask_wtf.csrf import CSRFProtect
 from flask_session import Session
 from flask_restx import apidoc
 from .instances import api, db, jwt, login_manager, csrf, mail
 from sqlalchemy.dialects.postgresql import psycopg2
-from .resources import auth_ns, user_ns, wallet_ns, pay_ns, trans_ns, api_ns
+from .resources import auth_ns, user_ns, wallet_ns, pay_ns, donation_ns, api_ns, contact_ns
 from .user_auth import user_auth as user_auth_blueprint
 from .main import main as main_blueprint
 from .api_auth import api_auth as api_auth_blueprint
@@ -67,6 +68,8 @@ def create_app():
     app.config['SESSION_TYPE'] = 'filesystem'
     Session(app)
 
+    # Create an instance of CSRFProtect
+    csrf = CSRFProtect(app)
 
     # initializing the JWTManager
     jwt.init_app(app)
@@ -80,7 +83,8 @@ def create_app():
     api.add_namespace(user_ns)
     api.add_namespace(wallet_ns)
     api.add_namespace(pay_ns)
-
+    api.add_namespace(donation_ns)
+    api.add_namespace(contact_ns)
     api.add_namespace(api_ns)
 
     api.init_app(app)
