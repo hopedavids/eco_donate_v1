@@ -24,3 +24,9 @@ api_auth =  {
         'login_date': fields.DateTime(dt_format='iso8601')
 
     }
+
+wallet_model = api.model(
+    "Wallet", {
+        "wallet_id": fields.String
+    }
+)

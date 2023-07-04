@@ -2,8 +2,8 @@ from flask import jsonify
 from flask_restx import Resource, Namespace
 from flask_jwt_extended import jwt_required
 from .instances import db, login_manager
-from .api_models import user_model
-from .models import User
+from .api_models import user_model, wallet_model
+from .models import User, Wallet
 
 
 """In this module, namespaces are defined and including the routes and views
@@ -82,18 +82,22 @@ class Users(Resource):
         pass
 
 
-@wallet_ns.route('')
-class Wallet(Resource):
+@wallet_ns.route('/all-wallets')
+class Wallet_Details(Resource):
     """This object defines the routes and views for Wallet and
         handles all wallets resources.
     """
-
+    
+    @wallet_ns.marshal_list_with(wallet_model)
+    # @jwt_required()
     def get(self):
         """The get method handles the HTTP GET requests and returns
             response in a serialized way.
         """
 
-        pass
+        wallet = Wallet.query.all()
+
+        return wallet
 
     def post(self):
         """This method provides the means to create new wallets."""
@@ -109,7 +113,7 @@ class Wallet(Resource):
 
 
 @pay_ns.route()
-class Payment(Resource):
+class Payment_Info(Resource):
     """This object defines the routes and views for Payment and
         handles the defined resources.
     """
