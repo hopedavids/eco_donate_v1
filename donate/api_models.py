@@ -2,17 +2,6 @@ from flask_restx import fields
 from .instances import api
 
 
-wallet_model = api.model(
-    "Wallet", {
-        "wallet_id": fields.String,
-        "user_id": fields.Integer,
-        "current_balance": fields.Float,
-        "previous_balance": fields.Float,
-        "created_at": fields.DateTime(dt_format='iso8601'),
-        "updated_at": fields.DateTime(dt_format='iso8601')
-    }
-)
-
 
 user_model = api.model(
     "User", {
@@ -41,6 +30,16 @@ api_auth =  {
     }
 
 
+wallet_model = api.model(
+    "Wallet", {
+        "wallet_id": fields.String,
+        "user": fields.Nested(user_model),       
+        "current_balance": fields.Float,
+        "previous_balance": fields.Float,
+        "created_at": fields.DateTime(dt_format='iso8601'),
+        "updated_at": fields.DateTime(dt_format='iso8601')
+    }
+)
 
 payment_model = api.model(
     "Payment", {

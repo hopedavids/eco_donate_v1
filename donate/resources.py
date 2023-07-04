@@ -58,7 +58,7 @@ class Users(Resource):
 
     # @user_ns.doc(security="jsonWebToken")
     @user_ns.marshal_list_with(user_model)
-    # @jwt_required()
+    @jwt_required()
     def get(self):
         """ This method handles the GET HTTP method and returns
             response in a serialized way.
@@ -84,7 +84,7 @@ class Users(Resource):
 
 
 @wallet_ns.route('/all-wallets')
-class Wallet(Resource):
+class Wallet_Details(Resource):
     """This object defines the routes and views for Wallet and
         handles all wallets resources.
     """
@@ -96,7 +96,6 @@ class Wallet(Resource):
         """
 
         wallet = Wallet.query.all()
-
         return wallet
 
     def post(self):
@@ -112,19 +111,19 @@ class Wallet(Resource):
         pass
 
 
-@pay_ns.route('/all-payments/<int:user_id>')
-class Payment(Resource):
+@pay_ns.route('/all-payments')
+class Payment_Info(Resource):
     """This object defines the routes and views for Payment and
         handles the defined resources.
     """
     @pay_ns.marshal_list_with(payment_model)
-    @jwt_required()
-    def get(self, user_id):
+    # @jwt_required()
+    def get(self):
         """This method handles the HTTP GET method and provides the
             platform to retrieve payments informations.
         """
 
-        payment = Payment.query.get(user_id).first()
+        payment = Payment.query.all()
 
         return payment
 
