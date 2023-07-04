@@ -2,8 +2,8 @@ from flask import jsonify
 from flask_restx import Resource, Namespace
 from flask_jwt_extended import jwt_required
 from .instances import db, login_manager
-from .api_models import user_model
-from .models import User
+from .api_models import user_model, wallet_model, payment_model
+from .models import User, Wallet, Payment, Contact
 
 
 """In this module, namespaces are defined and including the routes and views
@@ -55,12 +55,10 @@ class Users(Resource):
     """This class object defines the routes and views for
        User Authentication.
     """
-    # method_decorator = ['jsonWebToken']
 
     # @user_ns.doc(security="jsonWebToken")
     @user_ns.marshal_list_with(user_model)
-    @jwt_required()
-
+    # @jwt_required()
     def get(self):
         """ This method handles the GET HTTP method and returns
             response in a serialized way.
@@ -85,18 +83,21 @@ class Users(Resource):
         pass
 
 
-@wallet_ns.route('')
+@wallet_ns.route('/all-wallets')
 class Wallet(Resource):
     """This object defines the routes and views for Wallet and
         handles all wallets resources.
     """
 
+    @wallet_ns.marshal_list_with(wallet_model)
     def get(self):
         """The get method handles the HTTP GET requests and returns
             response in a serialized way.
         """
 
-        pass
+        wallet = Wallet.query.all()
+
+        return wallet
 
     def post(self):
         """This method provides the means to create new wallets."""
@@ -111,18 +112,21 @@ class Wallet(Resource):
         pass
 
 
-@pay_ns.route()
+@pay_ns.route('/all-payments/<int:user_id>')
 class Payment(Resource):
     """This object defines the routes and views for Payment and
         handles the defined resources.
     """
-
-    def get(self):
+    @pay_ns.marshal_list_with(payment_model)
+    @jwt_required()
+    def get(self, user_id):
         """This method handles the HTTP GET method and provides the
             platform to retrieve payments informations.
         """
 
-        pass
+        payment = Payment.query.get(user_id).first()
+
+        return payment
 
     def post(self):
         """This method handles the HTTP POST requests and provides the
