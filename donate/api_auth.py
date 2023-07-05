@@ -11,7 +11,6 @@ api_auth = Blueprint('api_auth', __name__, url_prefix='/v1/auth')
 
 
 @api_auth.route('/login', methods=['POST'])
-@csrf.exempt
 def login():
     try:
         username = request.json['username']
