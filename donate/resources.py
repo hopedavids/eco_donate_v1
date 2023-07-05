@@ -123,9 +123,13 @@ class Users(Resource):
             # return successful message once passed
             return {'message': 'User created successfully'}, 201
 
-        except:
-            return {'message': 'User creation failed! Try again'}, 400
-    
+
+        except Exception as e:
+            return {
+                'data': 'Null',
+                'message': 'Error: {}'.format(str(e)),
+                'status': 'api-error'
+            }, 400
 
 
 
