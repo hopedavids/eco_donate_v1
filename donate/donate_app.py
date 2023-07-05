@@ -114,7 +114,7 @@ def create_app():
         }
 
     # API documentation route
-    @app.route('/api/docs')
+    @app.route('/v1/api/docs')
     def swagger_ui():
         return apidoc.ui_for(api)
 
