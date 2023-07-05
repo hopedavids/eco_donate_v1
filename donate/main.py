@@ -24,9 +24,9 @@ def landing_page():
     return render_template('frontend/land-page.html')
 
 
-@main.route('/profile')
-def profile_page():
-    return render_template('frontend/pages/profile.html')
+# @main.route('/profile')
+# def profile_page():
+#     return render_template('backend/pages/profile.html')
 
 @main.route('/profile', methods = ['GET', 'POST'])
 @login_required
@@ -52,104 +52,108 @@ def index():
     updated_at = wallet.updated_at
     updated_date_format = updated_at.strftime("%B %d, %Y %H:%M:%S")
 
-    if request.method == 'POST':
-        csrf.protect()
-        amount = request.form['amount']
-        region = request.form['region']
-        tree_spieces = request.form['spieces']
-        description = request.form['description']
-        get_certified = request.form.get('get_certified', False)
+    try:
+        if request.method == 'POST':
+            csrf.protect()
+            amount = request.form['amount']
+            region = request.form['region']
+            tree_spieces = request.form['spieces']
+            description = request.form['description']
+            get_certified = request.form.get('get_certified', False)
 
-        number_of_trees = amount
-        minimum_length = 20
+            number_of_trees = amount
+            minimum_length = 20
 
-        # contact details
-        fullname = request.form['fullname']
-        address = request.form['address']
-        country = request.form['country']
-        about_me = request.form['aboutme']
-    
-        if any(len(text) < minimum_length for text in ([description, about_me])):
-            flash("description should be more than 20 words", 'danger')
-            return redirect(url_for("main.index"))
-
-        if (not fullname or not address or not country or not about_me or not description):
-            flash('kindly fill all fields correctly', 'danger')
-            return redirect(url_for("main.index"))
+            # contact details
+            fullname = request.form['fullname']
+            address = request.form['address']
+            country = request.form['country']
+            about_me = request.form['aboutme']
         
-        if any(text.isupper() for text in [fullname,country, address, about_me, description]):
-            flash("kindly use alphanumeric or lowercase", 'danger')
-            return redirect(url_for("main.index"))
+            if any(len(text) < minimum_length for text in ([description, about_me])):
+                flash("description should be more than 20 words", 'danger')
+                return redirect(url_for("main.index"))
 
-        
-        if amount:
-            # check if amount is matches or less than the wallet balance
-            if float(amount) > current_balance:
-                flash("Dear Donor, you have insufficient Fund in your account", 'warning')
+            if (not fullname or not address or not country or not about_me or not description):
+                flash('kindly fill all fields correctly', 'danger')
                 return redirect(url_for("main.index"))
             
-        # make the donotion happen
-        current_balance -= float(amount)
-        wallet.current_balance = current_balance
+            if any(text.isupper() for text in [fullname,country, address, about_me, description]):
+                flash("kindly use alphanumeric or lowercase", 'danger')
+                return redirect(url_for("main.index"))
 
-        donation = Donation(
-                        user_id=user_id, 
-                        amount=amount,
-                        region_to_plant=region,
-                        tree_spieces=tree_spieces,
-                        number_of_trees=number_of_trees,
-                        description=description
-                        )
+            
+            if amount:
+                # check if amount is matches or less than the wallet balance
+                if float(amount) > current_balance:
+                    flash("Dear Donor, you have insufficient Fund in your account", 'warning')
+                    return redirect(url_for("main.index"))
+                
+            # make the donotion happen
+            current_balance -= float(amount)
+            wallet.current_balance = current_balance
 
-        contact = Contact(
-                        user_id=user_id,
-                        full_name=fullname,
-                        address=address,
-                        country=country,
-                        about_me=about_me
-                        )
-
-        db.session.add_all([wallet, donation, contact])
-        db.session.commit()
-
-        # query the donation object to retrieve the id
-        donation = Donation.query.filter_by(user_id=user_id).first()
-
-        donate_wallet = os.environ.get('DONATE_WALLET')
-        payment = Payment(
-                    wallet_id=donate_wallet, 
-                    amount=amount, 
-                    donation_id=donation.donation_id
-                    )
-
-        wallet=Wallet.query.filter_by(wallet_id=donate_wallet).first()
-        wallet.current_balance = amount
-
-        db.session.add_all([payment, wallet])
-        db.session.commit()
-
-        
-
-        flash("Congratulations! Your tree planting donations was successful!!", 'success')
-
-        return redirect(url_for('main.gratitude'))
-
-    tree_images = ['tree.jpeg', 'tree1.jpg', 'tree3.jpg', 'tree4.jpg', 'tree5.jpg', 'tree6.jpg', 'tree7.jpg', 'tree8.jpg']
-
-    random_tree = random.choice(tree_images)
-
-    return render_template('backend/index.html',
-                            tree=random_tree,
-                            user=user,
-                            email=user_email,
-                            created_date=created_user_format,
-                            wallet_id=wallet_id,
-                            current_balance=current_balance,
-                            previous_balance=previous_balance,
-                            created_at=created_date_format,
-                            updated_at=updated_date_format
+            donation = Donation(
+                            user_id=user_id, 
+                            amount=amount,
+                            region_to_plant=region,
+                            tree_spieces=tree_spieces,
+                            number_of_trees=number_of_trees,
+                            description=description
                             )
 
+            contact = Contact(
+                            user_id=user_id,
+                            full_name=fullname,
+                            address=address,
+                            country=country,
+                            about_me=about_me
+                            )
+
+            db.session.add_all([wallet, donation, contact])
+            db.session.commit()
+
+            # query the donation object to retrieve the id
+            donation = Donation.query.filter_by(user_id=user_id).first()
+
+            donate_wallet = os.environ.get('DONATE_WALLET')
+            payment = Payment(
+                        wallet_id=donate_wallet, 
+                        amount=amount, 
+                        donation_id=donation.donation_id
+                        )
+
+            wallet=Wallet.query.filter_by(wallet_id=donate_wallet).first()
+            wallet.current_balance = amount
+
+            db.session.add_all([payment, wallet])
+            db.session.commit()
+
+            
+
+            flash("Congratulations! Your tree planting donations was successful!!", 'success')
+
+            return redirect(url_for('main.gratitude'))
+
+        tree_images = ['tree.jpeg', 'tree1.jpg', 'tree3.jpg', 'tree4.jpg', 'tree5.jpg', 'tree6.jpg', 'tree7.jpg', 'tree8.jpg']
+
+        random_tree = random.choice(tree_images)
+
+        return render_template('backend/index.html',
+                                tree=random_tree,
+                                user=user,
+                                email=user_email,
+                                created_date=created_user_format,
+                                wallet_id=wallet_id,
+                                current_balance=current_balance,
+                                previous_balance=previous_balance,
+                                created_at=created_date_format,
+                                updated_at=updated_date_format
+                                )
+    except Exception as e:
+        flash('fatal error caught from exeptions', 'danger')
+        error = 'Error -> {}'.format(str(e))
+        return error
 
 
 @main.route('/transactions')
