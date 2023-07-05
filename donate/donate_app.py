@@ -3,7 +3,6 @@ import psycopg2
 from flask import Flask
 from dotenv import load_dotenv
 from datetime import timedelta
-from flask_wtf.csrf import CSRFProtect
 from flask_session import Session
 from flask_restx import apidoc
 from .instances import api, db, jwt, login_manager, csrf, mail
@@ -62,14 +61,14 @@ def create_app():
     # adding extra security parameters for sessions
     app.config['SESSION_COOKIE_SECURE'] = False
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
+    app.config['WTF_CSRF_ENABLED'] = True
+    app.config['WTF_CSRF_CHECK_DEFAULT'] = False
     
 
     # Use a secure session storage
     app.config['SESSION_TYPE'] = 'filesystem'
     Session(app)
 
-    # Create an instance of CSRFProtect
-    csrf = CSRFProtect(app)
 
     # initializing the JWTManager
     jwt.init_app(app)
@@ -100,6 +99,10 @@ def create_app():
     app.register_blueprint(admin_blueprint)
     app.register_blueprint(frontend_views_blueprint)
 
+    
+    
+
+    
     @api.documentation
     def customize_swagger_ui():
         return {
