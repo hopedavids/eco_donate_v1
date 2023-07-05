@@ -9,7 +9,7 @@ from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 from io import BytesIO
 from flask_mail import Message
-from .instances import db, mail
+from .instances import db, mail, csrf
 from .models import Wallet, Donation, Contact, Payment
 
 
@@ -53,6 +53,7 @@ def index():
     updated_date_format = updated_at.strftime("%B %d, %Y %H:%M:%S")
 
     if request.method == 'POST':
+        csrf.protect()
         amount = request.form['amount']
         region = request.form['region']
         tree_spieces = request.form['spieces']
