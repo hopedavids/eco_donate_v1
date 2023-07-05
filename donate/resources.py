@@ -38,6 +38,7 @@ def load_user(user_id):
     return User.query.get((user_id))
 
 
+
 @auth_ns.route('')
 class Authentication(Resource):
     """ Login Endpoint to access the endpoint and api resources.
@@ -70,9 +71,8 @@ class Users(Resource):
 
         return user, 200
 
-    
+  
     @user_ns.expect(user_creation_model)
-    @csrf.exempt
     def post(self):
         """This method handles the POST and creates new uses based
             models defined.
