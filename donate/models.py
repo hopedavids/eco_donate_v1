@@ -26,9 +26,6 @@ class User(UserMixin, db.Model):
     created_date = db.Column(db.DateTime, default=datetime.utcnow)
     email_confirm_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # wallet = db.relationship('Wallet', backref='user', uselist=False)
-
-
 
     def set_password(self, password):
         self.password = generate_password_hash(password, method='sha256')
@@ -64,8 +61,7 @@ class Wallet(db.Model):
     __tablename__ = 'donate_wallets'
 
     wallet_id = db.Column(db.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id'), nullable=False, unique=True)
-
+    user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id',  ondelete='CASCADE'), nullable=True, unique=True)
     current_balance = db.Column(db.Float, default=0.0)
     previous_balance = db.Column(db.Float, default=0.0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -87,8 +83,8 @@ class Payment(db.Model):
     __tablename__ = 'donate_payments'
 
     payment_id = db.Column(db.Integer, primary_key=True)
-    wallet_id = db.Column(db.UUID(as_uuid=True), db.ForeignKey('donate_wallets.wallet_id'), nullable=False)
-    donation_id = db.Column(db.Integer, db.ForeignKey('donations'), nullable=False)
+    wallet_id = db.Column(db.UUID(as_uuid=True), db.ForeignKey('donate_wallets.wallet_id',  ondelete='CASCADE'), nullable=False)
+    donation_id = db.Column(db.Integer, db.ForeignKey('donations',  ondelete='CASCADE'), nullable=False)
     amount = db.Column(db.Integer, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -108,7 +104,7 @@ class Contact(db.Model):
     __tablename__ = 'donators_contact'
 
     contact_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id',  ondelete='CASCADE'), nullable=False)
     full_name = db.Column(db.String(100), nullable=False)
     address = db.Column(db.String(150), nullable=False)
     country = db.Column(db.String(50), nullable=False)
@@ -130,7 +126,7 @@ class Donation(db.Model):
     __tablename__ = 'donations'
 
     donation_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id',  ondelete='CASCADE'), nullable=False)
     amount = db.Column(db.Float, default=0.00)
     tree_spieces = db.Column(db.String(100), nullable=False)
     number_of_trees = db.Column(db.Integer, nullable=False)
