@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_mail import Message
 from .models import User, Wallet
-from .instances import db, mail
+from .instances import db, mail, csrf
 from sqlalchemy.exc import IntegrityError
 from dotenv import load_dotenv
 import re, random, os
@@ -19,12 +19,13 @@ user_auth = Blueprint('user_auth', __name__)
 def signin():
     try:
         if request.method == 'POST':
+            csrf.protect()
             username = request.form['username']
             password = request.form['password']
             remember = request.form.get('remember', False)
             
             user = User.query.filter_by(username=username).first()
-
+            
             if not username or not password:
                 flash('Enter a valid username and password', 'warning')
                 return redirect(url_for('user_auth.signin'))
@@ -59,6 +60,7 @@ def signin():
 def register():
     try:
         if request.method == 'POST':
+            csrf.protect()
             username = request.form['username']
             email = request.form['email']
             password = request.form['password']
@@ -137,6 +139,7 @@ def confirm():
     # email = request.args.get('email')
     # otp = request.args.get('otp')
     if request.method == 'POST':
+        csrf.protect()
         # email = request.args.get('email')
         otp = request.form.get('otp')
         
