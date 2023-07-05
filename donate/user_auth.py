@@ -115,7 +115,7 @@ def register():
 
     except:
         flash('invalid username or password', 'danger')
-        return
+        return render_template('backend/accounts/register.html')
 
 
 
