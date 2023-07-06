@@ -3,7 +3,7 @@ from flask_restx import Resource, Namespace
 from flask_jwt_extended import jwt_required
 from werkzeug.security import generate_password_hash
 from .instances import db, login_manager, csrf, api
-from .api_models import user_model, user_creation_model, wallet_model, payment_model, contact_model, contact_update_model, donation_model
+from .api_models import user_model, user_creation_model, wallet_model, payment_model, contact_model, contact_update_model, donation_model, donation_update_model
 from .models import User, Wallet, Payment, Contact, Donation
 
 
@@ -643,21 +643,191 @@ class Donations(Resource):
                         "status": "api-error"
                         }), 400
 
+            
+
             # Extract the data from the payload using marshal
             amount = api.payload['amount']
+            user_id = api.payload['userid']
             tree_spieces = api.payload['tree_spieces']
             number_of_trees = api.payload['number_of_trees']
             region_to_plant = api.payload['region_to_plant']
             description = api.payload['description']
 
+            if not amount and  not tree_spieces and not number_of_trees and not region_to_plant and not description:
+                    return ({
+                        "data": "null",
+                        "message": "Invalid fields or payload format",
+                        "status": "api-error"
+                        }), 400
+            
+            if not str(tree_spieces, number_of_trees, region_to_plant, description):
+                return ({
+                        "data": "null",
+                        "message": "fields must only contain strings",
+                        "status": "api-error"
+                        }), 400
+            
+            if not int(amount, user_id):
+                return ({
+                        "data": "null",
+                        "message": "field must only contain integer/float value",
+                        "status": "api-error"
+                        }), 400
+
             donation = Donation(
-                        amount=amount, 
+                        amount=amount,
+                        user_id=user_id,
                         tree_spieces=tree_spieces, 
                         number_of_trees=number_of_trees,
                         region_to_plant=region_to_plant,
                         description=description                        
                         )
 
+            # save and commit changes
+            db.session.add(donation)
+            db.session.commit()
+
+            return ({
+                "message": "donations was successful",
+                "status": "created successfully"
+            }), 200
+
+        except Exception as e:
+             return {
+                    'data': 'null',
+                    'message': 'Error {}'.format(str(e)),
+                    'status': 'api-error'
+                }, 400
+    
+
+@donation_ns.route('/<int:donation_id>')
+class Donations(Resource):
+    """This is an extension of the donations that handles specific
+        donations and HTTP methods.
+    """
+
+    @donation_ns.marshal_list_with(donation_model)
+    def get(self, donation_id):
+        """ This method handles the specific HTTP GET method and 
+            returns specific donations.
+        """
+
+        try:
+            donation = Donation.query.filter_by(donation_id=donation_id).first()
+
+            return donation, 200
+
+            if not donation:
+                return {
+                        'data': 'null',
+                        'message': 'donation details could not be fetched',
+                        'status': 'api-error'
+                    }, 400
+
+        except Exception as e:
+             return {
+                    'data': 'null',
+                    'message': 'Error {}'.format(str(e)),
+                    'status': 'api-error'
+                }, 400
+
+    @donation_ns.expect(donation_update_model)
+    def put(self, donation_id):
+        """ This method handles the PUT request for the Donation
+            object.
+        """
+        try:
+            payload = request.get_json()
+
+            if not api.payload:
+                return ({
+                    "data": "null",
+                    "message": "Invalid payload",
+                    "status": "api-error"
+                    }), 400
+            
+            donation = Donation.query.filter_by(donation_id=donation_id).first()
+
+            if not ('userid' in payload or 'amount' in payload or 'tree_spieces' in payload or 'number_of_trees' in payload or 'region_to_plant' in payload or 'description' in payload):
+                return ({
+                    "data": "null",
+                    "message": "sorry, the field is not valid",
+                    "status": "api-error"
+                    }), 400
+
+
+            if not all(isinstance(payload.get(field), str) for field in ['tree_spieces', 'region_to_plant', 'description']):
+                return {
+                    "data": "null",
+                    "message": "Fields must only contain strings",
+                    "status": "api-error"
+                }, 400
+
+            if not all(isinstance(payload.get(field), int) for field in ['amount', 'number_of_trees', 'userid']):
+                return {
+                    "data": "null",
+                    "message": "Fields must only contain integers",
+                    "status": "api-error"
+                }, 400
+
+            if 'userid' in payload:
+                donation.user_id = payload['userid']
+            
+            if 'amount' in payload:
+                donation.amount = payload['amount']
+
+            if 'tree_spieces' in payload:
+                donation.tree_spieces = payload['tree_spieces']
+            
+            if 'number_of_trees' in payload:
+                donation.number_of_trees = payload['number_of_trees']
+            
+            if 'region_to_plant' in payload:
+                donation.region_to_plant = payload['region_to_plant']
+            
+            if 'description' in payload:
+                donation.description = payload['description']
+            
+            # save and commit the updated field in database
+            db.session.commit()
+
+            return ({
+                    'message': 'donations has been updated successfully',
+                    'status': 'updated successfully'
+                }), 201
+
+
+        except Exception as e:
+             return {
+                    'data': 'null',
+                    'message': 'Error {}'.format(str(e)),
+                    'status': 'api-error'
+                }, 400
+    
+
+    def delete(self, donation_id):
+        """ This method handles the DELETE request for the donation
+            object.
+        """
+        
+        try:
+            donation = Donation.query.filter_by(donation_id=donation_id).first()
+            
+            if not donation:
+                return ({
+                        'message': 'donation is not valid or not found',
+                        'status': 'api-error'
+                    }), 400
+
+            # now save the session
+            db.session.delete(donation)
+            db.session.commit()
+
+            return ({
+                    'message': 'donation has been deleted successfully',
+                    'status': 'deleted successfully'
+                }), 202
+        
         except Exception as e:
              return {
                     'data': 'null',
