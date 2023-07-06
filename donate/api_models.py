@@ -94,6 +94,17 @@ donation_model = api.model(
     }
 )
 
+donation_update_model = api.model(
+    "Donation", {
+        "userid": fields.Integer,
+        "amount": fields.Integer,
+        "tree_spieces": fields.String,
+        "number_of_trees": fields.String,
+        "region_to_plant": fields.String,
+        "description": fields.String
+    }
+)
+
 payment_model = api.model(
     "Payment", {
         "payment_id": fields.Integer,
