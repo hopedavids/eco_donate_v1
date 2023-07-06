@@ -24,9 +24,6 @@ def landing_page():
     return render_template('frontend/land-page.html')
 
 
-# @main.route('/profile')
-# def profile_page():
-#     return render_template('backend/pages/profile.html')
 
 @main.route('/profile', methods = ['GET', 'POST'])
 @login_required
@@ -186,7 +183,7 @@ def gratitude():
 @main.route('/view-certificate')
 @login_required
 def view_certificate():
-     # query the contact object for the full name
+    # query the contact object for the full name
     user_id = current_user.id
 
     contact = Contact.query.filter_by(user_id=user_id).order_by(Contact.contact_id.desc()).first()
@@ -240,7 +237,7 @@ def email_certificate():
         flash("The certificate has been successfully sent to your email", "success")
         return redirect(url_for('main.gratitude'))
     
-    except:
+    except Exception as e:
         flash("The was an error in email transit", "danger")
         return redirect(url_for('main.gratitude'))
 

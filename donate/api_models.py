@@ -53,6 +53,12 @@ wallet_model = api.model(
     }
 )
 
+# create_model = api.model(
+#     "Wallet", {
+#         "current_balance": fields.Float
+#     }
+# )
+
 
 contact_model = api.model(
     "Contact", {
@@ -65,6 +71,14 @@ contact_model = api.model(
     }
 )
 
+contact_update_model = api.model(
+    "Contact", {
+        "fullname": fields.String,
+        "address": fields.String,
+        "country": fields.String,
+        "aboutme": fields.String
+    }
+)
 
 donation_model = api.model(
     "Donation", {

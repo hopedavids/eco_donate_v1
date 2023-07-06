@@ -3,7 +3,7 @@ from flask_restx import Resource, Namespace
 from flask_jwt_extended import jwt_required
 from werkzeug.security import generate_password_hash
 from .instances import db, login_manager, csrf, api
-from .api_models import user_model, user_creation_model, wallet_model, payment_model, contact_model, donation_model
+from .api_models import user_model, user_creation_model, wallet_model, payment_model, contact_model, contact_update_model, donation_model
 from .models import User, Wallet, Payment, Contact, Donation
 
 
@@ -65,10 +65,17 @@ class Users(Resource):
         """ This method handles the GET HTTP method and returns
             response in a serialized way.
         """
+        try:
+            user = User.query.all()
 
-        user = User.query.all()
-
-        return user, 200
+            return user, 200
+        
+        except Exception as e:
+            return ({
+                "data": "Null",
+                "message": "Error {}".format(str(e)),
+                "status": "api-error"
+            })
 
   
     @user_ns.expect(user_creation_model)
@@ -159,6 +166,9 @@ class Users(Resource):
         try:
             payload = request.get_json()
 
+            if not api.payload:
+                return {'message': 'Invalid payload'}, 400
+
             # query the User object with a given user id
             user = User.query.filter_by(id=userid).first()
 
@@ -202,7 +212,7 @@ class Users(Resource):
 
     def delete(self, userid):
         """ This method handles the DELETE HTTP method 
-            and returns.
+            and returns when successful.
         """
         try:
             user = User.query.filter_by(id=userid).first()
@@ -242,9 +252,16 @@ class Wallet_Details(Resource):
         """The get method handles generic HTTP GET requests and returns
             response in a serialized way.
         """
-
-        wallet = Wallet.query.all()
-        return wallet
+        try:
+            wallet = Wallet.query.all()
+            return wallet
+        
+        except Exception as e:
+            return ({
+                "data": "Null",
+                "message": "Error {}".format(str(e)),
+                "status": "api-error"
+            })
 
 
 @wallet_ns.route('/<int:userid>')
@@ -255,16 +272,111 @@ class Wallet_Details(Resource):
     
     @wallet_ns.marshal_list_with(wallet_model)
     def get(self, userid):
-        """The get method filters for specific userid using HTTP GET
+        """ The get method filters for specific user id using HTTP GET
             requests and returns a serialized results.
         """
+        try:
+            # query the wallet using the given user id
+            wallet = Wallet.query.filter_by(user_id=userid).first()
 
-        wallet = Wallet.query.filter_by(user_id=userid).first()
+            return wallet, 200
 
-        return wallet, 200
+            if not wallet or not userid:
+                return {
+                    'data': 'null',
+                    'message': 'wallet details not found',
+                    'status': 'api-error'
+                }, 400
+        
+        except Exception as e:
+            return {
+                'data': 'Null',
+                'message': 'Error: {}'.format(str(e)),
+                'status': 'api-error'
+            }, 400
 
 
-@pay_ns.route('/all-payments')
+    @wallet_ns.expect(wallet_model)
+    def put(self, userid):
+        """ This method handles the HTTP PUT method and returns 
+            the updated instance of the object 
+        """
+        try:
+            payload = request.get_json()
+
+            if not api.payload:
+                return {'message': 'Invalid payload'}, 400
+
+            # query the wallet object for the specific user
+            wallet = Wallet.query.filter_by(user_id=userid).first()
+
+            if not str(payload['current_balance']).isdigit():
+                return ({
+                        'message': 'Input format is not valid',
+                        'status': 'api-error'
+                    }), 400
+
+            if 'current_balance' in payload:
+                wallet.current_balance += payload['current_balance']
+
+
+            # now save the session
+            db.session.commit()
+
+            return ({
+                    'message': 'Wallet balance has been updated successfully',
+                    'status': 'updated successfully'
+                }), 201
+
+
+        except Exception as e:
+            return {
+                'data': 'Null',
+                'message': 'Error: {}'.format(str(e)),
+                'status': 'api-error'
+            }, 400
+
+
+    def delete(self, userid):
+        """ This method handles HTTP DELETE requests. """
+
+        try:
+            payload = request.get_json()
+
+            # query the wallet object for the specific user
+            wallet = Wallet.query.filter_by(user_id=userid).first()
+
+            if not wallet:
+                return ({
+                        'message': 'wallet details is not valid',
+                        'status': 'api-error'
+                    }), 400
+
+
+            # now save the session
+            db.session.delete(wallet)
+            db.session.commit()
+
+            return ({
+                    'message': 'Wallet has been deleted successfully',
+                    'status': 'deleted successfully'
+                }), 202
+
+
+        except Exception as e:
+            return {
+                'data': 'Null',
+                'message': 'Error: {}'.format(str(e)),
+                'status': 'api-error'
+            }, 400
+
+
+
+
+    
+
+
+@pay_ns.route('')
 class Payment_Info(Resource):
     """This object defines the routes and views for Payment and
         handles the defined resources.
@@ -275,30 +387,25 @@ class Payment_Info(Resource):
         """This method handles the HTTP GET method and provides the
             platform to retrieve payments informations.
         """
+        try:
+            payment = Payment.query.all()
 
-        payment = Payment.query.all()
+            return payment, 200
 
-        return payment
-
-    def post(self):
-        """This method handles the HTTP POST requests and provides the
-            platform to create new payment.
-        """
-
-        pass
-
-    def put(self):
-        """This method handles the HTTP PUT requests and provides the
-            platform to update payment based on id.
-        """
-
-        pass
+        except Exception as e:
+            return ({
+                "data": "Null",
+                "message": "Error {}".format(str(e)),
+                "status": "api-error"
+            }), 400
 
 
-@contact_ns.route('/all-contacts')
+
+@contact_ns.route('')
 class Contact_Details(Resource):
-    """This object defines views for Contact and
-        handles the defined resources.
+    """This defines the api views for Contact object and
+        handles the defined resources for generic GET 
+        and POST requests only.
     """
 
     @contact_ns.marshal_list_with(contact_model)
@@ -306,13 +413,199 @@ class Contact_Details(Resource):
         """This method handles the HTTP GET method and provides the
             platform to retrieve payments informations.
         """
+        try:
+            contact = Contact.query.all()
+            return contact, 200
+        
+        except Exception as e:
+            return ({
+                "data": "Null",
+                "message": "Error {}".format(str(e)),
+                "status": "api-error"
+            }), 400
+    
 
-        contact = Contact.query.all()
-        return contact
+    @contact_ns.expect(contact_model)
+    def post(self):
+        """ This method is responsible to handle all POST requests
+            made to the contact object.
+        """
+        try:
+            payload = request.get_json()
+
+            if not api.payload:
+                    return ({
+                        "data": "null",
+                        "message": "Invalid payload",
+                        "status": "api-error"
+                        }), 400
+            
+            # Extract the data from the payload using marshal
+            fullname = api.payload['fullname']
+            address = api.payload['address']
+            country = api.payload['country']
+            aboutme = api.payload['aboutme']
+
+            # check to know if the contact details exists
+            contact = Contact.query.filter_by(full_name=fullname).first()
+
+            if not fullname and  not address and not country and not aboutme:
+                    return ({
+                        "data": "null",
+                        "message": "Invalid fields or payload format",
+                        "status": "api-error"
+                        }), 400
+            
+            if not str(fullname, address, country, aboutme):
+                return ({
+                        "data": "null",
+                        "message": "fields must only contain strings",
+                        "status": "api-error"
+                        }), 400
+            
+            # create a new instance of the contact object
+            contact = Contact(full_name=fullname, address=address, country=country, about_me=about_me)
+            
+            # save and commit the new instance to database
+            db.session.add(contact)
+            db.session.commit()
+
+
+        except Exception as e:
+            return ({
+                "data": "Null",
+                "message": "Error {}".format(str(e)),
+                "status": "api-error"
+            }), 400
+
+
+@contact_ns.route('/<int:contact>')
+class Contact_Details(Resource):
+    """This defines the api views for Contact object and
+        handles the defined resources for specific GET 
+        and PUT and DELETE HTTP requests.
+    """
+    
+    @contact_ns.marshal_list_with(contact_model)
+    def get(self, contact):
+        """This method handles the GET HTTP request."""
+
+        try:
+            contact = Contact.query.filter_by(contact_id=contact).first()
+
+            return contact, 200
+
+            if not contact:
+                return {
+                        'data': 'null',
+                        'message': 'contact details could not be fetched',
+                        'status': 'api-error'
+                    }, 400
+
+        except Exception as e:
+             return {
+                    'data': 'null',
+                    'message': 'Error {}'.format(str(e)),
+                    'status': 'api-error'
+                }, 400
+
+
+    @contact_ns.expect(contact_update_model)
+    def put(self, contact):
+        """ This method handles the PUT request for the contact
+            object.
+        """
+        try:
+            payload = request.get_json()
+
+            if not api.payload:
+                return ({
+                    "data": "null",
+                    "message": "Invalid payload",
+                    "status": "api-error"
+                    }), 400
+            
+            contact = Contact.query.filter_by(contact_id=contact).first()
+
+            if not ('fullname' in payload or 'address' in payload or 'country' in payload or 'aboutme' in payload):
+                return ({
+                    "data": "null",
+                    "message": "sorry, the field is not valid",
+                    "status": "api-error"
+                    }), 400
+
+
+            if not all(isinstance(payload.get(field), str) for field in ['fullname', 'address', 'country', 'aboutme']):
+                return {
+                    "data": "null",
+                    "message": "Fields must only contain strings",
+                    "status": "api-error"
+                }, 400
 
 
 
-@donation_ns.route('/all-donations')
+            if 'fullname' in payload:
+                contact.full_name = payload['fullname']
+            
+            if 'address' in payload:
+                contact.address = payload['address']
+
+            if 'country' in payload:
+                contact.country = payload['country']
+            
+            if 'aboutme' in payload:
+                contact.about_me = payload['aboutme']
+            
+            # save and commit the updated field in database
+            db.session.commit()
+
+            return ({
+                    'message': 'Contact details has been updated successfully',
+                    'status': 'updated successfully'
+                }), 201
+
+
+        except Exception as e:
+             return {
+                    'data': 'null',
+                    'message': 'Error {}'.format(str(e)),
+                    'status': 'api-error'
+                }, 400
+
+    
+    def delete(self, contact):
+        """ This method handles the DELETE request for the contact
+            object.
+        """
+        
+        try:
+            contact = Contact.query.filter_by(contact_id=contact).first()
+            
+            if not contact:
+                return ({
+                        'message': 'contact details is not valid or not found',
+                        'status': 'api-error'
+                    }), 400
+
+            # now save the session
+            db.session.delete(contact)
+            db.session.commit()
+
+            return ({
+                    'message': 'Contact has been deleted successfully',
+                    'status': 'deleted successfully'
+                }), 202
+        
+        except Exception as e:
+             return {
+                    'data': 'null',
+                    'message': 'Error {}'.format(str(e)),
+                    'status': 'api-error'
+                }, 400
+
+
+
+@donation_ns.route('')
 class Donations(Resource):
     """This object defines the routes and views for Donations and
         handles the defined resources.
@@ -323,7 +616,51 @@ class Donations(Resource):
         """This method handles the HTTP GET method and provides the
             platform to retrieve donations.
         """
+        try:
+            donation = Donation.query.all()
 
-        donation = Donation.query.all()
+            return donation
 
-        return donation
+        except Exception as e:
+             return {
+                    'data': 'null',
+                    'message': 'Error {}'.format(str(e)),
+                    'status': 'api-error'
+                }, 400
+    
+    
+    @donation_ns.marshal_list_with(donation_model)
+    def post(self):
+        """ This method handles HTTP POST Request to the Donation Object"""
+
+        try:
+            payload = request.get_json()
+
+            if not api.payload:
+                    return ({
+                        "data": "null",
+                        "message": "Invalid payload",
+                        "status": "api-error"
+                        }), 400
+
+            # Extract the data from the payload using marshal
+            amount = api.payload['amount']
+            tree_spieces = api.payload['tree_spieces']
+            number_of_trees = api.payload['number_of_trees']
+            region_to_plant = api.payload['region_to_plant']
+            description = api.payload['description']
+
+            donation = Donation(
+                        amount=amount, 
+                        tree_spieces=tree_spieces, 
+                        number_of_trees=number_of_trees,
+                        region_to_plant=region_to_plant,
+                        description=description                        
+                        )
+
+        except Exception as e:
+             return {
+                    'data': 'null',
+                    'message': 'Error {}'.format(str(e)),
+                    'status': 'api-error'
+                }, 400
