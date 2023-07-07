@@ -1,9 +1,10 @@
 from flask import jsonify, request
 from flask_restx import Resource, Namespace
-from flask_jwt_extended import jwt_required
-from werkzeug.security import generate_password_hash
+from flask_jwt_extended import jwt_required, create_access_token
+from werkzeug.security import generate_password_hash, check_password_hash
 from .instances import db, login_manager, csrf, api
-from .api_models import user_model, user_creation_model, wallet_model, wallet_create_model, payment_model, contact_model, contact_update_model, donation_model, donation_update_model
+from .api_models import authorizations, user_model, user_creation_model, user_login_model, wallet_model, wallet_create_model, payment_model, contact_model, contact_update_model, donation_model, donation_update_model
+from .api_auth import login
 from .models import User, Wallet, Payment, Contact, Donation
 
 
@@ -12,13 +13,7 @@ from .models import User, Wallet, Payment, Contact, Donation
 """
 
 
-authorizations = {
-    "jsonWebToken": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "Authorization"
-    }
-}
+
 
 # define namespaces for the views
 auth_ns = Namespace('authenticate', description="Login Endpoint")
@@ -27,7 +22,7 @@ wallet_ns = Namespace('wallet', description="Wallet information")
 pay_ns = Namespace('payment', description="All payments operations")
 contact_ns = Namespace('contact', description="All Contact informations")
 donation_ns = Namespace('donation', description="Donations operation")
-api_ns = Namespace('api', description='API namespace')
+# api_ns = Namespace('api', description='API namespace')
 
 
 
@@ -46,11 +41,52 @@ class Authentication(Resource):
         to all eco_donate resources
     """
 
+    @user_ns.expect(user_login_model)
     def post(self):
         """ This allows users to retrieve a JWT which gives access.
         """
+        try:
+            payload = request.get_json()
+            username = api.payload['username']
+            password = api.payload['password']
 
-        pass
+            user = User.query.filter_by(username=username).first()
+
+            if not username or  not password:
+                return {
+                    "data": "null",
+                    "message": "Username or Password Incorrect",
+                    "status": "api-error"
+                }, 400
+
+            # Check if username is an email
+            elif '@' in username:
+                return {
+                    "data": "null",
+                    "message": "Username or Password Incorrect",
+                    "status": "api-error"
+                }, 400
+
+            elif not user or not check_password_hash(user.password, password):
+                return {
+                    "data": "null",
+                    "message": "Username or Password Incorrect",
+                    "status": "api-error"
+                }, 400
+
+            access_token = create_access_token(identity=username)
+            return {
+                "username": username,
+                "access_token": access_token
+                }, 200
+
+        except Exception as e:
+            return {
+                "data": "Null",
+                "message": "error {}".format(str(e)),
+                "error": "api-error"
+                }, 400
+
 
 
 @user_ns.route('')
@@ -59,7 +95,7 @@ class Users(Resource):
        POST and GET requests for the User Object.
     """
 
-    # @user_ns.doc(security="jsonWebToken")
+    @user_ns.doc(security="basicAuth")
     @user_ns.marshal_list_with(user_model)
     @jwt_required()
     def get(self):

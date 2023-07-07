@@ -3,6 +3,15 @@ from .instances import api
 
 
 
+
+authorizations = {
+    "basicAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+    }
+}
+
 user_model = api.model(
     "User", {
         "id": fields.Integer,
@@ -14,10 +23,9 @@ user_model = api.model(
     }
 )
 
-user_input_model = api.model(
+user_login_model = api.model(
     "User", {
         "username": fields.String(required=True),
-        "email": fields.String(required=True),
         "password": fields.String(required=True)
     }
 )

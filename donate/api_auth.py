@@ -42,5 +42,9 @@ def login():
             "access_token": access_token
             }), 200
 
-    except:
-        return jsonify({"message": "username or password not satisfied"}), 400
+    except Exception as e:
+        return jsonify({
+                "data": "Null",
+                "message": "error {}".format(str(e)),
+                "error": "api-error"
+                }), 400
