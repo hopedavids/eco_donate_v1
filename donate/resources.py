@@ -3,7 +3,7 @@ from flask_restx import Resource, Namespace
 from flask_jwt_extended import jwt_required
 from werkzeug.security import generate_password_hash
 from .instances import db, login_manager, csrf, api
-from .api_models import user_model, user_creation_model, wallet_model, payment_model, contact_model, contact_update_model, donation_model, donation_update_model
+from .api_models import user_model, user_creation_model, wallet_model, wallet_create_model, payment_model, contact_model, contact_update_model, donation_model, donation_update_model
 from .models import User, Wallet, Payment, Contact, Donation
 
 
@@ -61,6 +61,7 @@ class Users(Resource):
 
     # @user_ns.doc(security="jsonWebToken")
     @user_ns.marshal_list_with(user_model)
+    @jwt_required()
     def get(self):
         """ This method handles the GET HTTP method and returns
             response in a serialized way.
@@ -78,7 +79,8 @@ class Users(Resource):
             })
 
   
-    @user_ns.expect(user_creation_model)
+    @user_ns.expect(user_creation_model, validate=True)
+    @jwt_required()
     def post(self):
         """This method handles the POST and creates new uses based
             models defined.
@@ -149,6 +151,7 @@ class Users(Resource):
     """
 
     @user_ns.marshal_list_with(user_model)
+    @jwt_required()
     def get(self, userid):
         """ This method handles the GET HTTP method 
             and returns response in a serialized format.
@@ -158,7 +161,8 @@ class Users(Resource):
         # return the user object with 200 StatusCode
         return user, 200
     
-    @user_ns.expect(user_creation_model)
+    @user_ns.expect(user_creation_model, validate=True)
+    @jwt_required()
     def put(self, userid):
         """ This method handles the PUT HTTP method and returns 
             the updated instance of the object 
@@ -172,7 +176,7 @@ class Users(Resource):
             # query the User object with a given user id
             user = User.query.filter_by(id=userid).first()
 
-            if not user or ('username' not in payload and 'email' not in payload):
+            if not user or ('username' not in payload and 'email' not in payload and 'email_confirm' not in payload):
                 return {
                     'data': 'null',
                     'message': 'User not found or missing username/email',
@@ -193,6 +197,10 @@ class Users(Resource):
                     'status': 'api-error'
                 }, 400
             
+            # update email_confirmation if exists in payload
+            if 'email_confirm' in payload:
+                user.email_confirm = payload['email_confirm']
+            
             # add and save the User instance to the database
             db.session.commit()
 
@@ -210,6 +218,7 @@ class Users(Resource):
             }, 400
 
 
+    @jwt_required()
     def delete(self, userid):
         """ This method handles the DELETE HTTP method 
             and returns when successful.
@@ -230,7 +239,7 @@ class Users(Resource):
             return ({
                     'message': 'user has been deleted successfully',
                     'status': 'success'
-                }), 201
+                }), 202
 
         except Exception as e:
             return {
@@ -248,6 +257,7 @@ class Wallet_Details(Resource):
     """
 
     @wallet_ns.marshal_list_with(wallet_model)
+    @jwt_required()
     def get(self):
         """The get method handles generic HTTP GET requests and returns
             response in a serialized way.
@@ -271,6 +281,7 @@ class Wallet_Details(Resource):
     """
     
     @wallet_ns.marshal_list_with(wallet_model)
+    @jwt_required()
     def get(self, userid):
         """ The get method filters for specific user id using HTTP GET
             requests and returns a serialized results.
@@ -296,12 +307,14 @@ class Wallet_Details(Resource):
             }, 400
 
 
-    @wallet_ns.expect(wallet_model)
+    @wallet_ns.expect(wallet_create_model, validate=True)
+    @jwt_required()
     def put(self, userid):
         """ This method handles the HTTP PUT method and returns 
             the updated instance of the object 
         """
         try:
+            # Extract the userid from the query parameters
             payload = request.get_json()
 
             if not api.payload:
@@ -325,7 +338,7 @@ class Wallet_Details(Resource):
 
             return ({
                     'message': 'Wallet balance has been updated successfully',
-                    'status': 'updated successfully'
+                    'status': 'updated successfully',
                 }), 201
 
 
@@ -337,6 +350,7 @@ class Wallet_Details(Resource):
             }, 400
 
 
+    @jwt_required()
     def delete(self, userid):
         """ This method handles HTTP DELETE requests. """
 
@@ -382,7 +396,7 @@ class Payment_Info(Resource):
         handles the defined resources.
     """
     @pay_ns.marshal_list_with(payment_model)
-    # @jwt_required()
+    @jwt_required()
     def get(self):
         """This method handles the HTTP GET method and provides the
             platform to retrieve payments informations.
@@ -409,6 +423,7 @@ class Contact_Details(Resource):
     """
 
     @contact_ns.marshal_list_with(contact_model)
+    @jwt_required()
     def get(self):
         """This method handles the HTTP GET method and provides the
             platform to retrieve payments informations.
@@ -425,7 +440,8 @@ class Contact_Details(Resource):
             }), 400
     
 
-    @contact_ns.expect(contact_model)
+    @contact_ns.expect(contact_model, validate=True)
+    @jwt_required()
     def post(self):
         """ This method is responsible to handle all POST requests
             made to the contact object.
@@ -487,6 +503,7 @@ class Contact_Details(Resource):
     """
     
     @contact_ns.marshal_list_with(contact_model)
+    @jwt_required()
     def get(self, contact):
         """This method handles the GET HTTP request."""
 
@@ -510,7 +527,8 @@ class Contact_Details(Resource):
                 }, 400
 
 
-    @contact_ns.expect(contact_update_model)
+    @contact_ns.expect(contact_update_model, validate=True)
+    @jwt_required()
     def put(self, contact):
         """ This method handles the PUT request for the contact
             object.
@@ -573,6 +591,7 @@ class Contact_Details(Resource):
                 }, 400
 
     
+    @jwt_required()
     def delete(self, contact):
         """ This method handles the DELETE request for the contact
             object.
@@ -612,6 +631,7 @@ class Donations(Resource):
     """
 
     @donation_ns.marshal_list_with(donation_model)
+    @jwt_required()
     def get(self):
         """This method handles the HTTP GET method and provides the
             platform to retrieve donations.
@@ -629,7 +649,8 @@ class Donations(Resource):
                 }, 400
     
     
-    @donation_ns.marshal_list_with(donation_model)
+    @donation_ns.expect(donation_model)
+    @jwt_required()
     def post(self):
         """ This method handles HTTP POST Request to the Donation Object"""
 
@@ -707,6 +728,7 @@ class Donations(Resource):
     """
 
     @donation_ns.marshal_list_with(donation_model)
+    @jwt_required()
     def get(self, donation_id):
         """ This method handles the specific HTTP GET method and 
             returns specific donations.
@@ -731,7 +753,8 @@ class Donations(Resource):
                     'status': 'api-error'
                 }, 400
 
-    @donation_ns.expect(donation_update_model)
+    @donation_ns.expect(donation_update_model, validate=True)
+    @jwt_required()
     def put(self, donation_id):
         """ This method handles the PUT request for the Donation
             object.
@@ -805,6 +828,7 @@ class Donations(Resource):
                 }, 400
     
 
+    @jwt_required()
     def delete(self, donation_id):
         """ This method handles the DELETE request for the donation
             object.
