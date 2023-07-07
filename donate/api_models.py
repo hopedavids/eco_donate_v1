@@ -16,9 +16,9 @@ user_model = api.model(
 
 user_input_model = api.model(
     "User", {
-        "username": fields.String,
-        "email": fields.String,
-        "password": fields.String
+        "username": fields.String(required=True),
+        "email": fields.String(required=True),
+        "password": fields.String(required=True)
     }
 )
 
@@ -28,6 +28,7 @@ user_creation_model = api.model(
         "username": fields.String(required=True),
         "email": fields.String(required=True),
         "password": fields.String(required=True),
+        "email_confirm": fields.Boolean(default=False)
     }
 )
 
@@ -53,11 +54,11 @@ wallet_model = api.model(
     }
 )
 
-# create_model = api.model(
-#     "Wallet", {
-#         "current_balance": fields.Float
-#     }
-# )
+wallet_create_model = api.model(
+    "Wallet", {
+        "current_balance": fields.Float(required=True)
+    }
+)
 
 
 contact_model = api.model(
@@ -73,10 +74,10 @@ contact_model = api.model(
 
 contact_update_model = api.model(
     "Contact", {
-        "fullname": fields.String,
-        "address": fields.String,
-        "country": fields.String,
-        "aboutme": fields.String
+        "fullname": fields.String(required=True),
+        "address": fields.String(required=True),
+        "country": fields.String(required=True),
+        "aboutme": fields.String(required=True)
     }
 )
 
@@ -96,12 +97,12 @@ donation_model = api.model(
 
 donation_update_model = api.model(
     "Donation", {
-        "userid": fields.Integer,
-        "amount": fields.Integer,
-        "tree_spieces": fields.String,
-        "number_of_trees": fields.String,
-        "region_to_plant": fields.String,
-        "description": fields.String
+        "userid": fields.Integer(required=True),
+        "amount": fields.Integer(required=True),
+        "tree_spieces": fields.String(required=True),
+        "number_of_trees": fields.String(required=True),
+        "region_to_plant": fields.String(required=True),
+        "description": fields.String(required=True)
     }
 )
 
