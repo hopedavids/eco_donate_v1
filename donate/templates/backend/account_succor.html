@@ -29,7 +29,7 @@
             <nav class="navbar navbar-expand-lg blur border-radius-lg top-0 z-index-3 shadow position-absolute mt-4 py-2 start-0 end-0 mx-4">
               <div class="container-fluid">
 
-                <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 " href="#">
+                <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 " href="{{ url_for('main.landing_page') }}">
 
                   Eco-Donate
                 </a>
@@ -43,13 +43,13 @@
                 <div class="collapse navbar-collapse" id="navigation">
                   <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                      <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="#">
+                      <a class="nav-link d-flex align-items-center me-2 active" aria-current="page" href="{{ url_for('main.landing_page') }}">
                         <i class="fa fa-chart-pie opacity-6 text-dark me-1"></i>
                         Home
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link me-2" href="#">
+                      <a class="nav-link me-2" href="{{ url_for('main.landing_page') }}">
                         <i class="fa fa-user opacity-6 text-dark me-1"></i>
                         About Us
                       </a>
@@ -158,22 +158,22 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 mb-4 mx-auto text-center">
-            <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+            <a href="{{ url_for('main.landing_page') }}" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
               Eco-Donate
             </a>
-            <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+            <a href="{{ url_for('main.landing_page') }}" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
               Home
             </a>
-            <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+            <a href="{{ url_for('main.landing_page') }}" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
               About Us
             </a>
-            <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+            <a href="{{ url_for('main.landing_page') }}" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
               Plant Trees
             </a>
-            <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+            <a href="{{ url_for('main.landing_page') }}" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
               Blog
             </a>
-            <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+            <a href="{{ url_for('main.landing_page') }}" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
               More
             </a>
           </div>
