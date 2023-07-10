@@ -2,9 +2,9 @@ from flask import Blueprint, request, jsonify
 from flask_login import current_user
 from flask_jwt_extended import create_access_token, get_jwt_identity
 from werkzeug.security import check_password_hash, generate_password_hash
-from .instances import csrf, jwt
+from instances import csrf, jwt
 from datetime import datetime, timedelta
-from .models import User
+from models import User
 
 
 api_auth = Blueprint('api_auth', __name__, url_prefix='/v1/auth')

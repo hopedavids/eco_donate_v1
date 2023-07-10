@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash
 from flask_login import UserMixin
 from sqlalchemy import event, Boolean
 from datetime import datetime
-from .instances import db
+from instances import db
 
 
 """In this model, all the schemas and tables,

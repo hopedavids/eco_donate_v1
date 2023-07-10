@@ -2,8 +2,8 @@ from flask import Blueprint, render_template, session, redirect, url_for, reques
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_mail import Message
-from .models import User, Wallet
-from .instances import db, mail, csrf
+from models import User, Wallet
+from instances import db, mail, csrf
 from sqlalchemy.exc import IntegrityError
 from dotenv import load_dotenv
 import re, random, os

@@ -5,15 +5,15 @@ from dotenv import load_dotenv
 from datetime import timedelta
 from flask_session import Session
 from flask_restx import apidoc
-from .instances import api, db, jwt, login_manager, csrf, mail
+from instances import api, db, jwt, login_manager, csrf, mail
 from sqlalchemy.dialects.postgresql import psycopg2
-from .resources import auth_ns, user_ns, wallet_ns, pay_ns, donation_ns, contact_ns
-from .user_auth import user_auth as user_auth_blueprint
-from .main import main as main_blueprint
-from .api_auth import api_auth as api_auth_blueprint
-from .admin import admin as admin_blueprint
-from .google import google as google_blueprint
-from .frontend_views import frontend_views as frontend_views_blueprint
+from resources import auth_ns, user_ns, wallet_ns, pay_ns, donation_ns, contact_ns
+from user_auth import user_auth as user_auth_blueprint
+from main import main as main_blueprint
+from api_auth import api_auth as api_auth_blueprint
+from admin import admin as admin_blueprint
+from google import google as google_blueprint
+from frontend_views import frontend_views as frontend_views_blueprint
 
 
 load_dotenv('.flaskenv')

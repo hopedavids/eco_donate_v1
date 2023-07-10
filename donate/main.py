@@ -9,8 +9,8 @@ from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 from io import BytesIO
 from flask_mail import Message
-from .instances import db, mail, csrf
-from .models import Wallet, Donation, Contact, Payment
+from instances import db, mail, csrf
+from models import Wallet, Donation, Contact, Payment
 
 
 main = Blueprint('main', __name__)

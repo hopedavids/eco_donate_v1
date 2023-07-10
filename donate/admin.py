@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template
-from .models import User, Wallet, Payment, Contact, Donation
+from models import User, Wallet, Payment, Contact, Donation
 
 
 admin = Blueprint('admin', __name__)

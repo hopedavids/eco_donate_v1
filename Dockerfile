@@ -6,8 +6,7 @@ RUN mkdir /app
 
 #add labels to the application
 LABEL maintainer="Hope Davids <hledavids@gmail.com>,\
-                Emmanuel Davids <emmanueldavids417@gmail.com>,\
-                Bernard Sakyi <sakyibernard77@gmail.com>"
+                Emmanuel Davids <emmanueldavids417@gmail.com>"
 
 LABEL version="1.0"
 LABEL description="Eco_Donate Project"
@@ -36,4 +35,13 @@ RUN useradd -ms /bin/bash dev
 # activate and the dev user
 USER dev
 
-CMD ["flask","run","--host=0.0.0.0"]
+# CMD ["flask","run","--host=0.0.0.0"]
+
+# Expose the port that Gunicorn listens on (default is 8000)
+EXPOSE 8000
+
+RUN chmod +x ./entrypoint.sh
+
+ENTRYPOINT ["sh", "entrypoint.sh"]
+
+# ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "wsgi:app"]

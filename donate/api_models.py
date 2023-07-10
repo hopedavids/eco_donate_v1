@@ -1,5 +1,5 @@
 from flask_restx import fields
-from .instances import api
+from instances import api
 
 
 

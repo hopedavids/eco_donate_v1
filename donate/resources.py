@@ -2,10 +2,10 @@ from flask import jsonify, request
 from flask_restx import Resource, Namespace
 from flask_jwt_extended import jwt_required, create_access_token
 from werkzeug.security import generate_password_hash, check_password_hash
-from .instances import db, login_manager, csrf, api
-from .api_models import authorizations, user_model, user_creation_model, user_login_model, wallet_model, wallet_create_model, payment_model, contact_model, contact_update_model, donation_model, donation_update_model
-from .api_auth import login
-from .models import User, Wallet, Payment, Contact, Donation
+from instances import db, login_manager, csrf, api
+from api_models import authorizations, user_model, user_creation_model, user_login_model, wallet_model, wallet_create_model, payment_model, contact_model, contact_update_model, donation_model, donation_update_model
+from api_auth import login
+from models import User, Wallet, Payment, Contact, Donation
 
 
 """In this module, namespaces are defined and including the routes and views
