@@ -19,11 +19,10 @@ user_auth = Blueprint('user_auth', __name__)
 def signin():
     try:
         if request.method == 'POST':
-            csrf.protect()
             username = request.form['username']
             password = request.form['password']
             remember = request.form.get('remember', False)
-            
+
             user = User.query.filter_by(username=username).first()
             
             if not username or not password:
@@ -50,8 +49,9 @@ def signin():
                     
         return render_template('backend/accounts/signin.html')
     
-    except:
-        
+    except Exception as e:
+        error = "{}".format(str(e))
+        print(error)
         return render_template('backend/accounts/signin.html')
 
 
@@ -60,7 +60,6 @@ def signin():
 def register():
     try:
         if request.method == 'POST':
-            csrf.protect()
             username = request.form['username']
             email = request.form['email']
             password = request.form['password']
@@ -139,7 +138,6 @@ def confirm():
     # email = request.args.get('email')
     # otp = request.args.get('otp')
     if request.method == 'POST':
-        csrf.protect()
         # email = request.args.get('email')
         otp = request.form.get('otp')
         
@@ -213,7 +211,7 @@ def password_reset():
 @user_auth.route('/account/verify-email', methods=['GET', 'POST'])
 def verify():
     if request.method == 'POST':
-        csrf.protect()
+
         # email = request.args.get('email')
         otp = request.form.get('otp')
         

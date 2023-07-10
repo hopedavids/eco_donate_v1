@@ -51,7 +51,6 @@ def index():
 
     try:
         if request.method == 'POST':
-            csrf.protect()
             amount = request.form['amount']
             region = request.form['region']
             tree_spieces = request.form['spieces']
@@ -238,6 +237,8 @@ def email_certificate():
         return redirect(url_for('main.gratitude'))
     
     except Exception as e:
+        error = "{}".format(str(e))
+        print(error)
         flash("The was an error in email transit", "danger")
         return redirect(url_for('main.gratitude'))
 

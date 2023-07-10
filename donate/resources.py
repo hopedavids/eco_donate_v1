@@ -33,7 +33,6 @@ def load_user(user_id):
     return User.query.get((user_id))
 
 
-
 @auth_ns.route('')
 class Authentication(Resource):
     """ Login Endpoint to access the endpoint and api resources.
