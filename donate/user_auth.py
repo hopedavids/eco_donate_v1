@@ -120,7 +120,6 @@ def register():
 
 
 
-   
 def generate_otp():
     otp = ''.join([str(random.randint(0, 9)) for i in range(6)])
     return otp
@@ -190,3 +189,71 @@ def signout():
     flash('You are Signout', 'warning')
     return redirect(url_for('user_auth.signin'))
 
+
+@user_auth.route('/account/password-reset', methods=['GET', 'POST'])
+def password_reset():
+    if request.method == 'POST':
+        email = request.form['email']
+
+        # check if email is valid and registered in the database
+        user = User.query.filter_by(email=email).first()
+
+        if user.email_confirm is True:
+            #email verfication
+            otp = generate_otp()
+            send_otp(email, otp)
+            session['otp'] = otp
+            return redirect(url_for('user_auth.verify'))
+        
+        flash('sorry, your email account is not valid with us', 'danger')
+
+    return render_template('backend/accounts/reset_password.html')
+
+
+@user_auth.route('/account/verify-email', methods=['GET', 'POST'])
+def verify():
+    if request.method == 'POST':
+        csrf.protect()
+        # email = request.args.get('email')
+        otp = request.form.get('otp')
+        
+        stored_otp = session.get('otp')
+        email = session.get('email')
+
+        if otp == stored_otp:
+            flash('Email has been confirmed!, reset password now', 'success')
+            return redirect(url_for('user_auth.change_password'))
+
+    return render_template('backend/accounts/email_verify.html')
+
+
+@user_auth.route('/account/change-password', methods=['GET', 'POST'])
+def change_password():
+    if request.method == 'POST':
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+
+        if password != confirm_password:
+            flash('password does not match', 'danger')
+
+        minimum_length = 8
+
+        if len(password) < minimum_length:
+            flash('Password should be at least {} characters long'.format(minimum_length), 'error')
+            return redirect(url_for('user_auth.register'))
+
+        if not any(char.isalpha() for char in password) or not any(char.isdigit() for char in password):
+            flash('Password should contain alphanumeric', 'danger')
+            return redirect(url_for('user_auth.register'))
+
+        # get the email from the session
+        email = session.get('email')
+        user = User.query.filter_by(email=email).first()
+        user.password = generate_password_hash(password)
+
+        db.session.commit()
+
+        flash('Your password was reset successfully', 'alert')
+        return redirect(url_for('user_auth.signin'))
+
+    return render_template('backend/accounts/change_password.html')
