@@ -62,8 +62,8 @@ class Wallet(db.Model):
 
     wallet_id = db.Column(db.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id',  ondelete='CASCADE'), nullable=True, unique=True)
-    current_balance = db.Column(db.Float, default=0.0)
-    previous_balance = db.Column(db.Float, default=0.0)
+    current_balance = db.Column(db.Float, default=0.00)
+    previous_balance = db.Column(db.Float, default=0.00)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

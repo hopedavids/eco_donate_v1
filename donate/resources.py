@@ -16,12 +16,12 @@ from .models import User, Wallet, Payment, Contact, Donation
 
 
 # define namespaces for the views
-auth_ns = Namespace('authenticate', description="Login Endpoint")
+auth_ns = Namespace('authenticate', description="Login Endpoint", authorizations=authorizations)
 user_ns = Namespace('user', description="All user operations.", authorizations=authorizations)
-wallet_ns = Namespace('wallet', description="Wallet information")
-pay_ns = Namespace('payment', description="All payments operations")
-contact_ns = Namespace('contact', description="All Contact informations")
-donation_ns = Namespace('donation', description="Donations operation")
+wallet_ns = Namespace('wallet', description="Wallet information", authorizations=authorizations)
+pay_ns = Namespace('payment', description="All payments operations", authorizations=authorizations)
+contact_ns = Namespace('contact', description="All Contact informations", authorizations=authorizations)
+donation_ns = Namespace('donation', description="Donations operation", authorizations=authorizations)
 # api_ns = Namespace('api', description='API namespace')
 
 
@@ -114,7 +114,8 @@ class Users(Resource):
                 "status": "api-error"
             })
 
-  
+    
+    @user_ns.doc(security="basicAuth")
     @user_ns.expect(user_creation_model, validate=True)
     @jwt_required()
     def post(self):
@@ -186,6 +187,7 @@ class Users(Resource):
        User Authentication.
     """
 
+    @user_ns.doc(security="basicAuth")
     @user_ns.marshal_list_with(user_model)
     @jwt_required()
     def get(self, userid):
@@ -197,7 +199,8 @@ class Users(Resource):
         # return the user object with 200 StatusCode
         return user, 200
     
-    @user_ns.expect(user_creation_model, validate=True)
+    @user_ns.doc(security="basicAuth")
+    @user_ns.expect(user_creation_model, validate=False)
     @jwt_required()
     def put(self, userid):
         """ This method handles the PUT HTTP method and returns 
@@ -254,6 +257,7 @@ class Users(Resource):
             }, 400
 
 
+    @user_ns.doc(security="basicAuth")
     @jwt_required()
     def delete(self, userid):
         """ This method handles the DELETE HTTP method 
@@ -292,6 +296,7 @@ class Wallet_Details(Resource):
         to this endpoint.
     """
 
+    @wallet_ns.doc(security="basicAuth")
     @wallet_ns.marshal_list_with(wallet_model)
     @jwt_required()
     def get(self):
@@ -316,6 +321,7 @@ class Wallet_Details(Resource):
         and PUT requests for this endpoint.
     """
     
+    @wallet_ns.doc(security="basicAuth")
     @wallet_ns.marshal_list_with(wallet_model)
     @jwt_required()
     def get(self, userid):
@@ -343,6 +349,7 @@ class Wallet_Details(Resource):
             }, 400
 
 
+    @wallet_ns.doc(security="basicAuth")
     @wallet_ns.expect(wallet_create_model, validate=True)
     @jwt_required()
     def put(self, userid):
@@ -386,6 +393,7 @@ class Wallet_Details(Resource):
             }, 400
 
 
+    @wallet_ns.doc(security="basicAuth")
     @jwt_required()
     def delete(self, userid):
         """ This method handles HTTP DELETE requests. """
@@ -431,6 +439,8 @@ class Payment_Info(Resource):
     """This object defines the routes and views for Payment and
         handles the defined resources.
     """
+
+    @pay_ns.doc(security="basicAuth")
     @pay_ns.marshal_list_with(payment_model)
     @jwt_required()
     def get(self):
@@ -458,6 +468,7 @@ class Contact_Details(Resource):
         and POST requests only.
     """
 
+    @contact_ns.doc(security="basicAuth")
     @contact_ns.marshal_list_with(contact_model)
     @jwt_required()
     def get(self):
@@ -476,6 +487,7 @@ class Contact_Details(Resource):
             }), 400
     
 
+    @contact_ns.doc(security="basicAuth")
     @contact_ns.expect(contact_model, validate=True)
     @jwt_required()
     def post(self):
@@ -538,6 +550,7 @@ class Contact_Details(Resource):
         and PUT and DELETE HTTP requests.
     """
     
+    @contact_ns.doc(security="basicAuth")
     @contact_ns.marshal_list_with(contact_model)
     @jwt_required()
     def get(self, contact):
@@ -563,6 +576,7 @@ class Contact_Details(Resource):
                 }, 400
 
 
+    @contact_ns.doc(security="basicAuth")
     @contact_ns.expect(contact_update_model, validate=True)
     @jwt_required()
     def put(self, contact):
@@ -627,6 +641,7 @@ class Contact_Details(Resource):
                 }, 400
 
     
+    @contact_ns.doc(security="basicAuth")
     @jwt_required()
     def delete(self, contact):
         """ This method handles the DELETE request for the contact
@@ -666,6 +681,7 @@ class Donations(Resource):
         handles the defined resources.
     """
 
+    @donation_ns.doc(security="basicAuth")
     @donation_ns.marshal_list_with(donation_model)
     @jwt_required()
     def get(self):
@@ -685,6 +701,7 @@ class Donations(Resource):
                 }, 400
     
     
+    @donation_ns.doc(security="basicAuth")
     @donation_ns.expect(donation_model)
     @jwt_required()
     def post(self):
@@ -763,6 +780,7 @@ class Donations(Resource):
         donations and HTTP methods.
     """
 
+    @donation_ns.doc(security="basicAuth")
     @donation_ns.marshal_list_with(donation_model)
     @jwt_required()
     def get(self, donation_id):
@@ -789,6 +807,8 @@ class Donations(Resource):
                     'status': 'api-error'
                 }, 400
 
+
+    @donation_ns.doc(security="basicAuth")
     @donation_ns.expect(donation_update_model, validate=True)
     @jwt_required()
     def put(self, donation_id):
@@ -864,6 +884,7 @@ class Donations(Resource):
                 }, 400
     
 
+    @donation_ns.doc(security="basicAuth")
     @jwt_required()
     def delete(self, donation_id):
         """ This method handles the DELETE request for the donation

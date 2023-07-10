@@ -113,8 +113,9 @@ def register():
         
         return render_template('backend/accounts/register.html')
 
-    except:
-        flash('invalid username or password', 'danger')
+    except Exception as e:
+        error = '{}'.format(str(e))
+        flash(error, 'danger')
         return render_template('backend/accounts/register.html')
 
 
