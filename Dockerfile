@@ -20,8 +20,8 @@ COPY ./requirements.txt /requirements.txt
 
 # install all the requirements using pip
 RUN pip install --upgrade pip &&\
-    pip install -r requirements.txt
-
+    pip install -r requirements.txt &&\
+    apt-get update && apt-get install -y sudo
 
 #set the current working directory
 WORKDIR /app
@@ -29,19 +29,24 @@ WORKDIR /app
 #Copy all the resources and file in donate to the app directory
 COPY ./donate /app
 
+
 # create user dev
 RUN useradd -ms /bin/bash dev
+
+# Add the dev user to sudoers
+RUN echo "dev ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # activate and the dev user
 USER dev
 
 # CMD ["flask","run","--host=0.0.0.0"]
+COPY ./entrypoint.sh /entrypoint.sh
+
+# Elevate dev to sudo user
+RUN sudo -E /bin/bash
+
 
 # Expose the port that Gunicorn listens on (default is 8000)
 EXPOSE 8000
 
-RUN chmod +x ./entrypoint.sh
-
-ENTRYPOINT ["sh", "entrypoint.sh"]
-
-# ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8000", "wsgi:app"]
+ENTRYPOINT ["sh", "/entrypoint.sh"]
