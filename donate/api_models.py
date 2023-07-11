@@ -1,3 +1,10 @@
+import sys
+import os
+
+# Add the root directory of your project to the Python path
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(ROOT_DIR)
+
 from flask_restx import fields
 from instances import api
 

@@ -1,3 +1,10 @@
+import sys
+import os
+
+# Add the root directory of your project to the Python path
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(ROOT_DIR)
+
 import uuid
 from werkzeug.security import generate_password_hash
 from flask_login import UserMixin
@@ -16,7 +23,7 @@ class User(UserMixin, db.Model):
         will be defined.
     """
     __tablename__ = 'donate_users'
-    __table_args__ = {'extend_existing': True}
+    # __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
@@ -59,6 +66,8 @@ class Wallet(db.Model):
         return str(uuid.uuid4())
 
     __tablename__ = 'donate_wallets'
+    __table_args__ = {'extend_existing': True}
+
 
     wallet_id = db.Column(db.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id',  ondelete='CASCADE'), nullable=True, unique=True)
@@ -81,6 +90,8 @@ class Payment(db.Model):
         for payments.
     """
     __tablename__ = 'donate_payments'
+    __table_args__ = {'extend_existing': True}
+
 
     payment_id = db.Column(db.Integer, primary_key=True)
     wallet_id = db.Column(db.UUID(as_uuid=True), db.ForeignKey('donate_wallets.wallet_id',  ondelete='CASCADE'), nullable=False)
@@ -102,6 +113,8 @@ class Contact(db.Model):
     """
 
     __tablename__ = 'donators_contact'
+    __table_args__ = {'extend_existing': True}
+
 
     contact_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id',  ondelete='CASCADE'), nullable=False)
@@ -124,6 +137,8 @@ class Donation(db.Model):
     """
 
     __tablename__ = 'donations'
+    __table_args__ = {'extend_existing': True}
+
 
     donation_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id',  ondelete='CASCADE'), nullable=False)

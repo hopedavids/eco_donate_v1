@@ -1,3 +1,10 @@
+import sys
+import os
+
+# Add the root directory of your project to the Python path
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(ROOT_DIR)
+
 from flask import Blueprint, render_template, session, redirect, url_for, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user

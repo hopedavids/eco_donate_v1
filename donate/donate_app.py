@@ -3,6 +3,14 @@ import psycopg2
 from flask import Flask
 from dotenv import load_dotenv
 from datetime import timedelta
+import sys
+import os
+
+# Add the root directory of your project to the Python path
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(ROOT_DIR)
+
+
 from flask_session import Session
 from flask_restx import apidoc
 from instances import api, db, jwt, login_manager, csrf, mail

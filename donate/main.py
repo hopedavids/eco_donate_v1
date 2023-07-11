@@ -9,6 +9,12 @@ from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 from io import BytesIO
 from flask_mail import Message
+
+import sys
+import os
+# Add the root directory of your project to the Python path
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(ROOT_DIR)
 from instances import db, mail, csrf
 from models import Wallet, Donation, Contact, Payment
 
