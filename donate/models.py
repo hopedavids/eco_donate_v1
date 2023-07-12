@@ -96,7 +96,7 @@ class Payment(db.Model):
     payment_id = db.Column(db.Integer, primary_key=True)
     wallet_id = db.Column(db.UUID(as_uuid=True), db.ForeignKey('donate_wallets.wallet_id',  ondelete='CASCADE'), nullable=False)
     donation_id = db.Column(db.Integer, db.ForeignKey('donations',  ondelete='CASCADE'), nullable=False)
-    amount = db.Column(db.Integer, nullable=False)
+    amount = db.Column(db.Float, default=0.00)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
     wallet = db.relationship('Wallet', backref='payment', uselist=False)
