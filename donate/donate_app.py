@@ -4,8 +4,8 @@ from flask import Flask
 from dotenv import load_dotenv
 from datetime import timedelta
 # Add the root directory of your project to the Python path
-# ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-# sys.path.append(ROOT_DIR)
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(ROOT_DIR)
 
 
 from flask_session import Session

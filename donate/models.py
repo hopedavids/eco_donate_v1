@@ -2,8 +2,8 @@ import sys
 import os
 
 # Add the root directory of your project to the Python path
-# ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-# sys.path.append(ROOT_DIR)
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(ROOT_DIR)
 
 import uuid
 from werkzeug.security import generate_password_hash
@@ -71,8 +71,8 @@ class Wallet(db.Model):
 
     wallet_id = db.Column(db.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('donate_users.id',  ondelete='CASCADE'), nullable=True, unique=True)
-    current_balance = db.Column(db.Float, default=0.00)
-    previous_balance = db.Column(db.Float, default=0.00)
+    current_balance = db.Column(db.Float, default=0.0)
+    previous_balance = db.Column(db.Float, default=0.0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -96,7 +96,7 @@ class Payment(db.Model):
     payment_id = db.Column(db.Integer, primary_key=True)
     wallet_id = db.Column(db.UUID(as_uuid=True), db.ForeignKey('donate_wallets.wallet_id',  ondelete='CASCADE'), nullable=False)
     donation_id = db.Column(db.Integer, db.ForeignKey('donations',  ondelete='CASCADE'), nullable=False)
-    amount = db.Column(db.Float, default=0.00)
+    amount = db.Column(db.Integer, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
     wallet = db.relationship('Wallet', backref='payment', uselist=False)

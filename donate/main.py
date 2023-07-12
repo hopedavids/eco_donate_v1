@@ -11,8 +11,9 @@ from io import BytesIO
 from flask_mail import Message
 
 # Add the root directory of your project to the Python path
-# ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-# sys.path.append(ROOT_DIR)
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(ROOT_DIR)
+
 from instances import db, mail, csrf
 from models import Wallet, Donation, Contact, Payment
 
@@ -85,12 +86,12 @@ def index():
             
             if amount:
                 # check if amount is matches or less than the wallet balance
-                if float(amount) > current_balance:
+                if (amount) > current_balance:
                     flash("Dear Donor, you have insufficient Fund in your account", 'warning')
                     return redirect(url_for("main.index"))
                 
             # make the donotion happen
-            current_balance -= float(amount)
+            current_balance -= int(amount)
             wallet.current_balance = current_balance
 
             donation = Donation(
