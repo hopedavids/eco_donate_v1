@@ -9,5 +9,11 @@ This Project consist of the frontend aspect and the backend aspect.
 The frontend aspect is the landing page(Home page) which tell you about what the site is about.
 After Registration, consist of the backend.
 
-<li>Login / Register</li>
+- Login / Register
+- Make Donation
+
+# AUTHOR
+- Hope Lekan Davids
+- Benard Sakyi
+- Emmanuel k. Davids<li>Login / Register</li>
 <li>Make Donation</li>
