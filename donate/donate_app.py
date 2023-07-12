@@ -1,11 +1,8 @@
-import os
+import os, sys
 import psycopg2
 from flask import Flask
 from dotenv import load_dotenv
 from datetime import timedelta
-import sys
-import os
-
 # Add the root directory of your project to the Python path
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(ROOT_DIR)
