@@ -153,7 +153,7 @@ def index():
     except Exception as e:
         flash('fatal error caught from exeptions', 'danger')
         error = 'Error -> {}'.format(str(e))
-        return error
+        pass
 
 
 @main.route('/transactions')
