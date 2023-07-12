@@ -41,8 +41,6 @@ def index():
     user_creation = current_user.created_date
     created_user_format = user_creation.strftime("%B %d, %Y %H:%M:%S")
 
-    
-
     wallet = Wallet.query.filter_by(user_id=user_id).first()
     
     if wallet is None:
