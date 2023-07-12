@@ -33,6 +33,7 @@ class User(UserMixin, db.Model):
     created_date = db.Column(db.DateTime, default=datetime.utcnow)
     email_confirm_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    wallet = db.relationship('Wallet', backref='user', uselist=False)
 
     def set_password(self, password):
         self.password = generate_password_hash(password, method='sha256')
@@ -52,8 +53,8 @@ class User(UserMixin, db.Model):
         return False
 
 
-    # def __str__(self):
-    #     return (self.id)
+    def __str__(self):
+        return (self.id)
 
 
 
@@ -76,7 +77,7 @@ class Wallet(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    user = db.relationship('User', backref='wallet', uselist=False)
+    # user = db.relationship('User', backref='wallet', uselist=False)
 
 
     def __str__(self):
