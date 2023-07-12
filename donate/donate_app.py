@@ -67,7 +67,7 @@ def create_app():
     app.config['SESSION_COOKIE_SECURE'] = False
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
     app.config['WTF_CSRF_ENABLED'] = True
-    # app.config['WTF_CSRF_CHECK_DEFAULT'] = False
+    app.config['WTF_CSRF_CHECK_DEFAULT'] = False
     
 
     # Use a secure session storage
