@@ -23,7 +23,7 @@ class User(UserMixin, db.Model):
         will be defined.
     """
     __tablename__ = 'donate_users'
-    # __table_args__ = {'extend_existing': True}
+    __table_args__ = {'extend_existing': True}
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False, unique=True)

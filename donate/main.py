@@ -1,4 +1,4 @@
-import os, random
+import os, sys, random
 from datetime import datetime
 from dotenv import load_dotenv
 from flask import Blueprint, render_template, request, redirect, url_for, flash, send_file
@@ -10,8 +10,6 @@ from reportlab.pdfgen import canvas
 from io import BytesIO
 from flask_mail import Message
 
-import sys
-import os
 # Add the root directory of your project to the Python path
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(ROOT_DIR)
