@@ -94,7 +94,7 @@ def index():
             
             if amount:
                 # check if amount is matches or less than the wallet balance
-                if (amount) > current_balance:
+                if float(amount) > current_balance:
                     flash("Dear Donor, you have insufficient Fund in your account", 'warning')
                     return redirect(url_for("main.index"))
                 
