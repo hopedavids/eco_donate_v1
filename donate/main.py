@@ -153,7 +153,8 @@ def index():
     except Exception as e:
         flash('fatal error caught from exeptions', 'danger')
         error = 'Error -> {}'.format(str(e))
-        pass
+        print(error)
+        return redirect(url_for("main.index"))
 
 
 @main.route('/transactions')
