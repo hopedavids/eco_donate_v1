@@ -2,8 +2,8 @@ import sys
 import os
 
 # Add the root directory of your project to the Python path
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(ROOT_DIR)
+# ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+# sys.path.append(ROOT_DIR)
 
 import uuid
 from werkzeug.security import generate_password_hash
