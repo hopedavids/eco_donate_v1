@@ -44,6 +44,14 @@ def index():
     
 
     wallet = Wallet.query.filter_by(user_id=user_id).first()
+    
+    if wallet is None:
+        # Handle the case when the wallet doesn't exist
+        # For example, you can create a new wallet for the user
+        wallet = Wallet(user_id=user_id, current_balance=0, previous_balance=0)
+        db.session.add(wallet)
+        db.session.commit()
+    
     wallet_id = wallet.wallet_id
     current_balance = wallet.current_balance
     previous_balance = wallet.previous_balance
