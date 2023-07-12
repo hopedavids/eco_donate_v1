@@ -160,7 +160,7 @@ def index():
                                 updated_at=updated_date_format
                                 )
     except Exception as e:
-        flash('fatal error caught from exeptions: {}'.format(str(e)), 'danger')
+        # flash('fatal error caught from exeptions: {}'.format(str(e)), 'danger')
         error = 'Error -> {}'.format(str(e))
         print(error)
         return redirect(url_for("main.transaction"))
