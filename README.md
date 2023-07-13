@@ -21,5 +21,4 @@ After Registration, consist of the backend.
 # AUTHOR
 - Hope Lekan Davids
 - Benard Sakyi
-- Emmanuel k. Davids<li>Login / Register</li>
-<li>Make Donation</li>
+- Emmanuel k. Davids
